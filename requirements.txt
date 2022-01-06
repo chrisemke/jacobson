@@ -1,0 +1,5 @@
+sqlmodel
+fastapi
+uvicorn[standard]
+mariadb
+strawberry-graphql
