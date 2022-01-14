@@ -15,13 +15,13 @@ conventional_commit_regex = (
 
 commit_message = open(argv[1]).read()
 
+if search('MERGE_MSG', argv[1]):
+    if search(conventional_commit_regex, commit_message, M | U):
+        print("Commit message is validated")
+        exit(0)
 
-if search(conventional_commit_regex, commit_message, M | U):
-    print("Commit message is validated")
-    exit(0)
-
-print(
-    "The commit message doesn't match Conventional Commits. "
-    "Help: https://www.conventionalcommits.org/en/v1.0.0/"
-)
-exit(1)
+    print(
+        "The commit message doesn't match Conventional Commits. "
+        "Help: https://www.conventionalcommits.org/en/v1.0.0/"
+    )
+    exit(1)

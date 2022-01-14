@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Symlink all the githooks.
-# ln -s :: create symbolic link
-# ln -v :: verbose mode- print detail
-# ln -f :: overwrite target file if it exists
-
 GITDIR="../.git/hooks"
 CURDIR=$(basename "$PWD")
 
