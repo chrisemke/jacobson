@@ -2,7 +2,7 @@ from os import getenv
 from urllib.parse import quote_plus
 
 from dotenv import load_dotenv
-from sqlmodel import create_engine, Session
+from sqlmodel import create_engine, Session, SQLModel
 
 load_dotenv()
 
@@ -21,4 +21,4 @@ args = (
 
 engine = create_engine(args)
 
-session = Session(bind=engine)
+SQLModel.metadata.create_all(engine)

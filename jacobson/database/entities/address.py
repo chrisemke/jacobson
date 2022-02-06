@@ -1,22 +1,10 @@
 from typing import Opitional
-from sqlmodel import Field, SQLModel, Enum, Relationship
-
-# class Address(SQLModel, table=True):
-#     __table_args__ = (UniqueConstraint('cep'))
-#     zipcode: int = Field(default=None)
-#     neighborhood: str
-#     street: str
-#     city: str
-#     state: strStatusChoices = Field(sa_column=Column(Enum(StatusChoices)))
-#     service: str
-#     type: str
-#     latitude: str
-#     longitude: str
+from sqlmodel import Field, SQLModel, Enum, Relationship, UniqueConstraint
 
 
 class Address(SQLModel, table=True):
     __table_args__ = UniqueConstraint("zipcode")
-    zipcode: int = Field(default=None)
+    zipcode: int
     city: int = Field(default=None, foreign_key="city.ibge")
     state: int = Field(default=None, foreign_key="state.id")
     district: str
@@ -26,9 +14,12 @@ class Address(SQLModel, table=True):
     longitude: float
     altitude: float
 
+    States: List['State'] = Relationship(back_populates='address')
+    Cities: List['City'] = Relationship(back_populates='address')
+
 
 class State(SQLModel, table=True):
-    id: Opitional[int] = Field(default=None, primary_key=True)
+    id: int = Field(default=None, primary_key=True)
     state: str
 
     adresses: List["Address"] = Relationship(back_populates="state")
