@@ -15,7 +15,7 @@ conventional_commit_regex = (
 
 commit_message = open(argv[1]).read()
 
-if search('MERGE_MSG', argv[1]):
+if not search('MERGE_MSG', argv[1]):
     if search(conventional_commit_regex, commit_message, M | U):
         print("Commit message is validated")
         exit(0)
