@@ -1,7 +1,7 @@
 from typing import Optional, List
 from strawberry import type, field, Schema
 from strawberry.fastapi import GraphQLRouter
-# from jacobson.database.functions.db_function import 
+from jacobson.database.functions.functions import get_address, create_address
 
 
 @type
@@ -27,9 +27,6 @@ class Mutation:
     create_address: Address = field(resolver=create_address)
 
 
-schema = Schema(
-    query=Query,
-    mutation=Mutation
-)
+schema = Schema(query=Query, mutation=Mutation)
 
 graphql_app = GraphQLRouter(schema)

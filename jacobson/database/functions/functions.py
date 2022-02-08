@@ -13,23 +13,24 @@ from jacobson.database.engine import engine
 
 #     return livro
 
-def get_livros():
-    query = select(Livro).options(joinedload('*'))
-    with Session(engine) as session:
-        result = session.execute(query).scalars().unique().all()
-
-    return result
-
-
-# def create_pessoas(idade: int, nome: str):
-#     person = Pessoa(nome=nome, idade=idade)
-
+# def get_livros():
+#     query = select(Livro).options(joinedload('*'))
 #     with Session(engine) as session:
-#         session.add(person)
-#         session.commit()
-#         session.refresh(person)
+#         result = session.execute(query).scalars().unique().all()
 
-#     return person
+#     return result
+
+
+def create_address(zipcode: int):
+    address = Address(zipcode)
+
+    with Session(engine) as session:
+        session.add(address)
+        session.commit()
+        session.refresh(address)
+
+    return address
+
 
 def get_address(
     zipcode: int = None,

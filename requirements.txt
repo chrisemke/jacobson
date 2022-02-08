@@ -3,4 +3,3 @@ fastapi
 uvicorn[standard]
 mariadb
 strawberry-graphql
-jinja2
