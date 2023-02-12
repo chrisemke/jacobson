@@ -1,9 +1,9 @@
-from typing import Opitional
+from typing import Optional, List
 from sqlmodel import Field, SQLModel, Enum, Relationship, UniqueConstraint
 
 
 class Address(SQLModel, table=True):
-    __table_args__ = UniqueConstraint("zipcode")
+    __table_args__ = (UniqueConstraint("zipcode"),)
     zipcode: int
     city: int = Field(default=None, foreign_key="city.ibge")
     state: int = Field(default=None, foreign_key="state.id")
@@ -28,6 +28,6 @@ class State(SQLModel, table=True):
 class City(SQLModel, table=True):
     ibge: int
     name: str
-    ddd: Opitional[int]
+    ddd: Optional[int]
 
     adresses: List["Address"] = Relationship(back_populates="city")

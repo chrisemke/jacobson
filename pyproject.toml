@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "jacobson"
+version = "0.1.0"
+description = "self-hosted zipcode API"
+authors = ["Christian G. Semke <chrisemke@protonmail.com>"]
+license = "AGPLv3"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+sqlmodel = "^0.0.8"
+fastapi = "^0.90.0"
+uvicorn = {extras = ["standard"], version = "^0.20.0"}
+mariadb = "^1.1.5.post3"
+strawberry-graphql = "^0.155.4"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.0.0"
+black = "^23.1.0"
+flake8 = "^6.0.0"
+jedi = "^0.18.2"
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.4.2"
+mkdocs-material = "^9.0.11"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.2.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

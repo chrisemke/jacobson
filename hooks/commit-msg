@@ -7,7 +7,7 @@ conventional_commit_regex = (
     r"\A(?:"
     r"^(?P<type>feat|fix|ci|chore|docs|test|style|refactor|build|perf|revert)"
     r"(?:\((?P<scope>[\w-]+)\))?(?P<breaking>!)?:"
-    r"\s(?P<subject>\b[\w# \t-]{3,}\b)$)(?:(?:(?P<BLANK_LINE>\n^$\n)"
+    r"\s(?P<subject>\b[\w'\"# \t-]{3,}\b)$)(?:(?:(?P<BLANK_LINE>\n^$\n)"
     r"(?P<body>(?:^.{3,}$\n?\b){1,3}))?(?P<BLANK_LINE2>\n^$\n)"
     r"(?:(?P<breaking_change>^BREAKING\sCHANGE:\s[\s\w]+$)\n)?"
     r"(?:(?P<footer>^\w+:\s\w+)))?\n?\Z"

@@ -1,0 +1,15 @@
+version: '1.0'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8000:8000"
+  db:
+    build:
+      context: docker/database
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3306:3306"
