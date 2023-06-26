@@ -1,5 +1,4 @@
-from typing import Optional, List
-from sqlmodel import Field, SQLModel, Enum, Relationship, UniqueConstraint
+from sqlmodel import Field, Relationship, SQLModel, UniqueConstraint
 
 
 class Address(SQLModel, table=True):
@@ -14,20 +13,20 @@ class Address(SQLModel, table=True):
     longitude: float
     altitude: float
 
-    States: List['State'] = Relationship(back_populates='address')
-    Cities: List['City'] = Relationship(back_populates='address')
+    States: list["State"] = Relationship(back_populates="address")
+    Cities: list["City"] = Relationship(back_populates="address")
 
 
 class State(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     state: str
 
-    adresses: List["Address"] = Relationship(back_populates="state")
+    adresses: list["Address"] = Relationship(back_populates="state")
 
 
 class City(SQLModel, table=True):
     ibge: int
     name: str
-    ddd: Optional[int]
+    ddd: int | None
 
-    adresses: List["Address"] = Relationship(back_populates="city")
+    adresses: list["Address"] = Relationship(back_populates="city")

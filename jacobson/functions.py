@@ -1,7 +1,7 @@
 from sqlmodel import Session, select
-from sqlalchemy.orm import joinedload
-from jacobson.database.entities.address import Address
+
 from jacobson.database.engine import engine
+from jacobson.database.entities.address import Address
 
 # def create_livros(titulo: str, pessoa_id: int):
 #     livro = Livro(titulo=titulo, pessoa_id=pessoa_id)
@@ -33,9 +33,9 @@ def create_address(zipcode: int):
 
 
 def get_address(
-    zipcode: int = None,
-    city: str = None,
-    state: str = None,
+    zipcode: int | None = None,
+    city: str | None = None,
+    state: str | None = None,
     limit: int = 5,
 ):
     query = select(Address)

@@ -1,3 +1,34 @@
+[tool.black]
+line-length = 79
+
+[tool.mypy]
+python_version = 3.11
+warn_unused_configs = true
+namespace_packages = true
+
+[tool.ruff]
+select = [
+    "E", # pydocstyle
+    "W", # pydocstyle
+    "F", # pyflakes
+    "I", # isort
+    "UP", # pyupgrade
+    "D", # docstrings
+    "RUF", # ruff
+]
+ignore = [
+    "D100", # Missing docstring in public module
+    "D101", # Missing docstring in public class
+    "D102", # Missing docstring in public method
+    "D103", # Missing docstring in public function
+    "D104", # Missing docstring in public package
+    "D107", # Missing docstring in `__init__`
+    "D105", # Missing docstring in magic method
+    "D205" # 1 blank line required between summary line and description
+]
+line-length = 79
+target-version = "py311"
+
 [tool.poetry]
 name = "jacobson"
 version = "0.1.0"
@@ -7,26 +38,25 @@ license = "AGPLv3"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
-sqlmodel = "^0.0.8"
-fastapi = "^0.90.0"
-uvicorn = {extras = ["standard"], version = "^0.20.0"}
-mariadb = "^1.1.5.post3"
-strawberry-graphql = "^0.155.4"
+python = "^3.11"
+edgedb = "^1.4.0"
+uvicorn = {extras = ["standard"], version = "^0.22.0"}
+fastapi = "^0.98.0"
+strawberry-graphql = "^0.189.0"
 
 [tool.poetry.group.dev.dependencies]
-mypy = "^1.0.0"
-black = "^23.1.0"
-flake8 = "^6.0.0"
+mypy = "^1.4.0"
+black = "^23.3.0"
 jedi = "^0.18.2"
-pre-commit = "^3.3.2"
+pre-commit = "^3.3.3"
+ruff = "^0.0.274"
 
 [tool.poetry.group.docs.dependencies]
-mkdocs = "^1.4.2"
-mkdocs-material = "^9.0.11"
+mkdocs = "^1.4.3"
+mkdocs-material = "^9.1.16"
 
 [tool.poetry.group.test.dependencies]
-pytest = "^7.2.1"
+pytest = "^7.3.2"
 
 [build-system]
 requires = ["poetry-core"]
