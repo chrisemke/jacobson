@@ -2,7 +2,7 @@
 line-length = 79
 
 [tool.mypy]
-python_version = 3.11
+python_version = "3.11"
 warn_unused_configs = true
 namespace_packages = true
 
