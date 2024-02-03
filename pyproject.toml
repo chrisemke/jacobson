@@ -46,8 +46,6 @@ strawberry-graphql = "^0.189.0"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.4.0"
-black = "^23.3.0"
-jedi = "^0.18.2"
 pre-commit = "^3.3.3"
 ruff = "^0.0.274"
 
