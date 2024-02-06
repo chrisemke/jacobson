@@ -19,10 +19,29 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # jacobson
 self-hosted zipcode API
 
+### The initial structure I imagined would be:
+```
+*api query/get* -> search in database -> if there is any result return;
+else async call to all plugins that are configured, return and insert on database
+```
+```
+*api mutation/post* -> manually update or insert zipcodes
+```
+```
+call to tell the api to update some register from plugins that are configured
+```
+
 # TODO
 - [x] git hooks (pre-commit)
 - [ ] Edgedb
-- [ ] Taskipy
-- [ ] Docs (mkdocs)
+- [ ] fix podman pod for all devs (see jacobson-dev.yaml)
 - [ ] Tests (pytest)
-- [ ] Api's support plugin-like (cepaberto, brazilapi)
+- [ ] Docs (mkdocs)
+- [ ] Api's support plugin-like (cepaberto, brazilapi...)
+
+
+# DEV
+The idea is to just run this command and podman will run the entire dev environment
+```bash
+podman play kube jacobson-dev.yaml
+```
