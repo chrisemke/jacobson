@@ -28,6 +28,8 @@ repos:
                     --license-filepath,
                     license-templates/LICENSE.txt,
                     --fuzzy-match-generates-todo,
+                    --use-current-year,
+                    --no-space,
                 ]
           - id: insert-license
             name: Add license for all edgedb files
@@ -50,27 +52,16 @@ repos:
                     --license-filepath,
                     license-templates/LICENSE.txt,
                     --fuzzy-match-generates-todo,
+                    --no-space,
                 ]
-    - repo: https://github.com/psf/black
-      rev: 24.1.1
-      hooks:
-          - id: black
-            name: Run black (Python formatter)
-            args: [--config=./pyproject.toml]
-    - repo: https://github.com/asottile/blacken-docs
-      rev: 1.16.0
-      hooks:
-          - id: blacken-docs
-            name: Run black on Python code blocks in documentation files
-            args: [--line-length=79, --target-version=py311]
-            alias: black
-            additional_dependencies: [black]
     - repo: https://github.com/astral-sh/ruff-pre-commit
-      rev: v0.2.0
+      rev: v0.2.1
       hooks:
           - id: ruff
-            name: Run Ruff (Python linter)
-            args: [--fix, --exit-non-zero-on-fix]
+            name: Run Ruff Linter
+            args: [--fix]
+          - id: ruff-format
+            name: Run Ruff Formater
     - repo: https://github.com/pre-commit/mirrors-mypy
       rev: v1.8.0
       hooks:
