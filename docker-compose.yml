@@ -7,9 +7,11 @@ services:
       dockerfile: docker/api/Dockerfile.dev
     ports:
       - "8000:8000"
-  db:
-    build:
-      context: docker/database/
-      dockerfile: Dockerfile.dev
+  edgedb:
+    image: docker.io/edgedb/edgedb
+    environment:
+      EDGEDB_SERVER_SECURITY: insecure_dev_mode
+    volumes:
+      - "./dbschema:/dbschema"
     ports:
-      - "3306:3306"
+      - "5656:5656"
