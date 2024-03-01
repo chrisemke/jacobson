@@ -1,10 +1,12 @@
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.12"
 warn_unused_configs = true
 namespace_packages = true
+exclude = ["jacobson"]
+plugins = ["strawberry.ext.mypy_plugin"]
 
 [tool.ruff]
-select = [
+lint.select = [
     "E",   # pydocstyle
     "W",   # pydocstyle
     "F",   # pyflakes
@@ -13,7 +15,7 @@ select = [
     "D",   # docstrings
     "RUF", # ruff
 ]
-ignore = [
+lint.ignore = [
     "D100", # Missing docstring in public module
     "D101", # Missing docstring in public class
     "D102", # Missing docstring in public method
@@ -22,10 +24,11 @@ ignore = [
     "D107", # Missing docstring in `__init__`
     "D105", # Missing docstring in magic method
     "D205", # 1 blank line required between summary line and description
+    "D211", # no-blank-line-before-class
     "D212", # Multi-line docstring summary should start at the first line
 ]
 line-length = 79
-target-version = "py311"
+target-version = "py312"
 
 [tool.ruff.format]
 quote-style = 'single'
@@ -39,11 +42,11 @@ license = "AGPLv3"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12"
 edgedb = "^1.8.0"
 uvicorn = { extras = ["standard"], version = "^0.27.0.post1" }
 fastapi = "^0.109.0"
-strawberry-graphql = "^0.219.1"
+strawberry-graphql = "^0.219.2"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.6.0"

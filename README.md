@@ -19,6 +19,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # jacobson
 self-hosted zipcode API
 
+[!IMPORTANT]
+jacobson directory is legacy.
+
 ### The initial structure I imagined would be:
 ```
 *api query/get* -> search in database -> if there is any result return;
