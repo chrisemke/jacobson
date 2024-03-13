@@ -1,7 +1,12 @@
 [tool.mypy]
 python_version = "3.12"
 warn_unused_configs = true
+warn_unused_ignores = true
 namespace_packages = true
+scripts_are_modules = true
+ignore_missing_imports = true
+pretty = true
+strict = true
 exclude = ["jacobson"]
 plugins = ["strawberry.ext.mypy_plugin"]
 
@@ -31,7 +36,7 @@ line-length = 79
 target-version = "py312"
 
 [tool.ruff.format]
-quote-style = 'single'
+quote-style = "single"
 
 [tool.poetry]
 name = "jacobson"
@@ -43,23 +48,24 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-edgedb = "^1.8.0"
-uvicorn = { extras = ["standard"], version = "^0.27.0.post1" }
-fastapi = "^0.109.0"
-strawberry-graphql = "^0.219.2"
+edgedb = "^1.9.0"
+uvicorn = {extras = ["standard"], version = "^0.28.0"}
+fastapi = "^0.110.0"
+strawberry-graphql = "^0.220.0"
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = "^3.6.0"
-ruff = "^0.2.0"
-mypy = "^1.8.0"
+pre-commit = "^3.6.2"
+ruff = "^0.3.2"
+mypy = "^1.9.0"
 poetry-plugin-export = "^1.6.0"
+commitizen = "^3.18.3"
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = "^1.5.3"
-mkdocs-material = "^9.5.7"
+mkdocs-material = "^9.5.13"
 
 [tool.poetry.group.test.dependencies]
-pytest = "^7.3.2"
+pytest = "^8.1.1"
 
 [build-system]
 requires = ["poetry-core"]
