@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: docker/api/Dockerfile.dev
+    volumes:
+      - ".:/jacobson"
     ports:
       - "8000:8000"
   edgedb:

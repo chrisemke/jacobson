@@ -8,7 +8,7 @@ ignore_missing_imports = true
 pretty = true
 strict = true
 exclude = ["jacobson"]
-plugins = ["strawberry.ext.mypy_plugin"]
+plugins = ["strawberry.ext.mypy_plugin", "pydantic.mypy"]
 
 [tool.ruff]
 lint.select = [
@@ -28,6 +28,7 @@ lint.ignore = [
     "D104", # Missing docstring in public package
     "D107", # Missing docstring in `__init__`
     "D105", # Missing docstring in magic method
+    "D203", # 1 blank line required before class docstring
     "D205", # 1 blank line required between summary line and description
     "D211", # no-blank-line-before-class
     "D212", # Multi-line docstring summary should start at the first line
@@ -52,13 +53,15 @@ edgedb = "^1.9.0"
 uvicorn = {extras = ["standard"], version = "^0.28.0"}
 fastapi = "^0.110.0"
 strawberry-graphql = "^0.220.0"
+httpx = "^0.27.0"
+pydantic = "^2.6.4"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.6.2"
-ruff = "^0.3.2"
+ruff = "^0.3.3"
 mypy = "^1.9.0"
-poetry-plugin-export = "^1.6.0"
-commitizen = "^3.18.3"
+poetry-plugin-export = "^1.7.0"
+commitizen = "^3.18.4"
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = "^1.5.3"
@@ -66,6 +69,8 @@ mkdocs-material = "^9.5.13"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.1.1"
+pytest-cov = "^4.1.0"
+pytest-mock = "^3.12.0"
 
 [build-system]
 requires = ["poetry-core"]

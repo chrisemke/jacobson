@@ -4,8 +4,10 @@ LABEL app="adress"
 
 WORKDIR /jacobson
 
-ADD api .
-ADD jacobson .
+VOLUME .:/jacobson
+
+EXPOSE 8000
+
 ADD requirements.txt .
 
 RUN apk update \
@@ -15,4 +17,4 @@ RUN apk update \
     && pip install -r requirements.txt \
     && pip cache purge
 
-CMD ["uvicorn", "jacobson.api.app:app", "--host=0.0.0.0", "--port=8000", "--reload"]
+CMD ["uvicorn", "api.app:app", "--host=0.0.0.0", "--port=8000", "--reload"]
