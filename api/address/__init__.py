@@ -15,26 +15,3 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-
-from strawberry import Schema, field, type
-from strawberry.fastapi import GraphQLRouter
-
-from api.address.inputs import AddressInput
-from api.address.types import AddressType
-from api.resolvers import get_address
-
-
-@type
-class Query:
-    @field
-    async def all_address(self, address: AddressInput) -> list[AddressType]:
-        return list(map(AddressType.from_pydantic, await get_address(address)))
-
-
-# @type
-# class Mutation:
-#     create_address: Address = Address field(resolver=create_address)
-
-schema = Schema(query=Query)  # , mutation=Mutation)
-
-graphql_app = GraphQLRouter[object, object](schema)
