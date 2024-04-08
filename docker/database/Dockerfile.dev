@@ -1,1 +1,1 @@
-FROM mariadb
+FROM docker.io/library/mariadb:latest

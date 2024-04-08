@@ -1,34 +1,75 @@
 repos:
-    -   repo: https://github.com/pre-commit/pre-commit-hooks
-        rev: v4.4.0
-        hooks:
-            - id: trailing-whitespace
-            - id: end-of-file-fixer
-            - id: check-yaml
-            - id: check-added-large-files
-            - id: check-toml
-    -   repo: https://github.com/psf/black
-        rev: 23.3.0
-        hooks:
-            - id: black
-    -   repo: https://github.com/astral-sh/ruff-pre-commit
-        rev: v0.0.270
-        hooks:
-            - id: ruff
-              args: [--fix, --exit-non-zero-on-fix]
-    -   repo: https://github.com/pre-commit/mirrors-mypy
-        rev: v1.3.0
-        hooks:
-        -   id: mypy
-    -   repo: https://github.com/python-poetry/poetry
-        rev: "1.5.0"
-        hooks:
-            - id: poetry-check
-            - id: poetry-lock
-            - id: poetry-export
-              args: ["-f", "requirements.txt", "-o", "requirements.txt"]
-    -   repo: https://github.com/compilerla/conventional-pre-commit
-        rev: v2.3.0
-        hooks:
-            - id: conventional-pre-commit
-              stages: [commit-msg]
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v4.6.0
+      hooks:
+          - id: end-of-file-fixer
+          - id: trailing-whitespace
+          - id: mixed-line-ending
+          - id: check-byte-order-marker
+          - id: check-executables-have-shebangs
+          - id: check-merge-conflict
+          - id: check-symlinks
+          - id: check-vcs-permalinks
+          - id: debug-statements
+          - id: check-yaml
+            files: .*\.(yaml|yml)$
+          - id: check-added-large-files
+          - id: check-toml
+    - repo: https://github.com/Lucas-C/pre-commit-hooks
+      rev: v1.5.5
+      hooks:
+          - id: insert-license
+            name: Add license for all python files
+            files: \.py$|\.pyi$
+            args:
+                [
+                    --comment-style,
+                    '"""||"""',
+                    --license-filepath,
+                    license-templates/LICENSE.txt,
+                    --fuzzy-match-generates-todo,
+                    --use-current-year,
+                    --no-space,
+                ]
+          - id: insert-license
+            name: Add license for all Markdown files
+            files: \.md$
+            args:
+                [
+                    --comment-style,
+                    '<!--||-->',
+                    --license-filepath,
+                    license-templates/LICENSE.txt,
+                    --fuzzy-match-generates-todo,
+                    --no-space,
+                ]
+    - repo: https://github.com/astral-sh/ruff-pre-commit
+      rev: v0.3.5
+      hooks:
+          - id: ruff
+            name: Run Ruff Linter & Formater
+            args: [--fix, --exit-non-zero-on-fix]
+          - id: ruff-format
+            name: Run Ruff Formater
+    - repo: https://github.com/pre-commit/mirrors-mypy
+      rev: v1.9.0
+      hooks:
+          - id: mypy
+            name: Run Mypy (Static type checker)
+            exclude: "jacobson"
+            additional_dependencies: [strawberry-graphql, pydantic, pydantic-settings, sqlmodel]
+    - repo: https://github.com/python-poetry/poetry
+      rev: "1.8.0"
+      hooks:
+          - id: poetry-check
+          - id: poetry-lock
+          - id: poetry-export
+            args: [-f, requirements.txt, -o, requirements.txt]
+    - repo: https://github.com/commitizen-tools/commitizen
+      rev: v3.21.3
+      hooks:
+          - id: commitizen
+          - id: commitizen-branch
+            stages:
+            - post-commit
+            - push
