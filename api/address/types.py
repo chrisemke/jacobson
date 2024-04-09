@@ -21,11 +21,6 @@ from strawberry.experimental.pydantic import type as pydantic_type
 
 from database.models.brazil import Address, City, State
 
-DATABASE_USER = "teste"
-DATABASE_PASSWORD = "teste"
-DATABASE_HOST = "db"
-DATABASE_PORT = 3306
-DATABASE_NAME = "test"
 
 @pydantic_type(name='State', model=State)
 class StateType:
