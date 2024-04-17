@@ -1,15 +1,4 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: ./docker/app/Dockerfile.dev
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
-    volumes:
-      - ".:/jacobson"
-    restart: always
   db:
     build:
       context: ./docker/database/
@@ -23,4 +12,15 @@ services:
       - "3306:3306"
     volumes:
       - ./docker/database/data:/var/lib/mysql
+    restart: always
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile.dev
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    volumes:
+      - ".:/jacobson"
     restart: always

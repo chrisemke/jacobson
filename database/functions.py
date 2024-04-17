@@ -16,26 +16,75 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from fastapi import HTTPException
+from pydantic import PositiveInt
 from sqlalchemy.orm import joinedload
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from api.address.inputs import AddressInput
+from api.address.inputs import AddressFilterInput
+from api.address.types import AddressType
 from database.engine import engine
 from database.models.brazil import Address, City, State
 
 
+async def page_to_offset(
+    page_size: PositiveInt, page_number: PositiveInt
+) -> PositiveInt:
+    """
+    Calculate the database offset based on page size and number.
+
+    Parameters
+    ----------
+    page_size : PositiveInt
+        How many elements in each page
+    page_number : PositiveInt
+        Number of the page
+
+    Returns
+    -------
+    PositiveInt
+        The database offset
+
+    """
+    if page_number <= 1:
+        return 0
+    return page_size * (page_number - 1)
+
+
 async def get_address_by_dc_join_state_join_city(
-    filter: AddressInput,
+    filter: AddressFilterInput,
+    page_size: PositiveInt = 10,
+    page_number: PositiveInt = 1,
 ) -> list[Address | None]:
+    """
+    Query addresses by the strawberry dataclass.
+
+    Parameters
+    ----------
+    filter : AddressFilterInput
+        Strawberry input dataclass, everything can be None
+        (based on sqlmodel model)
+    page_size : PositiveInt, optional
+        How many elements in each page, by default 10
+    page_number : PositiveInt, optional
+        Number of the page, by default 1
+
+    Returns
+    -------
+    list[Address | None]
+        Return all addresses based on filter or None list
+
+    Todo: Fix Joins with async client
+
+    """
     query = (
         select(Address)
-        .join(State)
-        .join(City)
         .options(
-            joinedload(Address.state),
-            joinedload(Address.city),
+            joinedload('*'),
         )
+        .limit(page_size)
+        .offset(await page_to_offset(page_size, page_number))
     )
 
     if filter.zipcode:
@@ -51,10 +100,61 @@ async def get_address_by_dc_join_state_join_city(
             query = query.where(State.acronym == filter.state.acronym.value)
 
     async with AsyncSession(engine) as session:
-        result = (await session.exec(query)).unique().all()
+        adresses_result = await session.exec(query)
+        addresses = adresses_result.unique().all()
 
-    return result
+    return addresses
 
 
-async def create_address():
-    ...
+async def insert_address_by_dc(address: AddressType) -> Address:
+    """
+    Create address by the strawberry dataclass.
+
+    Parameters
+    ----------
+    address : AddressType
+        Strawberry input dataclass, strict (based on sqlmodel model)
+
+    Returns
+    -------
+    Address
+        Single model instance, should be converted for strawberry
+
+    Raises
+    ------
+    HTTPException
+        If city.ibge is not found on database: 404 error
+
+    """
+    address_model = address.to_pydantic()
+
+    async with AsyncSession(engine) as session:
+        state_query = select(State).where(
+            State.acronym == address.state.acronym.value
+        )
+        state_result = await session.exec(state_query)
+        state = state_result.one()
+        address_model.state = state
+
+        city_query = select(City).where(City.ibge == address.city.ibge)
+        city_result = await session.exec(city_query)
+        city = city_result.one_or_none()
+        if not city:
+            raise HTTPException(status_code=404, detail='City not found')
+        address_model.city = city
+
+        session.add(address_model)
+        await session.commit()
+        await session.refresh(address_model)
+
+        query = (
+            select(Address)
+            .options(
+                joinedload('*'),
+            )
+            .where(Address.id == address_model.id)
+        )
+        adress_result = await session.exec(query)
+        address_model = adress_result.unique().one()
+
+    return address_model

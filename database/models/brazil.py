@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from enum import Enum, StrEnum
+from enum import StrEnum
 from typing import NamedTuple
 
 from pydantic import PositiveInt
@@ -82,6 +82,8 @@ class Coordinates(NamedTuple):
     altitude: float
 
 
+# Needed until strawberry support auto | None type
+# https://github.com/strawberry-graphql/strawberry/issues/3435
 class AddressBase(SQLModel):
     id: int | None = Field(default=None, primary_key=True)
     zipcode: PositiveInt | None = None
@@ -92,11 +94,12 @@ class AddressBase(SQLModel):
 
 class Address(AddressBase, table=True):
     zipcode: PositiveInt = Field(unique=True)
-    neighborhood: str
-    complement: str | None = None
 
     state_id: PositiveInt = Field(foreign_key='state.id')
     state: State = Relationship(back_populates='addresses')
 
     city_id: PositiveInt = Field(foreign_key='city.id')
     city: City = Relationship(back_populates='addresses')
+
+    neighborhood: str
+    complement: str | None = None

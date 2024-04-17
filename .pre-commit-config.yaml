@@ -44,7 +44,7 @@ repos:
                     --no-space,
                 ]
     - repo: https://github.com/astral-sh/ruff-pre-commit
-      rev: v0.3.5
+      rev: v0.3.7
       hooks:
           - id: ruff
             name: Run Ruff Linter & Formater
@@ -66,7 +66,7 @@ repos:
           - id: poetry-export
             args: [-f, requirements.txt, -o, requirements.txt]
     - repo: https://github.com/commitizen-tools/commitizen
-      rev: v3.21.3
+      rev: v3.22.0
       hooks:
           - id: commitizen
           - id: commitizen-branch

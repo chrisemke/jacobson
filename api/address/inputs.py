@@ -19,19 +19,23 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from strawberry import auto, input
 from strawberry.experimental.pydantic import input as pydantic_input
 
-from database.models.brazil import AddressBase, City, State
+from database.models.brazil import Address, AddressBase, City, State
 
 
 @pydantic_input(model=State)
 class StateInput:
-    name: auto
     acronym: auto
+    # Needed until strawberry support auto | None type
+    # https://github.com/strawberry-graphql/strawberry/issues/3435
+    name: str | None
 
 
 @pydantic_input(model=City)
 class CityInput:
     ibge: auto
-    name: auto
+    # Needed until strawberry support auto | None type
+    # https://github.com/strawberry-graphql/strawberry/issues/3435
+    name: str | None
     ddd: auto
 
 
@@ -43,10 +47,19 @@ class CoordinatesInput:
 
 
 @pydantic_input(model=AddressBase)
-class AddressInput:
+class AddressFilterInput:
     zipcode: auto
     city: CityInput | None = None
     state: StateInput | None = None
     neighborhood: auto
     complement: auto
     # coordinates: CoordinatesInput | None = None
+
+
+@pydantic_input(model=Address)
+class AddressInsertInput:
+    zipcode: auto
+    state: StateInput
+    city: CityInput
+    neighborhood: auto
+    complement: auto

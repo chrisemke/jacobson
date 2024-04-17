@@ -1,1 +1,1 @@
-FROM docker.io/library/mariadb:latest
+FROM docker.io/library/mariadb:11
