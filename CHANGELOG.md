@@ -18,9 +18,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ## Unreleased
 
+### BREAKING CHANGE
+
+- The query has completely changed IO
+
 ### Feat
 
 - **mutation**: add create_address mutation and beta pagination
+- **sqlmodel-mariadb**: add sqlmodel models, create async session, create tables on startup and add query function with beta filters
 - Initial commit
 
 ### Fix
@@ -33,4 +38,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ### Refactor
 
+- **pydantic**: move pydantic models to sqlmodel models
+- **edgedb-jacobson**: remove edgedb and legacy jacobson
+- **graphql-query**: add pydantic and strawberry types to query
+- start edgedb support
 - create docker folders and minor fixes
