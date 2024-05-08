@@ -25,6 +25,15 @@ app = FastAPI()
 app.include_router(graphql_app, prefix='/graphql')
 
 
-@app.on_event("startup")
+@app.on_event('startup')
 async def on_startup() -> None:
+    """
+    Create database.
+
+    Todo:
+    ----
+    - Move from events to lifespan
+    see https://fastapi.tiangolo.com/advanced/events/
+
+    """
     await init_db()

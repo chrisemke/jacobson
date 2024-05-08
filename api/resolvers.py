@@ -21,26 +21,38 @@ from pydantic import PositiveInt
 from api.address.inputs import AddressFilterInput, AddressInsertInput
 from database import functions
 from database.models.brazil import Address
+from plugins.plugins_controller import get_zipcode_from_plugins
 
 
 async def get_address(
     filter: AddressFilterInput,
     page_size: PositiveInt,
     page_number: PositiveInt,
-) -> list[Address | None]:
+) -> list[Address]:
+    """
+    Get all addresses from database or all plugins.
+
+    Parameters
+    ----------
+    filter : AddressFilterInput
+        Strawberry input dataclass, everything can be None
+        (based on sqlmodel model)
+    page_size : PositiveInt
+        How many elements in each page
+    page_number : PositiveInt
+        Number of the page
+
+    Returns
+    -------
+    list[Address]
+        All addresses (db model) based on filter or empty list
+
+    """
     result = await functions.get_address_by_dc_join_state_join_city(
         filter, page_size, page_number
     )
-    if not result:
-        try:
-            ...
-            # result = async get from plugins
-        except Exception:
-            ...
-            # there is no address found
-        else:
-            ...
-            # async insert on database
+    if not result and filter.zipcode:
+        result = await get_zipcode_from_plugins(filter.zipcode)
     return result
 
 

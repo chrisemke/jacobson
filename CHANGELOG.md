@@ -38,6 +38,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ### Refactor
 
+- **api**: add docstrings and drop coordinates for now
+- **plugins**: start base for plugins and cep_aberto service
+- **settings**: move all .env settings to utils directory
 - **pydantic**: move pydantic models to sqlmodel models
 - **edgedb-jacobson**: remove edgedb and legacy jacobson
 - **graphql-query**: add pydantic and strawberry types to query

@@ -32,18 +32,28 @@ else async call to all plugins that are configured, return and insert on databas
 call to tell the api to update some register from plugins that are configured
 ```
 
-# TODO
+# TODO (Needed for v0.1)
 - [x] git hooks (pre-commit)
 - [x] SqlModel
-- [ ] Api's support plugin-like (cepaberto, brazilapi...)
-- [ ] Tests (pytest)
+- [-] Api's support plugin-like (viacep, brazilapi...) cep aberto was added for test, need to think in a better structure for plugins and tasks
+- [-] Tests, need to fix a lot of tests, need to study other ways to test
+- [ ] Integration Tests
+- [ ] Custom exceptions
+- [ ] Add log support (see loguru)
 - [ ] Docs (mkdocs)
-- [ ] fix podman pod for all devs (see jacobson-dev.yaml)
 - [ ] Alembic migrations
 
+## TODO (nice to have)
+- [ ] move from docker-compose to a podman pod
+- [ ] study mypyc viability
 
 # DEV
 The idea is to just run this command and podman will run the entire dev environment
 ```bash
 podman compose up -d --build
+```
+
+You can access the api at localhost port 8000 /graphql
+```
+http://127.0.0.1:8000/graphql
 ```

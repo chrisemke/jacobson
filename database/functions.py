@@ -22,8 +22,7 @@ from sqlalchemy.orm import joinedload
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from api.address.inputs import AddressFilterInput
-from api.address.types import AddressType
+from api.address.inputs import AddressFilterInput, AddressInsertInput
 from database.engine import engine
 from database.models.brazil import Address, City, State
 
@@ -56,7 +55,7 @@ async def get_address_by_dc_join_state_join_city(
     filter: AddressFilterInput,
     page_size: PositiveInt = 10,
     page_number: PositiveInt = 1,
-) -> list[Address | None]:
+) -> list[Address]:
     """
     Query addresses by the strawberry dataclass.
 
@@ -72,10 +71,12 @@ async def get_address_by_dc_join_state_join_city(
 
     Returns
     -------
-    list[Address | None]
-        Return all addresses based on filter or None list
+    list[Address]
+        All addresses (db model) based on filter or empty list
 
-    Todo: Fix Joins with async client
+    Todo:
+    ----
+    - Fix Joins with async client
 
     """
     query = (
@@ -103,16 +104,16 @@ async def get_address_by_dc_join_state_join_city(
         adresses_result = await session.exec(query)
         addresses = adresses_result.unique().all()
 
-    return addresses
+    return list(addresses)
 
 
-async def insert_address_by_dc(address: AddressType) -> Address:
+async def insert_address_by_dc(address: AddressInsertInput) -> Address:
     """
     Create address by the strawberry dataclass.
 
     Parameters
     ----------
-    address : AddressType
+    address : AddressInsertInput
         Strawberry input dataclass, strict (based on sqlmodel model)
 
     Returns
@@ -158,3 +159,22 @@ async def insert_address_by_dc(address: AddressType) -> Address:
         address_model = adress_result.unique().one()
 
     return address_model
+
+
+async def insert_address(address: Address) -> None:
+    async with AsyncSession(engine) as session:
+        state_query = select(State).where(
+            State.acronym == address.state.acronym.value
+        )
+        state_result = await session.exec(state_query)
+        state = state_result.one()
+        address.state = state
+
+        city_query = select(City).where(City.ibge == address.city.ibge)
+        city_result = await session.exec(city_query)
+        city = city_result.one_or_none()
+        if city:
+            address.city = city
+
+        session.add(address)
+        await session.commit()

@@ -33,7 +33,27 @@ class Query:
         filter: AddressFilterInput,
         page_size: PositiveInt = 10,
         page_number: PositiveInt = 1,
-    ) -> list[AddressType | None]:
+    ) -> list[AddressType]:
+        """
+        Query all addresses from database or all plugins.
+
+        Parameters
+        ----------
+        filter : AddressFilterInput
+            Strawberry input dataclass, everything can be None
+            (based on sqlmodel model)
+        page_size : PositiveInt, optional
+            How many elements in each page, by default 10
+        page_number : PositiveInt, optional
+            Number of the page, by default 1
+
+        Returns
+        -------
+        list[AddressType]
+            All addresses (db model converted to strawberry dataclass)
+            based on filter or empty list
+
+        """
         return list(
             map(
                 AddressType.from_pydantic,
@@ -49,6 +69,6 @@ class Mutation:
         return AddressType.from_pydantic(await insert_address(address))
 
 
-schema = Schema(query=Query, mutation=Mutation)  # , mutation=Mutation)
+schema = Schema(query=Query, mutation=Mutation)
 
 graphql_app = GraphQLRouter[object, object](schema)

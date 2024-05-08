@@ -16,37 +16,24 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from strawberry import auto
-from strawberry.experimental.pydantic import type as pydantic_type
+from typing import Self
 
-from database.models.brazil import Address, City, State
-
-
-@pydantic_type(name='State', model=State)
-class StateType:
-    name: auto
-    acronym: auto
+from utils.settings import Settings
 
 
-@pydantic_type(name='City', model=City)
-class CityType:
-    ibge: auto
-    name: auto
-    ddd: auto
+class TestSettings:
+    def test_all_settings(self: Self, monkeypatch):
+        expected = {
+            'DATABASE_USER': 'teste',
+            'DATABASE_PASSWORD': 'teste',
+            'DATABASE_HOST': 'jacobson_db_1',
+            'DATABASE_PORT': '3306',
+            'DATABASE_NAME': 'test',
+            'CEP_ABERTO_TOKEN': 'token',
+            'DATABASE_URL': 'mysql+asyncmy://teste:teste@jacobson_db_1:3306/test',
+        }
+        for k, v in expected.items():
+            monkeypatch.setenv(k, v)
 
-
-# @type(name='Coordinates')
-# class CoordinatesType:
-#     latitude: float
-#     longitude: float
-#     altitude: float
-
-
-@pydantic_type(name='Address', model=Address)
-class AddressType:
-    zipcode: auto
-    city: CityType
-    state: StateType
-    neighborhood: auto
-    complement: auto
-    # coordinates: CoordinatesType | None = None
+        expected['DATABASE_PORT'] = int(expected['DATABASE_PORT'])
+        assert Settings().model_dump() == expected

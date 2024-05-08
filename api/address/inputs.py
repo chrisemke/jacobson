@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from strawberry import auto, input
+from strawberry import auto
 from strawberry.experimental.pydantic import input as pydantic_input
 
 from database.models.brazil import Address, AddressBase, City, State
@@ -27,7 +27,7 @@ class StateInput:
     acronym: auto
     # Needed until strawberry support auto | None type
     # https://github.com/strawberry-graphql/strawberry/issues/3435
-    name: str | None
+    name: str | None = None
 
 
 @pydantic_input(model=City)
@@ -35,15 +35,15 @@ class CityInput:
     ibge: auto
     # Needed until strawberry support auto | None type
     # https://github.com/strawberry-graphql/strawberry/issues/3435
-    name: str | None
+    name: str | None = None
     ddd: auto
 
 
-@input
-class CoordinatesInput:
-    latitude: float
-    longitude: float
-    altitude: float | None = None
+# @input
+# class CoordinatesInput:
+#     latitude: float
+#     longitude: float
+#     altitude: float | None = None
 
 
 @pydantic_input(model=AddressBase)

@@ -44,7 +44,7 @@ repos:
                     --no-space,
                 ]
     - repo: https://github.com/astral-sh/ruff-pre-commit
-      rev: v0.3.7
+      rev: v0.4.3
       hooks:
           - id: ruff
             name: Run Ruff Linter & Formater
@@ -52,7 +52,7 @@ repos:
           - id: ruff-format
             name: Run Ruff Formater
     - repo: https://github.com/pre-commit/mirrors-mypy
-      rev: v1.9.0
+      rev: v1.10.0
       hooks:
           - id: mypy
             name: Run Mypy (Static type checker)
@@ -66,7 +66,7 @@ repos:
           - id: poetry-export
             args: [-f, requirements.txt, -o, requirements.txt]
     - repo: https://github.com/commitizen-tools/commitizen
-      rev: v3.22.0
+      rev: v3.25.0
       hooks:
           - id: commitizen
           - id: commitizen-branch
