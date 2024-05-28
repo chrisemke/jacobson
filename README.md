@@ -32,20 +32,33 @@ else async call to all plugins that are configured, return and insert on databas
 call to tell the api to update some register from plugins that are configured
 ```
 
-# TODO (Needed for v0.1)
-- [x] git hooks (pre-commit)
-- [x] SqlModel
-- [-] Api's support plugin-like (viacep, brazilapi...) cep aberto was added for test, need to think in a better structure for plugins and tasks
-- [-] Tests, need to fix a lot of tests, need to study other ways to test
-- [ ] Integration Tests
-- [ ] Custom exceptions
-- [ ] Add log support (see loguru)
-- [ ] Docs (mkdocs)
-- [ ] Alembic migrations
+# ROADMAP:
 
-## TODO (nice to have)
+## TODO (Needed for v0.1)
+- [x] git hooks (pre-commit)
+- [x] ORM (SqlModel)
+- [x] Api's support services (cepaberto, viacep...)
+- [x] Unit tests (pytest)
+- [x] Migrations and data seed (Alembic)
+
+## TODO (Needed for v0.2)
+- [ ] Integration tests
+- [ ] Better structure for services (plugin-like)
+- [ ] Custom exceptions
+- [ ] Add log support (loguru)
+- [ ] Docs (mkdocs + mkdocs-material[to beautify] + mkdocstrings[to transform docstrings into docs])
+- [ ] Resolve code issues (TODO's on docstrings)
+
+## TODO (Needed until v1.0)
+- [ ] Auth
+- [ ] mkdocs on gh pages
+- [ ] freeze versions on docker and pyproject
+
+### TODO (nice to have)
+- [ ] add option to data seed all cities (or chosen list)
 - [ ] move from docker-compose to a podman pod
 - [ ] study mypyc viability
+- [ ] jacobson logo
 
 # DEV
 The idea is to just run this command and podman will run the entire dev environment

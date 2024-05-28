@@ -20,8 +20,8 @@ from typing import Self
 
 from pytest import mark
 
-from api.address.inputs import AddressFilterInput, AddressInsertInput
-from api.address.types import AddressType
+from api.address.graphql_inputs import AddressFilterInput, AddressInsertInput
+from api.address.graphql_types import AddressType
 from api.schema import Mutation, Query
 from database.models.brazil import Address, City, State, StateAcronym
 

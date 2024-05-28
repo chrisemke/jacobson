@@ -29,59 +29,22 @@ from database.models.brazil import (
     StateAcronymName,
 )
 from plugins.protocol import Plugin
-from utils.settings import settings
 
 
-class CepAbertoState(TypedDict):
-    sigla: str
-
-
-class CepAbertoCity(TypedDict):
-    ddd: int
-    ibge: str
-    nome: str
-
-
-class CepAbertoAddress(TypedDict):
-    altitude: float
+class ViaCepAddress(TypedDict):
     cep: str
-    latitude: str
-    longitude: str
     logradouro: str
-    bairro: str
     complemento: str
-    cidade: CepAbertoCity
-    estado: CepAbertoState
+    bairro: str
+    localidade: str
+    uf: str
+    ibge: str
+    gia: str
+    ddd: str
+    siafi: str
 
 
-class CepAberto(Plugin):
-    """The service of https://www.cepaberto.com/ api."""
-
-    __slots__ = ('token',)
-
-    def __init__(self: Self) -> None:
-        """
-        Set token attribute.
-
-        Parameters
-        ----------
-        self : Self
-            scope of current class
-
-        Raises
-        ------
-        Exception
-            if token does not exists.
-
-        Todo:
-        ____
-        - Fix generic exception
-
-        """
-        if not settings.CEP_ABERTO_TOKEN:
-            raise Exception('Token Inválido')
-        self.token = settings.CEP_ABERTO_TOKEN
-
+class ViaCep(Plugin):
     async def get_address_by_zipcode(
         self: Self, zipcode: PositiveInt
     ) -> list[Address]:
@@ -110,9 +73,7 @@ class CepAberto(Plugin):
         - Fix generic exception
 
         """
-        url = f'https://www.cepaberto.com/api/v3/cep?cep={zipcode:08}'
-        headers = {'Authorization': f'Token token={self.token}'}
-        request = get(url, headers=headers)
+        request = get(f'https://viacep.com.br/ws/{zipcode:08}/json/')
 
         if request.status_code != 200:
             raise Exception('Something went wrong, request status code != 200')
@@ -121,31 +82,26 @@ class CepAberto(Plugin):
 
     @classmethod
     async def _request_to_database_model(
-        cls, address_data: CepAbertoAddress
+        cls, address_data: ViaCepAddress
     ) -> Address:
         """
         Receive a json/dict and return an Address object.
 
         Parameters
         ----------
-        address_data : CepAbertoAddress
+        address_data : ViaCepAddress
             here's a dict example
             {
-                "altitude":760.0,
-                "cep":"01001000",
-                "latitude":"-23.5479099981",
-                "longitude":"-46.636",
-                "logradouro":"Praça da Sé",
-                "bairro":"Sé",
-                "complemento":"- lado ímpar",
-                "cidade":{
-                    "ddd":11,
-                    "ibge":"3550308",
-                    "nome":"São Paulo"
-                },
-                "estado":{
-                    "sigla":"SP"
-                }
+                "cep": "01001-000",
+                "logradouro": "Praça da Sé",
+                "complemento": "lado ímpar",
+                "bairro": "Sé",
+                "localidade": "São Paulo",
+                "uf": "SP",
+                "ibge": "3550308",
+                "gia": "1004",
+                "ddd": "11",
+                "siafi": "7107"
             }
 
         Returns
@@ -154,16 +110,16 @@ class CepAberto(Plugin):
             The Database model from database.models.brazil
 
         """
-        acronym = address_data['estado']['sigla']
+        acronym = address_data['uf']
         state = State(
             acronym=StateAcronym(acronym),
             name=getattr(StateAcronymName, acronym).value,
         )
 
         city = City(
-            ibge=int(address_data['cidade']['ibge']),
-            name=address_data['cidade']['nome'],
-            ddd=address_data['cidade']['ddd'],
+            ibge=int(address_data['ibge']),
+            name=address_data['localidade'],
+            ddd=int(address_data['ddd']),
         )
         logradouro = None
         if address_data['logradouro']:
@@ -172,7 +128,7 @@ class CepAberto(Plugin):
             ).strip()
 
         return Address(
-            zipcode=int(address_data['cep']),
+            zipcode=int(address_data['cep'].replace('-', '')),
             state=state,
             city=city,
             neighborhood=address_data['bairro'],

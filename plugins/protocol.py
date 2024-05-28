@@ -15,3 +15,19 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
+
+from abc import abstractmethod
+from typing import Protocol, Self, runtime_checkable
+
+from pydantic import PositiveInt
+
+from database.models.brazil import Address
+
+
+@runtime_checkable
+class Plugin(Protocol):
+    @abstractmethod
+    async def get_address_by_zipcode(
+        self: Self, zipcode: PositiveInt
+    ) -> list[Address]:
+        """Get address by zipcode."""

@@ -17,7 +17,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from sqlalchemy.ext.asyncio import create_async_engine
-from sqlmodel import SQLModel
 
 from utils.settings import settings
 
@@ -29,8 +28,3 @@ engine = create_async_engine(
     max_overflow=20,
     pool_recycle=3600,
 )
-
-
-async def init_db() -> None:
-    async with engine.begin() as session:
-        await session.run_sync(SQLModel.metadata.create_all)

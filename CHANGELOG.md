@@ -24,6 +24,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ### Feat
 
+- **protocol-and-viacep**: add protocol to ensure all plugins have the right method and add viacep service
+- **database-migrations**: move from sqlmodel metadata create all to alembic async migrations
 - **mutation**: add create_address mutation and beta pagination
 - **sqlmodel-mariadb**: add sqlmodel models, create async session, create tables on startup and add query function with beta filters
 - Initial commit
@@ -38,6 +40,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ### Refactor
 
+- **module-to-namespace**: move from modules to namespace
 - **api**: add docstrings and drop coordinates for now
 - **plugins**: start base for plugins and cep_aberto service
 - **settings**: move all .env settings to utils directory

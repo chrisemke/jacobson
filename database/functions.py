@@ -22,7 +22,7 @@ from sqlalchemy.orm import joinedload
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from api.address.inputs import AddressFilterInput, AddressInsertInput
+from api.address.graphql_inputs import AddressFilterInput, AddressInsertInput
 from database.engine import engine
 from database.models.brazil import Address, City, State
 
@@ -162,6 +162,15 @@ async def insert_address_by_dc(address: AddressInsertInput) -> Address:
 
 
 async def insert_address(address: Address) -> None:
+    """
+    Insert addresses and city if not exists in background.
+
+    Parameters
+    ----------
+    address : Address
+        Address instance based on database models
+
+    """
     async with AsyncSession(engine) as session:
         state_query = select(State).where(
             State.acronym == address.state.acronym.value

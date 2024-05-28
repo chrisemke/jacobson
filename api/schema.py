@@ -20,8 +20,8 @@ from pydantic import PositiveInt
 from strawberry import Schema, field, type
 from strawberry.fastapi import GraphQLRouter
 
-from api.address.inputs import AddressFilterInput, AddressInsertInput
-from api.address.types import AddressType
+from api.address.graphql_inputs import AddressFilterInput, AddressInsertInput
+from api.address.graphql_types import AddressType
 from api.resolvers import get_address, insert_address
 
 
@@ -66,6 +66,20 @@ class Query:
 class Mutation:
     @field
     async def create_address(self, address: AddressInsertInput) -> AddressType:
+        """
+        Insert address and city if not exists on database.
+
+        Parameters
+        ----------
+        address : AddressInsertInput
+            Strict address class, all needed fields need to be passed
+
+        Returns
+        -------
+        AddressType
+            Address (db model converted to strawberry dataclass)
+
+        """
         return AddressType.from_pydantic(await insert_address(address))
 
 

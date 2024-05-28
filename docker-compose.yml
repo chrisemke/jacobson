@@ -1,26 +1,39 @@
 services:
-  db:
-    build:
-      context: ./docker/database/
-      dockerfile: Dockerfile.dev
-    environment:
-        MARIADB_RANDOM_ROOT_PASSWORD: "yes"
-        MARIADB_USER: ${DATABASE_USER}
-        MARIADB_PASSWORD: ${DATABASE_PASSWORD}
-        MARIADB_DATABASE: ${DATABASE_NAME}
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./docker/database/data:/var/lib/mysql
-    restart: always
-  app:
-    build:
-      context: .
-      dockerfile: ./docker/app/Dockerfile.dev
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
-    volumes:
-      - ".:/jacobson"
-    restart: always
+    db:
+        build:
+            context: ./docker/database/
+            dockerfile: Dockerfile.dev
+        environment:
+            MARIADB_RANDOM_ROOT_PASSWORD: "yes"
+            MARIADB_USER: ${DATABASE_USER}
+            MARIADB_PASSWORD: ${DATABASE_PASSWORD}
+            MARIADB_DATABASE: ${DATABASE_NAME}
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./docker/database/data:/var/lib/mysql
+        restart: always
+        healthcheck:
+            interval: 30s
+            retries: 3
+            test:
+                [
+                    "CMD",
+                    "healthcheck.sh",
+                    "--su-mysql",
+                    "--connect",
+                    "--innodb_initialized",
+                ]
+            timeout: 30s
+    app:
+        build:
+            context: .
+            dockerfile: ./docker/app/Dockerfile.dev
+        ports:
+            - "8000:8000"
+        depends_on:
+            db:
+                condition: service_healthy
+        volumes:
+            - ".:/jacobson"
+        restart: always

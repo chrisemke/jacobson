@@ -18,7 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import Self
 
-from api.address.inputs import (
+from api.address.graphql_inputs import (
     AddressFilterInput,
     AddressInsertInput,
     CityInput,

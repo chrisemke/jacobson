@@ -6,7 +6,7 @@ VOLUME .:/jacobson
 
 EXPOSE 8000
 
-ADD requirements.txt .
+ADD . /jacobson
 
 RUN apk update \
     && apk upgrade \
@@ -16,4 +16,4 @@ RUN apk update \
     && apk del gcc musl-dev \
     && pip cache purge
 
-CMD ["uvicorn", "api.app:app", "--host=0.0.0.0", "--port=8000", "--reload"]
+ENTRYPOINT ["sh", "-c", "alembic upgrade head && uvicorn api.app:app --host=0.0.0.0 --port=8000 --reload"]

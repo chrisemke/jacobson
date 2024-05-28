@@ -47,6 +47,7 @@ class Settings(BaseSettings):
     @computed_field  # type: ignore[misc]
     @property
     def DATABASE_URL(self) -> str:
+        """Generate and validate database url based on other fields."""
         url = (
             'mysql+asyncmy://'
             f'{self.DATABASE_USER}:{quote_plus(self.DATABASE_PASSWORD)}@'

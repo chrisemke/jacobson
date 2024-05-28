@@ -23,14 +23,43 @@ from pydantic import PositiveInt
 from database.functions import insert_address
 from database.models.brazil import Address
 from plugins.cep_aberto.cep_aberto import CepAberto
+from plugins.viacep.viacep import ViaCep
 
 
 async def get_zipcode_from_plugins(
     zipcode: PositiveInt,
 ) -> list[Address]:
-    cep_aberto_task = create_task(CepAberto().get_address_by_zipcode(zipcode))
+    """
+    Async call to all plugins at decame time
+    The first task that returns successfully returns and cancels the others.
 
-    tasks = [cep_aberto_task]
+    Parameters
+    ----------
+    zipcode : PositiveInt
+        zipcode needed to search address on api's
+
+    Returns
+    -------
+    list[Address]
+        List that contains only one Address (db model)
+        it's a list for compatibility with database query
+
+    Todo:
+    ----
+    - Create all tasks based on config
+    - Add logs
+
+    """
+    tasks = []
+    for service in [CepAberto, ViaCep]:
+        try:
+            service_instance = service()
+            tasks.append(
+                create_task(service_instance.get_address_by_zipcode(zipcode))
+            )
+        except Exception:
+            # async insert logs
+            ...
 
     result = []
     for task in as_completed(tasks):
@@ -40,12 +69,11 @@ async def get_zipcode_from_plugins(
         except Exception as e:
             print('Erro:', e)
             # there is no address found in this task
-            # insert logs
+            # async insert logs
 
     if result:
         insert_task = create_task(insert_address(result[0]))
         # insert log
         print(insert_task)
-        return result
 
-    return []
+    return result

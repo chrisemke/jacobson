@@ -37,39 +37,57 @@ repos:
             args:
                 [
                     --comment-style,
-                    '<!--||-->',
+                    "<!--||-->",
                     --license-filepath,
                     license-templates/LICENSE.txt,
                     --fuzzy-match-generates-todo,
                     --no-space,
                 ]
     - repo: https://github.com/astral-sh/ruff-pre-commit
-      rev: v0.4.3
+      rev: v0.4.5
       hooks:
           - id: ruff
             name: Run Ruff Linter & Formater
             args: [--fix, --exit-non-zero-on-fix]
+            exclude: |
+                (?x)^(
+                    ^build/|
+                    ^docker/|
+                    ^tests/
+                )
           - id: ruff-format
             name: Run Ruff Formater
+            exclude: |
+                (?x)(
+                    ^build/|
+                    ^docker/|
+                    ^tests/
+                )
     - repo: https://github.com/pre-commit/mirrors-mypy
       rev: v1.10.0
       hooks:
           - id: mypy
             name: Run Mypy (Static type checker)
-            exclude: "jacobson"
-            additional_dependencies: [strawberry-graphql, pydantic, pydantic-settings, sqlmodel]
+            exclude: |
+                (?x)(
+                    ^build/|
+                    ^docker/|
+                    ^tests/
+                )
+            additional_dependencies:
+                [strawberry-graphql, pydantic, pydantic-settings, sqlmodel]
     - repo: https://github.com/python-poetry/poetry
       rev: "1.8.0"
       hooks:
           - id: poetry-check
           - id: poetry-lock
           - id: poetry-export
-            args: [-f, requirements.txt, -o, requirements.txt]
+            args: [-o, requirements.txt]
     - repo: https://github.com/commitizen-tools/commitizen
-      rev: v3.25.0
+      rev: v3.27.0
       hooks:
           - id: commitizen
           - id: commitizen-branch
             stages:
-            - post-commit
-            - push
+                - post-commit
+                - push
