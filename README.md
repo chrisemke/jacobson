@@ -62,6 +62,9 @@ call to tell the api to update some register from plugins that are configured
 
 # DEV
 The idea is to just run this command and podman will run the entire dev environment
+
+obs: before this command you need to create the .env (see sample.env for example)
+
 ```bash
 podman compose up -d --build
 ```
