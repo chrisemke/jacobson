@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from pydantic import PositiveInt
+from sqlmodel.ext.asyncio.session import AsyncSession
 
 from api.address.graphql_inputs import AddressFilterInput, AddressInsertInput
 from database import functions
@@ -25,6 +26,7 @@ from plugins.plugins_controller import get_zipcode_from_plugins
 
 
 async def get_address(
+    session: AsyncSession,
     filter: AddressFilterInput,
     page_size: PositiveInt,
     page_number: PositiveInt,
@@ -34,6 +36,8 @@ async def get_address(
 
     Parameters
     ----------
+    session : AsyncSession
+        get the session of database from get_session
     filter : AddressFilterInput
         Strawberry input dataclass, everything can be None
         (based on sqlmodel model)
@@ -49,19 +53,23 @@ async def get_address(
 
     """
     result = await functions.get_address_by_dc_join_state_join_city(
-        filter, page_size, page_number
+        session, filter, page_size, page_number
     )
     if not result and filter.zipcode:
-        result = await get_zipcode_from_plugins(filter.zipcode)
+        result = await get_zipcode_from_plugins(session, filter.zipcode)
     return result
 
 
-async def insert_address(address: AddressInsertInput) -> Address:
+async def insert_address(
+    session: AsyncSession, address: AddressInsertInput
+) -> Address:
     """
     Insert address and city if not exists on database.
 
     Parameters
     ----------
+    session : AsyncSession
+        get the session of database from get_session
     address : AddressInsertInput
         Strict address class, all needed fields need to be passed
 
@@ -71,4 +79,4 @@ async def insert_address(address: AddressInsertInput) -> Address:
         Address (db model)
 
     """
-    return await functions.insert_address_by_dc(address)
+    return await functions.insert_address_by_dc(session, address)

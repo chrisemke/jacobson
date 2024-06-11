@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from asyncio import as_completed, create_task
 
 from pydantic import PositiveInt
+from sqlmodel.ext.asyncio.session import AsyncSession
 
 from database.functions import insert_address
 from database.models.brazil import Address
@@ -27,6 +28,7 @@ from plugins.viacep.viacep import ViaCep
 
 
 async def get_zipcode_from_plugins(
+    session: AsyncSession,
     zipcode: PositiveInt,
 ) -> list[Address]:
     """
@@ -35,6 +37,8 @@ async def get_zipcode_from_plugins(
 
     Parameters
     ----------
+    session : AsyncSession
+        get the session of database from get_session
     zipcode : PositiveInt
         zipcode needed to search address on api's
 
@@ -72,7 +76,7 @@ async def get_zipcode_from_plugins(
             # async insert logs
 
     if result:
-        insert_task = create_task(insert_address(result[0]))
+        insert_task = create_task(insert_address(session, result[0]))
         # insert log
         print(insert_task)
 

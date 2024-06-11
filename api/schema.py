@@ -16,13 +16,18 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from typing import Annotated
+
+from fastapi import Depends, Request
 from pydantic import PositiveInt
-from strawberry import Schema, field, type
+from sqlmodel.ext.asyncio.session import AsyncSession
+from strawberry import Info, Schema, field, type
 from strawberry.fastapi import GraphQLRouter
 
 from api.address.graphql_inputs import AddressFilterInput, AddressInsertInput
 from api.address.graphql_types import AddressType
 from api.resolvers import get_address, insert_address
+from database.engine import get_session
 
 
 @type
@@ -30,6 +35,7 @@ class Query:
     @field
     async def all_address(
         self,
+        info: Info,
         filter: AddressFilterInput,
         page_size: PositiveInt = 10,
         page_number: PositiveInt = 1,
@@ -39,6 +45,9 @@ class Query:
 
         Parameters
         ----------
+        info : Info
+            Strawberry default value to get context information
+            in this case we use 'db'
         filter : AddressFilterInput
             Strawberry input dataclass, everything can be None
             (based on sqlmodel model)
@@ -57,7 +66,9 @@ class Query:
         return list(
             map(
                 AddressType.from_pydantic,
-                await get_address(filter, page_size, page_number),
+                await get_address(
+                    info.context['db'], filter, page_size, page_number
+                ),
             )
         )
 
@@ -65,12 +76,17 @@ class Query:
 @type
 class Mutation:
     @field
-    async def create_address(self, address: AddressInsertInput) -> AddressType:
+    async def create_address(
+        self, info: Info, address: AddressInsertInput
+    ) -> AddressType:
         """
         Insert address and city if not exists on database.
 
         Parameters
         ----------
+        info : Info
+            Strawberry default value to get context information
+            in this case we use 'db'
         address : AddressInsertInput
             Strict address class, all needed fields need to be passed
 
@@ -80,9 +96,35 @@ class Mutation:
             Address (db model converted to strawberry dataclass)
 
         """
-        return AddressType.from_pydantic(await insert_address(address))
+        return AddressType.from_pydantic(
+            await insert_address(info.context['db'], address)
+        )
+
+
+async def get_context(
+    request: Request, db: Annotated[AsyncSession, Depends(get_session)]
+) -> dict[str, AsyncSession]:
+    """
+    Create database session to use when needed.
+
+    Parameters
+    ----------
+    request : Request
+        the context of the request
+    db : Annotated[AsyncSession, Depends(get_session)]
+        get database session from get_session
+
+    Returns
+    -------
+    dict[str, AsyncSession]
+        set the database session on 'db' key
+
+    """
+    return {
+        'db': db,
+    }
 
 
 schema = Schema(query=Query, mutation=Mutation)
 
-graphql_app = GraphQLRouter[object, object](schema)
+graphql_app = GraphQLRouter[object, object](schema, context_getter=get_context)

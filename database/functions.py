@@ -23,7 +23,6 @@ from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from api.address.graphql_inputs import AddressFilterInput, AddressInsertInput
-from database.engine import engine
 from database.models.brazil import Address, City, State
 
 
@@ -52,6 +51,7 @@ async def page_to_offset(
 
 
 async def get_address_by_dc_join_state_join_city(
+    session: AsyncSession,
     filter: AddressFilterInput,
     page_size: PositiveInt = 10,
     page_number: PositiveInt = 1,
@@ -61,6 +61,8 @@ async def get_address_by_dc_join_state_join_city(
 
     Parameters
     ----------
+    session : AsyncSession
+        get the session of database from get_session
     filter : AddressFilterInput
         Strawberry input dataclass, everything can be None
         (based on sqlmodel model)
@@ -99,20 +101,22 @@ async def get_address_by_dc_join_state_join_city(
             query = query.where(City.ibge == filter.city.ibge)
         if filter.state:
             query = query.where(State.acronym == filter.state.acronym.value)
-
-    async with AsyncSession(engine) as session:
-        adresses_result = await session.exec(query)
-        addresses = adresses_result.unique().all()
+    adresses_result = await session.exec(query)
+    addresses = adresses_result.unique().all()
 
     return list(addresses)
 
 
-async def insert_address_by_dc(address: AddressInsertInput) -> Address:
+async def insert_address_by_dc(
+    session: AsyncSession, address: AddressInsertInput
+) -> Address:
     """
     Create address by the strawberry dataclass.
 
     Parameters
     ----------
+    session : AsyncSession
+        get the session of database from get_session
     address : AddressInsertInput
         Strawberry input dataclass, strict (based on sqlmodel model)
 
@@ -129,61 +133,61 @@ async def insert_address_by_dc(address: AddressInsertInput) -> Address:
     """
     address_model = address.to_pydantic()
 
-    async with AsyncSession(engine) as session:
-        state_query = select(State).where(
-            State.acronym == address.state.acronym.value
+    state_query = select(State).where(
+        State.acronym == address.state.acronym.value
+    )
+    state_result = await session.exec(state_query)
+    state = state_result.one()
+    address_model.state = state
+
+    city_query = select(City).where(City.ibge == address.city.ibge)
+    city_result = await session.exec(city_query)
+    city = city_result.one_or_none()
+    if not city:
+        raise HTTPException(status_code=404, detail='City not found')
+    address_model.city = city
+
+    session.add(address_model)
+    await session.commit()
+    await session.refresh(address_model)
+
+    query = (
+        select(Address)
+        .options(
+            joinedload('*'),
         )
-        state_result = await session.exec(state_query)
-        state = state_result.one()
-        address_model.state = state
-
-        city_query = select(City).where(City.ibge == address.city.ibge)
-        city_result = await session.exec(city_query)
-        city = city_result.one_or_none()
-        if not city:
-            raise HTTPException(status_code=404, detail='City not found')
-        address_model.city = city
-
-        session.add(address_model)
-        await session.commit()
-        await session.refresh(address_model)
-
-        query = (
-            select(Address)
-            .options(
-                joinedload('*'),
-            )
-            .where(Address.id == address_model.id)
-        )
-        adress_result = await session.exec(query)
-        address_model = adress_result.unique().one()
+        .where(Address.id == address_model.id)
+    )
+    adress_result = await session.exec(query)
+    address_model = adress_result.unique().one()
 
     return address_model
 
 
-async def insert_address(address: Address) -> None:
+async def insert_address(session: AsyncSession, address: Address) -> None:
     """
     Insert addresses and city if not exists in background.
 
     Parameters
     ----------
+    session : AsyncSession
+        get the session of database from get_session
     address : Address
         Address instance based on database models
 
     """
-    async with AsyncSession(engine) as session:
-        state_query = select(State).where(
-            State.acronym == address.state.acronym.value
-        )
-        state_result = await session.exec(state_query)
-        state = state_result.one()
-        address.state = state
+    state_query = select(State).where(
+        State.acronym == address.state.acronym.value
+    )
+    state_result = await session.exec(state_query)
+    state = state_result.one()
+    address.state = state
 
-        city_query = select(City).where(City.ibge == address.city.ibge)
-        city_result = await session.exec(city_query)
-        city = city_result.one_or_none()
-        if city:
-            address.city = city
+    city_query = select(City).where(City.ibge == address.city.ibge)
+    city_result = await session.exec(city_query)
+    city = city_result.one_or_none()
+    if city:
+        address.city = city
 
-        session.add(address)
-        await session.commit()
+    session.add(address)
+    await session.commit()
