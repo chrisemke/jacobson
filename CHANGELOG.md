@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-## Unreleased
+## 0.1 (2024-05-28)
 
 ### BREAKING CHANGE
 
@@ -49,3 +49,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 - **graphql-query**: add pydantic and strawberry types to query
 - start edgedb support
 - create docker folders and minor fixes
+
+## Unreleased 0.2 (2024-06-10)
+
+### Refactor
+
+- **db-session**: add graphql context_getter to send the database session to queries and mutations on demand
