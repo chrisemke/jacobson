@@ -44,21 +44,21 @@ repos:
                     --no-space,
                 ]
     - repo: https://github.com/astral-sh/ruff-pre-commit
-      rev: v0.4.5
+      rev: v0.4.8
       hooks:
-          - id: ruff
-            name: Run Ruff Linter & Formater
-            args: [--fix, --exit-non-zero-on-fix]
-            exclude: |
-                (?x)^(
-                    ^build/|
-                    ^docker/|
-                    ^tests/
-                )
           - id: ruff-format
             name: Run Ruff Formater
             exclude: |
                 (?x)(
+                    ^build/|
+                    ^docker/|
+                    ^tests/
+                )
+          - id: ruff
+            name: Run Ruff Linter
+            args: [--fix, --exit-non-zero-on-fix]
+            exclude: |
+                (?x)^(
                     ^build/|
                     ^docker/|
                     ^tests/
