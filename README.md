@@ -44,6 +44,7 @@ call to tell the api to update some register from plugins that are configured
 ## TODO (Needed for v0.2)
 - [ ] Integration tests
 - [ ] Better structure for services (plugin-like)
+- [x] Fix database session with get_db or get_session
 - [ ] Custom exceptions
 - [ ] Add log support (loguru)
 - [ ] Docs (mkdocs + mkdocs-material[to beautify] + mkdocstrings[to transform docstrings into docs])
@@ -51,11 +52,13 @@ call to tell the api to update some register from plugins that are configured
 
 ## TODO (Needed until v1.0)
 - [ ] Auth
-- [ ] mkdocs on gh pages
+- [ ] mkdocs on gh pages and/or readthedocs
+- [ ] CI and CI tests
 - [ ] freeze versions on docker and pyproject
 
 ### TODO (nice to have)
 - [ ] add option to data seed all cities (or chosen list)
+- [ ] add graphql schema generator on git hooks
 - [ ] move from docker-compose to a podman pod
 - [ ] study mypyc viability
 - [ ] jacobson logo
@@ -64,6 +67,8 @@ call to tell the api to update some register from plugins that are configured
 The idea is to just run this command and podman will run the entire dev environment
 
 obs: before this command you need to create the .env (see sample.env for example)
+
+to run podman as expected, you will need the packages "podman", "podman-compose" and "aardvark-dns"
 
 ```bash
 podman compose up -d --build

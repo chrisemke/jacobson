@@ -1,0 +1,83 @@
+type Address {
+  city: City!
+  state: State!
+  zipcode: Int!
+  neighborhood: String!
+  complement: String
+}
+
+input AddressFilterInput {
+  city: CityInput = null
+  state: StateInput = null
+  zipcode: Int = null
+  neighborhood: String = null
+  complement: String = null
+}
+
+input AddressInsertInput {
+  state: StateInput!
+  city: CityInput!
+  zipcode: Int!
+  neighborhood: String!
+  complement: String = null
+}
+
+type City {
+  ibge: Int!
+  name: String!
+  ddd: Int
+}
+
+input CityInput {
+  ibge: Int!
+  name: String
+  ddd: Int = null
+}
+
+type Mutation {
+  createAddress(address: AddressInsertInput!): Address!
+}
+
+type Query {
+  allAddress(filter: AddressFilterInput!, pageSize: Int! = 10, pageNumber: Int! = 1): [Address!]!
+}
+
+type State {
+  acronym: StateAcronym!
+  name: String!
+}
+
+enum StateAcronym {
+  AC
+  AL
+  AP
+  AM
+  BA
+  CE
+  DF
+  ES
+  GO
+  MA
+  MT
+  MS
+  MG
+  PA
+  PB
+  PR
+  PE
+  PI
+  RJ
+  RN
+  RS
+  RO
+  RR
+  SC
+  SP
+  SE
+  TO
+}
+
+input StateInput {
+  acronym: StateAcronym!
+  name: String
+}
