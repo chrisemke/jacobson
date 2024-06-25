@@ -42,19 +42,21 @@ call to tell the api to update some register from plugins that are configured
 - [x] Migrations and data seed (Alembic)
 
 ## TODO (Needed for v0.2)
-- [ ] Integration tests
-- [ ] Better structure for services (plugin-like)
 - [x] Fix database session with get_db or get_session
+- [ ] Integration tests
 - [ ] Custom exceptions
 - [ ] Add log support (loguru)
 - [ ] Docs (mkdocs + mkdocs-material[to beautify] + mkdocstrings[to transform docstrings into docs])
-- [ ] Resolve code issues (TODO's on docstrings)
+- [ ] Taskipy
 
 ## TODO (Needed until v1.0)
 - [ ] Auth
+- [ ] Re-enable Coordinates?
+- [ ] Resolve all code issues (TODO's on docstrings)
 - [ ] mkdocs on gh pages and/or readthedocs
 - [ ] CI and CI tests
 - [ ] freeze versions on docker and pyproject
+- [ ] Better structure for services (plugin-like)
 
 ### TODO (nice to have)
 - [ ] add option to data seed all cities (or chosen list)
