@@ -26,8 +26,8 @@ from database.models.brazil import Address
 
 @runtime_checkable
 class Plugin(Protocol):
-    @abstractmethod
-    async def get_address_by_zipcode(
-        self: Self, zipcode: PositiveInt
-    ) -> list[Address]:
-        """Get address by zipcode."""
+	@abstractmethod
+	async def get_address_by_zipcode(
+		self: Self, zipcode: PositiveInt
+	) -> list[Address]:
+		"""Get address by zipcode."""

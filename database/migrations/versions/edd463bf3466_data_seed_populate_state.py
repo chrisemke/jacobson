@@ -39,41 +39,41 @@ depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
-    """Insert all 27 states."""
-    op.bulk_insert(
-        State.__table__,  # type: ignore
-        [
-            {'id': 1, 'acronym': 'AC', 'name': 'Acre'},
-            {'id': 2, 'acronym': 'AL', 'name': 'Alagoas'},
-            {'id': 3, 'acronym': 'AP', 'name': 'Amapá'},
-            {'id': 4, 'acronym': 'AM', 'name': 'Amazonas'},
-            {'id': 5, 'acronym': 'BA', 'name': 'Bahia'},
-            {'id': 6, 'acronym': 'CE', 'name': 'Ceará'},
-            {'id': 7, 'acronym': 'DF', 'name': 'Distrito Federal'},
-            {'id': 8, 'acronym': 'ES', 'name': 'Espírito Santo'},
-            {'id': 9, 'acronym': 'GO', 'name': 'Goiás'},
-            {'id': 10, 'acronym': 'MA', 'name': 'Maranhão'},
-            {'id': 11, 'acronym': 'MT', 'name': 'Mato Grosso'},
-            {'id': 12, 'acronym': 'MS', 'name': 'Mato Grosso do Sul'},
-            {'id': 13, 'acronym': 'MG', 'name': 'Minas Gerais'},
-            {'id': 14, 'acronym': 'PA', 'name': 'Pará'},
-            {'id': 15, 'acronym': 'PB', 'name': 'Paraíba'},
-            {'id': 16, 'acronym': 'PR', 'name': 'Paraná'},
-            {'id': 17, 'acronym': 'PE', 'name': 'Pernambuco'},
-            {'id': 18, 'acronym': 'PI', 'name': 'Piauí'},
-            {'id': 19, 'acronym': 'RJ', 'name': 'Rio de Janeiro'},
-            {'id': 20, 'acronym': 'RN', 'name': 'Rio Grande do Norte'},
-            {'id': 21, 'acronym': 'RS', 'name': 'Rio Grande do Sul'},
-            {'id': 22, 'acronym': 'RO', 'name': 'Rondônia'},
-            {'id': 23, 'acronym': 'RR', 'name': 'Roraima'},
-            {'id': 24, 'acronym': 'SC', 'name': 'Santa Catarina'},
-            {'id': 25, 'acronym': 'SP', 'name': 'São Paulo'},
-            {'id': 26, 'acronym': 'SE', 'name': 'Sergipe'},
-            {'id': 27, 'acronym': 'TO', 'name': 'Tocantins'},
-        ],
-    )
+	"""Insert all 27 states."""
+	op.bulk_insert(
+		State.__table__,  # type: ignore
+		[
+			{'id': 1, 'acronym': 'AC', 'name': 'Acre'},
+			{'id': 2, 'acronym': 'AL', 'name': 'Alagoas'},
+			{'id': 3, 'acronym': 'AP', 'name': 'Amapá'},
+			{'id': 4, 'acronym': 'AM', 'name': 'Amazonas'},
+			{'id': 5, 'acronym': 'BA', 'name': 'Bahia'},
+			{'id': 6, 'acronym': 'CE', 'name': 'Ceará'},
+			{'id': 7, 'acronym': 'DF', 'name': 'Distrito Federal'},
+			{'id': 8, 'acronym': 'ES', 'name': 'Espírito Santo'},
+			{'id': 9, 'acronym': 'GO', 'name': 'Goiás'},
+			{'id': 10, 'acronym': 'MA', 'name': 'Maranhão'},
+			{'id': 11, 'acronym': 'MT', 'name': 'Mato Grosso'},
+			{'id': 12, 'acronym': 'MS', 'name': 'Mato Grosso do Sul'},
+			{'id': 13, 'acronym': 'MG', 'name': 'Minas Gerais'},
+			{'id': 14, 'acronym': 'PA', 'name': 'Pará'},
+			{'id': 15, 'acronym': 'PB', 'name': 'Paraíba'},
+			{'id': 16, 'acronym': 'PR', 'name': 'Paraná'},
+			{'id': 17, 'acronym': 'PE', 'name': 'Pernambuco'},
+			{'id': 18, 'acronym': 'PI', 'name': 'Piauí'},
+			{'id': 19, 'acronym': 'RJ', 'name': 'Rio de Janeiro'},
+			{'id': 20, 'acronym': 'RN', 'name': 'Rio Grande do Norte'},
+			{'id': 21, 'acronym': 'RS', 'name': 'Rio Grande do Sul'},
+			{'id': 22, 'acronym': 'RO', 'name': 'Rondônia'},
+			{'id': 23, 'acronym': 'RR', 'name': 'Roraima'},
+			{'id': 24, 'acronym': 'SC', 'name': 'Santa Catarina'},
+			{'id': 25, 'acronym': 'SP', 'name': 'São Paulo'},
+			{'id': 26, 'acronym': 'SE', 'name': 'Sergipe'},
+			{'id': 27, 'acronym': 'TO', 'name': 'Tocantins'},
+		],
+	)
 
 
 def downgrade() -> None:
-    """Remove all 27 states."""
-    op.execute('DELETE FROM state WHERE id BETWEEN 1 AND 27')
+	"""Remove all 27 states."""
+	op.execute('DELETE FROM state WHERE id BETWEEN 1 AND 27')

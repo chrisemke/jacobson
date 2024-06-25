@@ -40,8 +40,8 @@ depends_on: str | Sequence[str] | None = ${repr(depends_on)}
 
 
 def upgrade() -> None:
-    ${upgrades if upgrades else "..."}
+	${upgrades if upgrades else "..."}
 
 
 def downgrade() -> None:
-    ${downgrades if downgrades else "..."}
+	${downgrades if downgrades else "..."}

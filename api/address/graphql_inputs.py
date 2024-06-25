@@ -24,19 +24,19 @@ from database.models.brazil import Address, AddressBase, City, State
 
 @pydantic_input(model=State)
 class StateInput:
-    acronym: auto
-    # Needed until strawberry support auto | None type
-    # https://github.com/strawberry-graphql/strawberry/issues/3435
-    name: str | None = None
+	acronym: auto
+	# Needed until strawberry support auto | None type
+	# https://github.com/strawberry-graphql/strawberry/issues/3435
+	name: str | None = None
 
 
 @pydantic_input(model=City)
 class CityInput:
-    ibge: auto
-    # Needed until strawberry support auto | None type
-    # https://github.com/strawberry-graphql/strawberry/issues/3435
-    name: str | None = None
-    ddd: auto
+	ibge: auto
+	# Needed until strawberry support auto | None type
+	# https://github.com/strawberry-graphql/strawberry/issues/3435
+	name: str | None = None
+	ddd: auto
 
 
 # @input
@@ -48,18 +48,18 @@ class CityInput:
 
 @pydantic_input(model=AddressBase)
 class AddressFilterInput:
-    zipcode: auto
-    city: CityInput | None = None
-    state: StateInput | None = None
-    neighborhood: auto
-    complement: auto
-    # coordinates: CoordinatesInput | None = None
+	zipcode: auto
+	city: CityInput | None = None
+	state: StateInput | None = None
+	neighborhood: auto
+	complement: auto
+	# coordinates: CoordinatesInput | None = None
 
 
 @pydantic_input(model=Address)
 class AddressInsertInput:
-    zipcode: auto
-    state: StateInput
-    city: CityInput
-    neighborhood: auto
-    complement: auto
+	zipcode: auto
+	state: StateInput
+	city: CityInput
+	neighborhood: auto
+	complement: auto

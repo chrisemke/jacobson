@@ -23,39 +23,39 @@ from database.models.brazil import StateAcronym
 
 
 class TestTypes:
-    def test_state_type(self: Self):
-        state_input = StateType(name='São Paulo', acronym=StateAcronym.SP)
-        assert state_input.to_pydantic().model_dump() == {
-            'acronym': StateAcronym.SP,
-            'name': 'São Paulo',
-            'id': None,
-        }
+	def test_state_type(self: Self):
+		state_input = StateType(name='São Paulo', acronym=StateAcronym.SP)
+		assert state_input.to_pydantic().model_dump() == {
+			'acronym': StateAcronym.SP,
+			'name': 'São Paulo',
+			'id': None,
+		}
 
-    def test_city_type(self: Self):
-        city_input = CityType(ibge=3550308, name='São Paulo', ddd=11)
-        assert city_input.to_pydantic().model_dump() == {
-            'ibge': 3550308,
-            'name': 'São Paulo',
-            'ddd': 11,
-            'id': None,
-        }
+	def test_city_type(self: Self):
+		city_input = CityType(ibge=3550308, name='São Paulo', ddd=11)
+		assert city_input.to_pydantic().model_dump() == {
+			'ibge': 3550308,
+			'name': 'São Paulo',
+			'ddd': 11,
+			'id': None,
+		}
 
-    def test_address_type(self: Self):
-        state_input = StateType(name='São Paulo', acronym=StateAcronym.SP)
-        city_input = CityType(ibge=3550308, name='São Paulo', ddd=11)
-        address_filter_input = AddressType(
-            zipcode=1001000,
-            city=city_input,
-            state=state_input,
-            neighborhood='Sé',
-            complement='Praça da Sé - lado ímpar',
-        )
+	def test_address_type(self: Self):
+		state_input = StateType(name='São Paulo', acronym=StateAcronym.SP)
+		city_input = CityType(ibge=3550308, name='São Paulo', ddd=11)
+		address_filter_input = AddressType(
+			zipcode=1001000,
+			city=city_input,
+			state=state_input,
+			neighborhood='Sé',
+			complement='Praça da Sé - lado ímpar',
+		)
 
-        assert address_filter_input.to_pydantic().model_dump() == {
-            'id': None,
-            'zipcode': 1001000,
-            'neighborhood': 'Sé',
-            'complement': 'Praça da Sé - lado ímpar',
-        }
-        assert address_filter_input.state == state_input
-        assert address_filter_input.city == city_input
+		assert address_filter_input.to_pydantic().model_dump() == {
+			'id': None,
+			'zipcode': 1001000,
+			'neighborhood': 'Sé',
+			'complement': 'Praça da Sé - lado ímpar',
+		}
+		assert address_filter_input.state == state_input
+		assert address_filter_input.city == city_input

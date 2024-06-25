@@ -24,15 +24,15 @@ from database.models.brazil import Address, City, State
 
 @pydantic_type(name='State', model=State)
 class StateType:
-    name: auto
-    acronym: auto
+	name: auto
+	acronym: auto
 
 
 @pydantic_type(name='City', model=City)
 class CityType:
-    ibge: auto
-    name: auto
-    ddd: auto
+	ibge: auto
+	name: auto
+	ddd: auto
 
 
 # @type(name='Coordinates')
@@ -44,9 +44,9 @@ class CityType:
 
 @pydantic_type(name='Address', model=Address)
 class AddressType:
-    zipcode: auto
-    city: CityType
-    state: StateType
-    neighborhood: auto
-    complement: auto
-    # coordinates: CoordinatesType | None = None
+	zipcode: auto
+	city: CityType
+	state: StateType
+	neighborhood: auto
+	complement: auto
+	# coordinates: CoordinatesType | None = None
