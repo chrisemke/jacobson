@@ -1,0 +1,71 @@
+site_name: Jacobson
+repo_url: https://codeberg.org/Krisque/jacobson
+repo_name: Krisque/jacobson
+
+docs_dir: documentation/docs
+site_dir: documentation/site
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - search.suggest
+    - search.highlight
+    - search.share
+  palette:
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Modo claro
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Modo noturno
+
+nav:
+  - Home:
+    - readme: "README.md"
+    - changelog: "changelog.md"
+  - Api:
+    - app: "api/app.md"
+    - resolvers: "api/resolvers.md"
+    - schema: "api/schema.md"
+    - address:
+      - inputs: "api/address/graphql_inputs.md"
+      - types: "api/address/graphql_types.md"
+  - Database:
+    - models:
+      - brazil: "database/models/brazil.md"
+    - migrations: "database/migrations.md"
+    - engine: "database/engine.md"
+    - functions: "database/functions.md"
+  - Containers: "containers.md"
+  - Plugins:
+    - cep_aberto:
+      - cep_aberto: "plugins/cep_aberto/cep_aberto.md"
+    - viacep:
+      - viacep: "plugins/viacep/viacep.md"
+    - plugins_controller: "plugins/plugins_controller.md"
+    - protocol: "plugins/protocol.md"
+  - Tests: "tests.md"
+  - Utils:
+    - settings: "utils/settings.md"
+  - About:
+    - LICENSE: "license.md"
+
+plugins:
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_root_heading: true
+  - search
+  - site-urls
+
+markdown_extensions:
+  - pymdownx.tasklist
+  - pymdownx.snippets
+  - admonition
