@@ -16,9 +16,9 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from typing import Self
+from typing import ClassVar, Self
 
-from pytest import mark
+import pytest
 
 from api.address.graphql_inputs import AddressFilterInput, AddressInsertInput
 from api.address.graphql_types import AddressType
@@ -27,47 +27,49 @@ from database.models.brazil import Address, City, State, StateAcronym
 
 
 class TestQuery:
-    @mark.asyncio
-    async def test_all_address(self: Self, mocker):
-        state = State(acronym=StateAcronym.SP, name='São Paulo', id=None)
-        city = City(ibge=3550308, name='São Paulo', ddd=11, id=None)
-        address = Address(
-            zipcode=1001000,
-            neighborhood='Sé',
-            complement='Praça da Sé - lado ímpar',
-            id=None,
-            state=state,
-            city=city,
-        )
-        mocker.patch('api.schema.get_address', return_value=[address])
-        out = await Query().all_address(AddressFilterInput())
-        for i in out:
-            assert isinstance(i, AddressType)
+	@pytest.mark.asyncio()
+	async def test_all_address(self: Self, mocker):
+		state = State(acronym=StateAcronym.SP, name='São Paulo', id=None)
+		city = City(ibge=3550308, name='São Paulo', ddd=11, id=None)
+		address = Address(
+			zipcode=1001000,
+			neighborhood='Sé',
+			complement='Praça da Sé - lado ímpar',
+			id=None,
+			state=state,
+			city=city,
+		)
 
-            assert i.to_pydantic().model_dump() == address.model_dump()
+		class Info:
+			context: ClassVar[dict[str, str]] = {'db': 'db_session'}
+
+		mocker.patch('api.schema.get_address', return_value=[address])
+		out = await Query().all_address(Info(), AddressFilterInput())
+		for i in out:
+			assert isinstance(i, AddressType)
+
+			assert i.to_pydantic().model_dump() == address.model_dump()
 
 
 class TestMutation:
-    @mark.asyncio
-    async def test_create_address(self: Self, mocker):
-        state = State(acronym=StateAcronym.SP, name='São Paulo', id=None)
-        city = City(ibge=3550308, name='São Paulo', ddd=11, id=None)
-        address = AddressInsertInput(
-            zipcode=1001000,
-            neighborhood='Sé',
-            complement='Praça da Sé - lado ímpar',
-            state=state,
-            city=city,
-        )
+	@pytest.mark.asyncio()
+	async def test_create_address(self: Self, mocker):
+		state = State(acronym=StateAcronym.SP, name='São Paulo', id=None)
+		city = City(ibge=3550308, name='São Paulo', ddd=11, id=None)
+		address = AddressInsertInput(
+			zipcode=1001000,
+			neighborhood='Sé',
+			complement='Praça da Sé - lado ímpar',
+			state=state,
+			city=city,
+		)
 
-        mocker.patch(
-            'api.schema.insert_address', return_value=address.to_pydantic()
-        )
-        out = await Mutation().create_address(address)
+		class Info:
+			context: ClassVar[dict[str, str]] = {'db': 'db_session'}
 
-        assert isinstance(out, AddressType)
+		mocker.patch('api.schema.insert_address', return_value=address.to_pydantic())
+		out = await Mutation().create_address(Info(), address)
 
-        assert (
-            out.to_pydantic().model_dump()
-            == address.to_pydantic().model_dump()
-        )
+		assert isinstance(out, AddressType)
+
+		assert out.to_pydantic().model_dump() == address.to_pydantic().model_dump()

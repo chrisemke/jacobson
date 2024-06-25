@@ -19,65 +19,48 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from asyncio import as_completed, create_task
 
 from pydantic import PositiveInt
-from sqlmodel.ext.asyncio.session import AsyncSession
 
-from database.functions import insert_address
 from database.models.brazil import Address
 from plugins.cep_aberto.cep_aberto import CepAberto
 from plugins.viacep.viacep import ViaCep
 
 
 async def get_zipcode_from_plugins(
-    session: AsyncSession,
-    zipcode: PositiveInt,
+	zipcode: PositiveInt,
 ) -> list[Address]:
-    """
-    Async call to all plugins at decame time
-    The first task that returns successfully returns and cancels the others.
+	"""
+	Async call to all plugins at decame time
+	The first task that returns successfully returns and cancels the others.
 
-    Parameters
-    ----------
-    session : AsyncSession
-        get the session of database from get_session
-    zipcode : PositiveInt
-        zipcode needed to search address on api's
+	Args:
+			zipcode (PositiveInt): zipcode needed to search address on api's
 
-    Returns
-    -------
-    list[Address]
-        List that contains only one Address (db model)
-        it's a list for compatibility with database query
+	Returns:
+			list[Address]: List that contains only one Address (db model)
+					it's a list for compatibility with database query
 
-    Todo:
-    ----
-    - Create all tasks based on config
-    - Add logs
+	Todo:
+			Create all tasks based on config
+			Add logs
 
-    """
-    tasks = []
-    for service in [CepAberto, ViaCep]:
-        try:
-            service_instance = service()
-            tasks.append(
-                create_task(service_instance.get_address_by_zipcode(zipcode))
-            )
-        except Exception:
-            # async insert logs
-            ...
+	"""
+	tasks = []
+	for service in [CepAberto, ViaCep]:
+		try:
+			service_instance = service()
+			tasks.append(create_task(service_instance.get_address_by_zipcode(zipcode)))
+		except Exception:
+			# async insert logs
+			...
 
-    result = []
-    for task in as_completed(tasks):
-        try:
-            result = await task
-            break
-        except Exception as e:
-            print('Erro:', e)
-            # there is no address found in this task
-            # async insert logs
+	result = []
+	for task in as_completed(tasks):
+		try:
+			result = await task
+			break
+		except Exception as e:
+			print('Erro:', e)
+			# there is no address found in this task
+			# async insert logs
 
-    if result:
-        insert_task = create_task(insert_address(session, result[0]))
-        # insert log
-        print(insert_task)
-
-    return result
+	return result
