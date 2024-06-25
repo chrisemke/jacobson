@@ -28,103 +28,92 @@ from api.address.graphql_inputs import AddressFilterInput, AddressInsertInput
 from api.address.graphql_types import AddressType
 from api.resolvers import get_address, insert_address
 from database.engine import get_session
+from utils.settings import settings
 
 
 @type
 class Query:
-    @field
-    async def all_address(
-        self,
-        info: Info,
-        filter: AddressFilterInput,
-        page_size: PositiveInt = 10,
-        page_number: PositiveInt = 1,
-    ) -> list[AddressType]:
-        """
-        Query all addresses from database or all plugins.
+	@field
+	async def all_address(
+		self,
+		info: Info,
+		filter: AddressFilterInput,
+		page_size: PositiveInt = 10,
+		page_number: PositiveInt = 1,
+	) -> list[AddressType]:
+		"""
+		Query all addresses from database or all plugins.
 
-        Parameters
-        ----------
-        info : Info
-            Strawberry default value to get context information
-            in this case we use 'db'
-        filter : AddressFilterInput
-            Strawberry input dataclass, everything can be None
-            (based on sqlmodel model)
-        page_size : PositiveInt, optional
-            How many elements in each page, by default 10
-        page_number : PositiveInt, optional
-            Number of the page, by default 1
+		Args:
+				info (Info): Strawberry default value to get context information
+						in this case we use 'db'
+				filter (AddressFilterInput): Strawberry input dataclass,
+						everything can be None (based on sqlmodel model)
+				page_size (PositiveInt, optional): How many elements in each page.
+						Defaults to 10.
+				page_number (PositiveInt, optional): Number of the page. Defaults to 1.
 
-        Returns
-        -------
-        list[AddressType]
-            All addresses (db model converted to strawberry dataclass)
-            based on filter or empty list
+		Returns:
+				list[AddressType]: All addresses (db model converted to strawberry type)
+						based on filter or empty list
 
-        """
-        return list(
-            map(
-                AddressType.from_pydantic,
-                await get_address(
-                    info.context['db'], filter, page_size, page_number
-                ),
-            )
-        )
+		"""
+		return list(
+			map(
+				AddressType.from_pydantic,
+				await get_address(info.context['db'], filter, page_size, page_number),
+			)
+		)
 
 
 @type
 class Mutation:
-    @field
-    async def create_address(
-        self, info: Info, address: AddressInsertInput
-    ) -> AddressType:
-        """
-        Insert address and city if not exists on database.
+	@field
+	async def create_address(
+		self, info: Info, address: AddressInsertInput
+	) -> AddressType:
+		"""
+		Insert address and city if not exists on database.
 
-        Parameters
-        ----------
-        info : Info
-            Strawberry default value to get context information
-            in this case we use 'db'
-        address : AddressInsertInput
-            Strict address class, all needed fields need to be passed
+		Args:
+				info (Info): Strawberry default value to get context information
+						in this case we use 'db'
+				address (AddressInsertInput): Strict address class,
+						almost all fields need to be passed
 
-        Returns
-        -------
-        AddressType
-            Address (db model converted to strawberry dataclass)
+		Returns:
+				AddressType: Address (db model converted to strawberry dataclass)
 
-        """
-        return AddressType.from_pydantic(
-            await insert_address(info.context['db'], address)
-        )
+		"""
+		return AddressType.from_pydantic(
+			await insert_address(info.context['db'], address)
+		)
 
 
 async def get_context(
-    request: Request, db: Annotated[AsyncSession, Depends(get_session)]
+	request: Request, db: Annotated[AsyncSession, Depends(get_session)]
 ) -> dict[str, AsyncSession]:
-    """
-    Create database session to use when needed.
+	"""
+	Create database session to use when needed.
 
-    Parameters
-    ----------
-    request : Request
-        the context of the request
-    db : Annotated[AsyncSession, Depends(get_session)]
-        get database session from get_session
+	Args:
+			request (Request): context of the request
+			db (Annotated[AsyncSession, Depends): get database session from get_session
 
-    Returns
-    -------
-    dict[str, AsyncSession]
-        set the database session on 'db' key
+	Returns:
+			dict[str, AsyncSession]: set the database session on 'db' key
 
-    """
-    return {
-        'db': db,
-    }
+	"""
+	return {
+		'db': db,
+	}
 
 
 schema = Schema(query=Query, mutation=Mutation)
 
-graphql_app = GraphQLRouter[object, object](schema, context_getter=get_context)
+"""Create Graphql Router for fastapi and start graphql ide if env is DEV."""
+graphql_app = GraphQLRouter[object, object](
+	schema,
+	context_getter=get_context,
+	graphql_ide='graphiql' if settings.DEV else None,
+)
