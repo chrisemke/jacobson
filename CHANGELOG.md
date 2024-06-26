@@ -50,8 +50,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 - start edgedb support
 - create docker folders and minor fixes
 
-## Unreleased 0.2 (2024-06-10)
+## Unreleased 0.2 (2024-06-26)
+
+### Fix
+
+- **plugins-async-error**: create async client to run requests async
 
 ### Refactor
 
+- **dev-mode**: add dev flag on .env to enable some features like db logs on shell and graphql ide
 - **db-session**: add graphql context_getter to send the database session to queries and mutations on demand
