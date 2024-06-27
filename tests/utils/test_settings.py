@@ -24,7 +24,7 @@ from utils.settings import Settings
 class TestSettings:
 	def test_all_settings(self: Self, monkeypatch):
 		expected = {
-			'DEV': 1,
+			'DEV': '1',
 			'DATABASE_USER': 'teste',
 			'DATABASE_PASSWORD': 'teste',
 			'DATABASE_HOST': 'jacobson_db_1',
@@ -36,5 +36,6 @@ class TestSettings:
 		for k, v in expected.items():
 			monkeypatch.setenv(k, v)
 
+		expected['DEV'] = bool(int(expected['DEV']))
 		expected['DATABASE_PORT'] = int(expected['DATABASE_PORT'])
 		assert Settings().model_dump() == expected

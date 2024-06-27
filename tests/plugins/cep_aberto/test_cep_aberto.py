@@ -17,10 +17,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from dataclasses import dataclass
+from re import escape
 from typing import Self
 
 import pytest
-from httpx import Response
+from httpx import HTTPStatusError, Response
 from pytest_mock import MockerFixture
 
 from database.models.brazil import (
@@ -117,7 +118,11 @@ class TestCepAberto:
 		)
 
 		with pytest.raises(
-			Exception, match='Something went wrong, request status code != 200'
+			HTTPStatusError,
+			match=escape(
+				"Client error '400 Bad Request' for url 'https://www.cepaberto.com/api/v3/cep?cep=01001000'\n"
+				'For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400'
+			),
 		):
 			await CepAberto().get_address_by_zipcode(zipcode)
 

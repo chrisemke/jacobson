@@ -16,10 +16,11 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from re import escape
 from typing import Self
 
 import pytest
-from httpx import Response
+from httpx import HTTPStatusError, Response
 
 from database.models.brazil import (
 	Address,
@@ -72,7 +73,11 @@ class TestViaCep:
 		)
 
 		with pytest.raises(
-			Exception, match='Something went wrong, request status code != 200'
+			HTTPStatusError,
+			match=escape(
+				"Client error '400 Bad Request' for url 'https://viacep.com.br/ws/01001000/json/'\n"
+				'For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400'
+			),
 		):
 			await ViaCep().get_address_by_zipcode(zipcode)
 
