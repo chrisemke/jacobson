@@ -47,7 +47,7 @@ call to tell the api to update some register from plugins that are configured
 - [ ] Custom exceptions
 - [ ] Add log support (loguru)
 - [x] Docs (mkdocs + mkdocs-material[to beautify] + mkdocstrings[to transform docstrings into docs])
-- [ ] Taskipy
+- [x] Taskipy
 
 ## TODO (Needed until v1.0)
 - [ ] Auth
