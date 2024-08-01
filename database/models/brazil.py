@@ -16,120 +16,147 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from datetime import datetime
 from enum import StrEnum
+from typing import TypedDict
+from uuid import UUID, uuid4
 
-# from typing import NamedTuple
 from pydantic import PositiveInt
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import (
-    Field,
-    Relationship,
-    SQLModel,
+	Field,
+	Relationship,
+	SQLModel,
 )
 from strawberry import enum
 
 
 @enum
 class StateAcronym(StrEnum):
-    AC = 'AC'
-    AL = 'AL'
-    AP = 'AP'
-    AM = 'AM'
-    BA = 'BA'
-    CE = 'CE'
-    DF = 'DF'
-    ES = 'ES'
-    GO = 'GO'
-    MA = 'MA'
-    MT = 'MT'
-    MS = 'MS'
-    MG = 'MG'
-    PA = 'PA'
-    PB = 'PB'
-    PR = 'PR'
-    PE = 'PE'
-    PI = 'PI'
-    RJ = 'RJ'
-    RN = 'RN'
-    RS = 'RS'
-    RO = 'RO'
-    RR = 'RR'
-    SC = 'SC'
-    SP = 'SP'
-    SE = 'SE'
-    TO = 'TO'
+	AC = 'AC'
+	AL = 'AL'
+	AP = 'AP'
+	AM = 'AM'
+	BA = 'BA'
+	CE = 'CE'
+	DF = 'DF'
+	ES = 'ES'
+	GO = 'GO'
+	MA = 'MA'
+	MT = 'MT'
+	MS = 'MS'
+	MG = 'MG'
+	PA = 'PA'
+	PB = 'PB'
+	PR = 'PR'
+	PE = 'PE'
+	PI = 'PI'
+	RJ = 'RJ'
+	RN = 'RN'
+	RS = 'RS'
+	RO = 'RO'
+	RR = 'RR'
+	SC = 'SC'
+	SP = 'SP'
+	SE = 'SE'
+	TO = 'TO'
 
 
 class StateAcronymName(StrEnum):
-    AC = 'Acre'
-    AL = 'Alagoas'
-    AP = 'Amapá'
-    AM = 'Amazonas'
-    BA = 'Bahia'
-    CE = 'Ceará'
-    DF = 'Distrito Federal'
-    ES = 'Espírito Santo'
-    GO = 'Goiás'
-    MA = 'Maranhão'
-    MT = 'Mato Grosso'
-    MS = 'Mato Grosso do Sul'
-    MG = 'Minas Gerais'
-    PA = 'Pará'
-    PB = 'Paraíba'
-    PR = 'Paraná'
-    PE = 'Pernambuco'
-    PI = 'Piauí'
-    RJ = 'Rio de Janeiro'
-    RN = 'Rio Grande do Norte'
-    RS = 'Rio Grande do Sul'
-    RO = 'Rondônia'
-    RR = 'Roraima'
-    SC = 'Santa Catarina'
-    SP = 'São Paulo'
-    SE = 'Sergipe'
-    TO = 'Tocantins'
+	AC = 'Acre'
+	AL = 'Alagoas'
+	AP = 'Amapá'
+	AM = 'Amazonas'
+	BA = 'Bahia'
+	CE = 'Ceará'
+	DF = 'Distrito Federal'
+	ES = 'Espírito Santo'
+	GO = 'Goiás'
+	MA = 'Maranhão'
+	MT = 'Mato Grosso'
+	MS = 'Mato Grosso do Sul'
+	MG = 'Minas Gerais'
+	PA = 'Pará'
+	PB = 'Paraíba'
+	PR = 'Paraná'
+	PE = 'Pernambuco'
+	PI = 'Piauí'
+	RJ = 'Rio de Janeiro'
+	RN = 'Rio Grande do Norte'
+	RS = 'Rio Grande do Sul'
+	RO = 'Rondônia'
+	RR = 'Roraima'
+	SC = 'Santa Catarina'
+	SP = 'São Paulo'
+	SE = 'Sergipe'
+	TO = 'Tocantins'
 
 
-class State(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
-    acronym: StateAcronym = Field(unique=True)
-    name: str
-
-    addresses: list['Address'] = Relationship(back_populates='state')
+class StateBase(SQLModel):
+	acronym: StateAcronym = Field(unique=True)
+	name: str | None
 
 
-class City(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
-    ibge: PositiveInt = Field(unique=True)
-    name: str
-    ddd: int | None = None
-
-    addresses: list['Address'] = Relationship(back_populates='city')
+class StateCreate(StateBase):
+	name: str
 
 
-# class Coordinates(NamedTuple):
-#     latitude: float
-#     longitude: float
-#     altitude: float
+class State(StateCreate, table=True):
+	__tablename__ = 'states'
+
+	id: UUID | None = Field(default_factory=uuid4, primary_key=True)
 
 
-# Needed until strawberry support auto | None type
-# https://github.com/strawberry-graphql/strawberry/issues/3435
+class CityBase(SQLModel):
+	ibge: PositiveInt = Field(unique=True)
+	name: str | None
+	ddd: int | None = None
+
+
+class CityCreate(CityBase):
+	name: str
+
+
+class City(CityCreate, table=True):
+	__tablename__ = 'cities'
+
+	id: UUID | None = Field(default_factory=uuid4, primary_key=True)
+
+
+class Coordinates(TypedDict):
+	latitude: float
+	longitude: float
+	altitude: float | None
+
+
 class AddressBase(SQLModel):
-    id: int | None = Field(default=None, primary_key=True)
-    zipcode: int | None = Field(None, gt=1_000_000, lt=99_999_999)
-    neighborhood: str | None = None
-    complement: str | None = None
-    # coordinates: Coordinates | None = None
+	zipcode: int | None = Field(None, gt=1_000_000, lt=99_999_999)
+	neighborhood: str | None = None
+	complement: str | None = None
+	coordinates: Coordinates | None = None
 
 
 class Address(AddressBase, table=True):
-    zipcode: int = Field(unique=True, gt=1_000_000, lt=99_999_999)
+	__tablename__ = 'addresses'
 
-    state_id: PositiveInt = Field(foreign_key='state.id')
-    state: State = Relationship(back_populates='addresses')
+	id: UUID = Field(default_factory=uuid4, primary_key=True)
 
-    city_id: PositiveInt = Field(foreign_key='city.id')
-    city: City = Relationship(back_populates='addresses')
+	zipcode: int = Field(unique=True, gt=1_000_000, lt=99_999_999)
 
-    neighborhood: str
-    complement: str | None = None
+	state_id: UUID = Field(foreign_key='states.id')
+	state: State = Relationship(sa_relationship_kwargs={'lazy': 'selectin'})
+
+	city_id: UUID = Field(foreign_key='cities.id')
+	city: City = Relationship(sa_relationship_kwargs={'lazy': 'selectin'})
+
+	neighborhood: str
+	complement: str | None = None
+	coordinates: Coordinates | None = Field(None, nullable=True, sa_type=JSONB)
+
+	updated_at: datetime | None = Field(
+		default_factory=datetime.now,
+		nullable=False,
+		sa_column_kwargs={
+			'onupdate': datetime.now,
+		},
+	)

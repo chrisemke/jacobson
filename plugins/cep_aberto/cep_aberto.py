@@ -18,163 +18,161 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import Self, TypedDict
 
-from httpx import get
+from httpx import AsyncClient
 from pydantic import PositiveInt
 
+from api.address.graphql_types import DictResponse
 from database.models.brazil import (
-    Address,
-    City,
-    State,
-    StateAcronym,
-    StateAcronymName,
+	Address,
+	City,
+	StateAcronym,
+	StateAcronymName,
+	StateCreate,
 )
 from plugins.protocol import Plugin
 from utils.settings import settings
 
 
 class CepAbertoState(TypedDict):
-    sigla: str
+	sigla: str
 
 
 class CepAbertoCity(TypedDict):
-    ddd: int
-    ibge: str
-    nome: str
+	ddd: int
+	ibge: str
+	nome: str
 
 
 class CepAbertoAddress(TypedDict):
-    altitude: float
-    cep: str
-    latitude: str
-    longitude: str
-    logradouro: str
-    bairro: str
-    complemento: str
-    cidade: CepAbertoCity
-    estado: CepAbertoState
+	altitude: float
+	cep: str
+	latitude: str
+	longitude: str
+	logradouro: str
+	bairro: str
+	complemento: str
+	cidade: CepAbertoCity
+	estado: CepAbertoState
 
 
 class CepAberto(Plugin):
-    """The service of https://www.cepaberto.com/ api."""
+	"""
+	The service of https://www.cepaberto.com/ api.
 
-    __slots__ = ('token',)
+	Info:
+			Currently, the request interval for each user is 1 second.
+			More frequent requests will result in HTTP Error 403 Forbidden.
+			The maximum request limit for each user is 10,000 per day.
+	"""
 
-    def __init__(self: Self) -> None:
-        """
-        Set token attribute.
+	__slots__ = ('token',)
 
-        Parameters
-        ----------
-        self : Self
-            scope of current class
+	def __init__(self: Self) -> None:
+		"""
+		Set token attribute.
 
-        Raises
-        ------
-        Exception
-            if token does not exists.
+		Args:
+				self (Self): scope of current class
 
-        Todo:
-        ____
-        - Fix generic exception
+		Raises:
+				Exception: if token does not exists.
 
-        """
-        if not settings.CEP_ABERTO_TOKEN:
-            raise Exception('Token Inválido')
-        self.token = settings.CEP_ABERTO_TOKEN
+		Todo:
+				Fix generic exception
 
-    async def get_address_by_zipcode(
-        self: Self, zipcode: PositiveInt
-    ) -> list[Address]:
-        """
-        Get address by zipcode.
+		"""
+		if not settings.CEP_ABERTO_TOKEN:
+			raise Exception('Token Inválido')
+		self.token = settings.CEP_ABERTO_TOKEN
 
-        Parameters
-        ----------
-        self : Self
-            scope of the class
-        zipcode : PositiveInt
-            Zipcode to search for, it should be > 1_000_000 and < 99_999_999
+	async def get_address_by_zipcode(
+		self: Self, zipcode: PositiveInt
+	) -> DictResponse:
+		"""
+		Get address by zipcode.
 
-        Returns
-        -------
-        list[Address]
-            A valid address or exception
+		Args:
+				self (Self): scope of the class
+				zipcode (PositiveInt): Zipcode to search for,
+						it should be > 1_000_000 and < 99_999_999
 
-        Raises
-        ------
-        Exception
-            If the request went wrong or it does not return any data
+		Raises:
+				HTTPStatusError: raise_for_status if there's any error status code
 
-        Todo:
-        ____
-        - Fix generic exception
+		Returns:
+				DictResponse: data key have a valid address (db model);
+						provider key have 'cep_aberto' str
 
-        """
-        url = f'https://www.cepaberto.com/api/v3/cep?cep={zipcode:08}'
-        headers = {'Authorization': f'Token token={self.token}'}
-        request = get(url, headers=headers)
+		"""
+		url = f'https://www.cepaberto.com/api/v3/cep?cep={zipcode:08}'
+		headers = {'Authorization': f'Token token={self.token}'}
+		async with AsyncClient() as client:
+			request = await client.get(url, headers=headers)
+		request.raise_for_status()
 
-        if request.status_code != 200:
-            raise Exception('Something went wrong, request status code != 200')
+		return {
+			'data': [await self._request_to_database_model(request.json())],
+			'provider': 'cep_aberto',
+		}
 
-        return [await self._request_to_database_model(request.json())]
+	@classmethod
+	async def _request_to_database_model(
+		cls, address_data: CepAbertoAddress
+	) -> Address:
+		"""
+		Receive a json/dict and return an Address object.
 
-    @classmethod
-    async def _request_to_database_model(
-        cls, address_data: CepAbertoAddress
-    ) -> Address:
-        """
-        Receive a json/dict and return an Address object.
+		Args:
+				address_data (CepAbertoAddress): here's a dict example:
+						{
+							"altitude": 760.0,
+							"cep": "01001000",
+							"latitude": "-23.5479099981",
+							"longitude": "-46.636",
+							"logradouro": "Praça da Sé",
+							"bairro": "Sé",
+							"complemento": "- lado ímpar",
+							"cidade": {
+								"ddd": 11,
+								"ibge": "3550308",
+								"nome": "São Paulo"
+							},
+							"estado": {
+								"sigla": "SP"
+							}
+						}
 
-        Parameters
-        ----------
-        address_data : CepAbertoAddress
-            here's a dict example
-            {
-                "altitude":760.0,
-                "cep":"01001000",
-                "latitude":"-23.5479099981",
-                "longitude":"-46.636",
-                "logradouro":"Praça da Sé",
-                "bairro":"Sé",
-                "complemento":"- lado ímpar",
-                "cidade":{
-                    "ddd":11,
-                    "ibge":"3550308",
-                    "nome":"São Paulo"
-                },
-                "estado":{
-                    "sigla":"SP"
-                }
-            }
+		Returns:
+				Address: Database model
 
-        Returns
-        -------
-        Address
-            The Database model from database.models.brazil
+		"""
+		acronym = address_data['estado']['sigla']
+		state = StateCreate(
+			acronym=StateAcronym(acronym),
+			name=getattr(StateAcronymName, acronym).value,
+		)
 
-        """
-        acronym = address_data['estado']['sigla']
-        state = State(
-            acronym=StateAcronym(acronym),
-            name=getattr(StateAcronymName, acronym).value,
-        )
+		city = City(
+			ibge=int(address_data['cidade']['ibge']),
+			name=address_data['cidade']['nome'],
+			ddd=address_data['cidade']['ddd'],
+		)
 
-        city = City(
-            ibge=int(address_data['cidade']['ibge']),
-            name=address_data['cidade']['nome'],
-            ddd=address_data['cidade']['ddd'],
-        )
-        logradouro = None
-        if address_data['logradouro']:
-            logradouro = (
-                f'{address_data['logradouro']} {address_data['complemento']}'
-            ).strip()
+		logradouro = (
+			f'{address_data['logradouro']} {address_data.get('complemento', '')}'
+		).strip()
 
-        return Address(
-            zipcode=int(address_data['cep']),
-            state=state,
-            city=city,
-            neighborhood=address_data['bairro'],
-            complement=logradouro,
-        )
+		return Address(
+			zipcode=int(address_data['cep']),
+			state=state,
+			city=city,
+			neighborhood=address_data['bairro'],
+			complement=logradouro,
+			coordinates={
+				'latitude': float(address_data['latitude']),
+				'longitude': float(address_data['longitude']),
+				'altitude': address_data.get('altitude'),
+			}
+			if address_data.get('latitude') and address_data.get('longitude')
+			else None,
+		)

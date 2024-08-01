@@ -16,9 +16,38 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from fastapi import FastAPI
+from http import HTTPStatus
+
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 from api.schema import graphql_app
+from utils.settings import settings
 
 app = FastAPI()
 app.include_router(graphql_app, prefix='/graphql')
+
+if settings.DEV:
+	app.mount(
+		'/',
+		StaticFiles(directory='documentation/site', html=True),
+		name='mkdocs',
+	)
+	templates = Jinja2Templates(directory='documentation/site')
+
+	@app.get('/', status_code=HTTPStatus.OK, response_class=HTMLResponse)
+	async def mkdocs(request: Request) -> HTMLResponse:
+		"""
+		Response de mkdocs site, from result of build.
+		ONLY ENABLED IN DEV MODE.
+
+		Args:
+				request (Request): Fastapi Request
+
+		Returns:
+				HTMLResponse: Mkdocs static site from documentation/site
+
+		"""
+		return templates.TemplateResponse(name='index.html', request=request)

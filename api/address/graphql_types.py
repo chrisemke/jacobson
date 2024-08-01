@@ -16,37 +16,42 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from typing import TypedDict
+
 from strawberry import auto
 from strawberry.experimental.pydantic import type as pydantic_type
+from strawberry.scalars import JSON
 
-from database.models.brazil import Address, City, State
+from database.models.brazil import (
+	Address,
+	CityCreate,
+	StateCreate,
+)
 
 
-@pydantic_type(name='State', model=State)
+@pydantic_type(StateCreate, name='State')
 class StateType:
-    name: auto
-    acronym: auto
+	name: auto
+	acronym: auto
 
 
-@pydantic_type(name='City', model=City)
+@pydantic_type(CityCreate, name='City')
 class CityType:
-    ibge: auto
-    name: auto
-    ddd: auto
+	ibge: auto
+	name: auto
+	ddd: auto
 
 
-# @type(name='Coordinates')
-# class CoordinatesType:
-#     latitude: float
-#     longitude: float
-#     altitude: float
-
-
-@pydantic_type(name='Address', model=Address)
+@pydantic_type(Address, name='Address')
 class AddressType:
-    zipcode: auto
-    city: CityType
-    state: StateType
-    neighborhood: auto
-    complement: auto
-    # coordinates: CoordinatesType | None = None
+	zipcode: auto
+	city: CityType
+	state: StateType
+	neighborhood: auto
+	complement: auto
+	coordinates: JSON | None = None
+
+
+class DictResponse(TypedDict):
+	data: list[Address]
+	provider: str

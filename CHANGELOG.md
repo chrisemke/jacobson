@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-## Unreleased
+## 0.1 (2024-05-28)
 
 ### BREAKING CHANGE
 
@@ -49,3 +49,22 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 - **graphql-query**: add pydantic and strawberry types to query
 - start edgedb support
 - create docker folders and minor fixes
+
+## 0.2 (2024-07-31)
+
+### BREAKING CHANGE
+
+- Now postgres is needed because of uuid pk. Remake migrations
+
+### Fix
+
+- **all_address**: add joins on filters that depend on other tables
+- **background-insert**: fix insert on query to run after return
+- **plugins-async-error**: create async client to run requests async
+
+### Refactor
+
+- **remake-database**: move from mariadb to postgres, re-enable coordinates and move to uuid
+- **mkdocs-dev-mode**: if dev mode is on, mkdocs is enabled on / of fastapi
+- **dev-mode**: add dev flag on .env to enable some features like db logs on shell and graphql ide
+- **db-session**: add graphql context_getter to send the database session to queries and mutations on demand

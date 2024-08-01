@@ -16,15 +16,26 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from collections.abc import AsyncGenerator
+
 from sqlalchemy.ext.asyncio import create_async_engine
+from sqlmodel.ext.asyncio.session import AsyncSession
 
 from utils.settings import settings
 
 engine = create_async_engine(
-    settings.DATABASE_URL,
-    echo=True,
-    future=True,
-    pool_size=20,
-    max_overflow=20,
-    pool_recycle=3600,
+	settings.DATABASE_URL,
+	echo=settings.DEV,
+	future=True,
+	pool_size=20,
+	max_overflow=20,
+	pool_recycle=3600,
 )
+
+
+async def get_session() -> (
+	AsyncGenerator[AsyncSession, None]
+):  # pragma: no cover
+	"""Create and yield database async session."""
+	async with AsyncSession(engine) as session:
+		yield session

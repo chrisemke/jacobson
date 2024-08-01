@@ -19,42 +19,43 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from urllib.parse import quote_plus
 
 from pydantic import (
-    BaseModel,
-    MySQLDsn,
-    PositiveInt,
-    computed_field,
+	BaseModel,
+	PositiveInt,
+	PostgresDsn,
+	computed_field,
 )
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class UrlValidate(BaseModel):
-    url: MySQLDsn
+	url: PostgresDsn
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file='.env', env_file_encoding='utf-8', frozen=True
-    )
+	model_config = SettingsConfigDict(
+		env_file='.env', env_file_encoding='utf-8', frozen=True
+	)
+	DEV: bool
 
-    DATABASE_USER: str
-    DATABASE_PASSWORD: str
-    DATABASE_HOST: str
-    DATABASE_PORT: PositiveInt
-    DATABASE_NAME: str
+	DATABASE_USER: str
+	DATABASE_PASSWORD: str
+	DATABASE_HOST: str
+	DATABASE_PORT: PositiveInt = 5432
+	DATABASE_NAME: str
 
-    CEP_ABERTO_TOKEN: str | None = None
+	CEP_ABERTO_TOKEN: str | None = None
 
-    @computed_field  # type: ignore[misc]
-    @property
-    def DATABASE_URL(self) -> str:
-        """Generate and validate database url based on other fields."""
-        url = (
-            'mysql+asyncmy://'
-            f'{self.DATABASE_USER}:{quote_plus(self.DATABASE_PASSWORD)}@'
-            f'{self.DATABASE_HOST}:{self.DATABASE_PORT}/{self.DATABASE_NAME}'
-        )
+	@computed_field  # type: ignore[prop-decorator]
+	@property
+	def DATABASE_URL(self) -> str:
+		"""Generate and validate database url based on other fields."""
+		url = (
+			'postgresql+psycopg://'
+			f'{self.DATABASE_USER}:{quote_plus(self.DATABASE_PASSWORD)}@'
+			f'{self.DATABASE_HOST}:{self.DATABASE_PORT}/{self.DATABASE_NAME}'
+		)
 
-        return str(UrlValidate(url=url).url)
+		return str(UrlValidate(url=url).url)
 
 
 settings = Settings()

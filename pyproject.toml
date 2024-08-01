@@ -7,37 +7,41 @@ license = "AGPLv3"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
-uvicorn = {extras = ["standard"], version = "^0.30.0"}
-fastapi-slim = "^0.111.0"
-strawberry-graphql = "^0.232.1"
+python = "3.12.*"
+uvicorn = {extras = ["standard"], version = "^0.30.4"}
+fastapi-slim = "^0.111.1"
+strawberry-graphql = {extras = ["fastapi"], version = "^0.237.3"}
 httpx = "^0.27.0"
-pydantic = "^2.7.1"
-alembic = "^1.13.1"
-asyncmy = "^0.2.9"
-pydantic-settings = "^2.2.1"
-sqlmodel-slim = {extras = ["standard"], version = "^0.0.18"}
-sqlmodel = "^0.0.18"
+pydantic = "^2.8.2"
+alembic = "^1.13.2"
+psycopg = {extras = ["binary"], version = "^3.2.1"}
+pydantic-settings = "^2.4.0"
+sqlmodel = "^0.0.21"
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = "^3.7.1"
-ruff = "^0.4.5"
-mypy = "^1.10.0"
-commitizen = "^3.27.0"
+pre-commit = "^3.8.0"
+ruff = "^0.5.5"
+mypy = "^1.11.1"
+commitizen = "^3.28.0"
 poetry-plugin-export = "^1.8.0"
-fastapi = "^0.111.0"
+fastapi = "^0.111.1"
+strawberry-graphql = {extras = ["cli"], version = "^0.237.3"}
+taskipy = "^1.13.0"
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = "^1.6.0"
-mkdocs-material = "^9.5.25"
-mkdocstrings = "^0.25.1"
+mkdocs-material = "^9.5.30"
+mkdocstrings = {extras = ["python"], version = "^0.25.2"}
+mkdocs-site-urls = "^0.2.0"
 
 [tool.poetry.group.test.dependencies]
-pytest = "^8.2.1"
+pytest = "^8.3.2"
 pytest-cov = "^5.0.0"
 pytest-mock = "^3.14.0"
-pytest-asyncio = "^0.23.7"
+pytest-asyncio = "^0.23.8"
 respx = "^0.21.1"
+testcontainers = {extras = ["postgres"], version = "^4.7.2"}
+factory-boy = "^3.3.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -52,31 +56,62 @@ plugins = ["pydantic.mypy", "strawberry.ext.mypy_plugin"]
 
 [tool.ruff]
 lint.select = [
-    "E",   # pydocstyle
-    "W",   # pydocstyle
-    "F",   # pyflakes
-    "I",   # isort
-    "UP",  # pyupgrade
-    "D",   # docstrings
-    "RUF", # ruff
+	"E",     # pydocstyle
+	"W",     # pydocstyle
+	"F",     # pyflakes
+	"I",     # isort
+	"PL",    # Pylint
+	"UP",    # pyupgrade
+	"D",     # docstrings
+	"RUF",   # ruff
+	"ASYNC", # flake8-async
+	"PT",    # flake8-pytest-style
 ]
 lint.ignore = [
-    "D100", # Missing docstring in public module
-    "D101", # Missing docstring in public class
-    "D104", # Missing docstring in public package
-    "D105", # Missing docstring in magic method
-    "D203", # 1 blank line required before class docstring
-    "D205", # 1 blank line required between summary line and description
-    "D211", # no-blank-line-before-class
-    "D212", # Multi-line docstring summary should start at the first line
+	"D100", # Missing docstring in public module
+	"D101", # Missing docstring in public class
+	"D104", # Missing docstring in public package
+	"D105", # Missing docstring in magic method
+	"D203", # 1 blank line required before class docstring
+	"D205", # 1 blank line required between summary line and description
+	"D211", # no-blank-line-before-class
+	"D212", # Multi-line docstring summary should start at the first line
+	"D206", # Docstring should be indented with spaces, not tabs
+	"D407", # Missing dashed underline after section
+	"W191", # Indentation contains tabs
 ]
+indent-width = 1
 line-length = 79
 target-version = "py312"
 
 [tool.ruff.format]
+indent-style = "tab"
 quote-style = "single"
+docstring-code-format = true
 
 [tool.pytest.ini_options]
 minversion = "8.2"
-addopts = "-vv --no-header --ignore=docker"
+addopts = "-vv --no-header -p no:warnings"
+asyncio_mode = 'auto'
 testpaths = ["tests"]
+
+[tool.taskipy.variables]
+container = "podman"
+
+[tool.taskipy.tasks]
+build = {cmd = "{container} compose up -d --build", help = "Build containers", use_vars = true}
+up = {cmd = "{container} compose up -d", help = "Run containers", use_vars = true}
+down = {cmd = "{container} compose down", help = "Turn off containers", use_vars = true}
+logs = {cmd = "{container} logs -f -t --color jacobson_app_1", use_vars = true}
+
+docs_serve = {cmd = "mkdocs serve -w . -a localhost:8008", help = "Serve mkdocs watch all files"}
+pre_docs_deploy = {cmd = "mkdocs build", help = "Build mkdocs"}
+docs_deploy = {cmd = "mkdocs gh-deploy -b pages", help = "Deploy mkdocs on branch pages"}
+
+hooks = {cmd = "pre-commit run --all-files", help = "Run htoolooks on all files"}
+hooks_upgrade = {cmd = "pre-commit autoupdate", help = "Auto update git hooks"}
+
+post_test = {cmd = "coverage html", help = "Generate coverage html"}
+[tool.taskipy.tasks.test]
+cmd = "DOCKER_HOST=unix:///run/user/$UID/podman/podman.sock TESTCONTAINERS_RYUK_DISABLED=true pytest --cov=."
+help = "Run all tests in current directory"

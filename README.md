@@ -34,28 +34,42 @@ call to tell the api to update some register from plugins that are configured
 
 # ROADMAP:
 
-## TODO (Needed for v0.1)
+## DONE (v0.1)
 - [x] git hooks (pre-commit)
 - [x] ORM (SqlModel)
 - [x] Api's support services (cepaberto, viacep...)
 - [x] Unit tests (pytest)
 - [x] Migrations and data seed (Alembic)
 
-## TODO (Needed for v0.2)
-- [ ] Integration tests
-- [ ] Better structure for services (plugin-like)
+## DONE (v0.2)
+- [x] Fix database session with get_db or get_session
+- [x] Start Integration tests
+- [x] Docs (mkdocs + mkdocs-material[to beautify] + mkdocstrings[to transform docstrings into docs])
+- [x] mkdocs on gh pages and/or readthedocs
+- [x] Taskipy
+- [x] Re-enable Coordinates on database and api's (only cep_aberto available)
+
+## TODO (Needed for v0.3)
+- [ ] Add log support (loguru? or OpenTelemetry?)
 - [ ] Custom exceptions
-- [ ] Add log support (loguru)
-- [ ] Docs (mkdocs + mkdocs-material[to beautify] + mkdocstrings[to transform docstrings into docs])
-- [ ] Resolve code issues (TODO's on docstrings)
+- [ ] Auth (pyjwt+pwdlib)
+- [ ] More test (unit and integration)
 
 ## TODO (Needed until v1.0)
-- [ ] Auth
-- [ ] mkdocs on gh pages
+- [ ] Populate the database with zip codes and cities
+- [ ] Automate migrations tests?
+- [ ] separate tests into groups to be run selectively
+- [ ] git hooks to run fast and slow tests
+- [ ] Resolve all code issues (TODO's on docstrings)
+- [ ] CI and CI tests
 - [ ] freeze versions on docker and pyproject
+- [ ] Better structure for services (plugin-like)
+- [ ] Send 'total' information on api requests for pagination
 
 ### TODO (nice to have)
-- [ ] add option to data seed all cities (or chosen list)
+- [ ] add option to seed all cities (or chosen list)
+- [ ] add option to seed all zip codes (or chosen list)
+- [ ] add graphql schema generator on git hooks
 - [ ] move from docker-compose to a podman pod
 - [ ] study mypyc viability
 - [ ] jacobson logo
@@ -64,6 +78,8 @@ call to tell the api to update some register from plugins that are configured
 The idea is to just run this command and podman will run the entire dev environment
 
 obs: before this command you need to create the .env (see sample.env for example)
+
+to run podman as expected, you will need the packages "podman", "podman-compose" and "aardvark-dns"
 
 ```bash
 podman compose up -d --build

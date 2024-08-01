@@ -16,50 +16,52 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from strawberry import auto
+from strawberry import auto, input
 from strawberry.experimental.pydantic import input as pydantic_input
 
-from database.models.brazil import Address, AddressBase, City, State
+from database.models.brazil import (
+	Address,
+	AddressBase,
+	CityBase,
+	StateBase,
+)
 
 
-@pydantic_input(model=State)
+@pydantic_input(StateBase)
 class StateInput:
-    acronym: auto
-    # Needed until strawberry support auto | None type
-    # https://github.com/strawberry-graphql/strawberry/issues/3435
-    name: str | None = None
+	acronym: auto
+	name: auto
 
 
-@pydantic_input(model=City)
+@pydantic_input(CityBase)
 class CityInput:
-    ibge: auto
-    # Needed until strawberry support auto | None type
-    # https://github.com/strawberry-graphql/strawberry/issues/3435
-    name: str | None = None
-    ddd: auto
+	ibge: auto
+	name: auto
+	ddd: auto
 
 
-# @input
-# class CoordinatesInput:
-#     latitude: float
-#     longitude: float
-#     altitude: float | None = None
+@input
+class CoordinatesInput:
+	latitude: float
+	longitude: float
+	altitude: float | None = None
 
 
-@pydantic_input(model=AddressBase)
+@pydantic_input(AddressBase)
 class AddressFilterInput:
-    zipcode: auto
-    city: CityInput | None = None
-    state: StateInput | None = None
-    neighborhood: auto
-    complement: auto
-    # coordinates: CoordinatesInput | None = None
+	zipcode: auto
+	city: CityInput | None = None
+	state: StateInput | None = None
+	neighborhood: auto
+	complement: auto
+	coordinates: CoordinatesInput | None = None
 
 
-@pydantic_input(model=Address)
+@pydantic_input(Address)
 class AddressInsertInput:
-    zipcode: auto
-    state: StateInput
-    city: CityInput
-    neighborhood: auto
-    complement: auto
+	zipcode: auto
+	state: StateInput
+	city: CityInput
+	neighborhood: auto
+	complement: auto
+	coordinates: CoordinatesInput | None = None
