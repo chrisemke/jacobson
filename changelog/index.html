@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.30">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.31">
     
     
       
@@ -588,14 +588,23 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#02-2024-07-30" class="md-nav__link">
+  <a href="#02-2024-07-31" class="md-nav__link">
     <span class="md-ellipsis">
-      0.2 (2024-07-30)
+      0.2 (2024-07-31)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="0.2 (2024-07-30)">
+    <nav class="md-nav" aria-label="0.2 (2024-07-31)">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#breaking-change_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      BREAKING CHANGE
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#fix_1" class="md-nav__link">
@@ -1476,14 +1485,23 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#02-2024-07-30" class="md-nav__link">
+  <a href="#02-2024-07-31" class="md-nav__link">
     <span class="md-ellipsis">
-      0.2 (2024-07-30)
+      0.2 (2024-07-31)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="0.2 (2024-07-30)">
+    <nav class="md-nav" aria-label="0.2 (2024-07-31)">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#breaking-change_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      BREAKING CHANGE
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#fix_1" class="md-nav__link">
@@ -1594,13 +1612,20 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 <li>start edgedb support</li>
 <li>create docker folders and minor fixes</li>
 </ul>
-<h2 id="02-2024-07-30">0.2 (2024-07-30)</h2>
+<h2 id="02-2024-07-31">0.2 (2024-07-31)</h2>
+<h3 id="breaking-change_1">BREAKING CHANGE</h3>
+<ul>
+<li>Now postgres is needed because of uuid pk. Remake migrations</li>
+</ul>
 <h3 id="fix_1">Fix</h3>
 <ul>
+<li><strong>all_address</strong>: add joins on filters that depend on other tables</li>
+<li><strong>background-insert</strong>: fix insert on query to run after return</li>
 <li><strong>plugins-async-error</strong>: create async client to run requests async</li>
 </ul>
 <h3 id="refactor_1">Refactor</h3>
 <ul>
+<li><strong>remake-database</strong>: move from mariadb to postgres, re-enable coordinates and move to uuid</li>
 <li><strong>mkdocs-dev-mode</strong>: if dev mode is on, mkdocs is enabled on / of fastapi</li>
 <li><strong>dev-mode</strong>: add dev flag on .env to enable some features like db logs on shell and graphql ide</li>
 <li><strong>db-session</strong>: add graphql context_getter to send the database session to queries and mutations on demand</li>
