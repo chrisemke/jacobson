@@ -18,8 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import ClassVar, Self
 
-from api.address.graphql_inputs import AddressFilterInput, AddressInsertInput
-from api.address.graphql_types import AddressType
+from api.address.inputs import AddressFilterInput, AddressInsertInput
+from api.address.types import AddressType
 from api.schema import Mutation, Query
 from database.models.brazil import (
 	Address,

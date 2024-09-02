@@ -20,7 +20,7 @@ from asyncio import as_completed, create_task
 
 from pydantic import PositiveInt
 
-from api.address.graphql_types import DictResponse
+from api.address.types import DictResponse
 from plugins.cep_aberto.cep_aberto import CepAberto
 from plugins.viacep.viacep import ViaCep
 

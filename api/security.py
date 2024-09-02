@@ -16,18 +16,35 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from abc import abstractmethod
-from typing import Protocol, Self, runtime_checkable
+from pwdlib import PasswordHash
 
-from pydantic import PositiveInt
-
-from api.address.types import DictResponse
+pwd_context = PasswordHash.recommended()
 
 
-@runtime_checkable
-class Plugin(Protocol):
-	@abstractmethod
-	async def get_address_by_zipcode(
-		self: Self, zipcode: PositiveInt
-	) -> DictResponse:
-		"""Get address by zipcode."""
+def get_password_hash(password: str) -> str:
+	"""
+	Get a password hash.
+
+	Args:
+			password (str): Clear password.
+
+	Returns:
+			str: Hashed password.
+
+	"""
+	return pwd_context.hash(password)
+
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+	"""
+	Verify password.
+
+	Args:
+			plain_password (str): Clear password.
+			hashed_password (str): Hashed password.
+
+	Returns:
+			bool: True if the passwords match, False if the passwords are not the same.
+
+	"""
+	return pwd_context.verify(plain_password, hashed_password)

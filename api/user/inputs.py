@@ -16,18 +16,21 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from abc import abstractmethod
-from typing import Protocol, Self, runtime_checkable
+from strawberry import auto
+from strawberry.experimental.pydantic import input as pydantic_input
 
-from pydantic import PositiveInt
-
-from api.address.types import DictResponse
+from database.models.user import User, UserLogin
 
 
-@runtime_checkable
-class Plugin(Protocol):
-	@abstractmethod
-	async def get_address_by_zipcode(
-		self: Self, zipcode: PositiveInt
-	) -> DictResponse:
-		"""Get address by zipcode."""
+@pydantic_input(User)
+class UserRegisterInput:
+	email: auto
+	username: auto
+	password: auto
+
+
+@pydantic_input(UserLogin)
+class LoginInput:
+	email: auto
+	username: auto
+	password: auto

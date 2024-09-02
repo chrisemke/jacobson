@@ -19,9 +19,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from datetime import datetime
 from enum import StrEnum
 from typing import TypedDict
-from uuid import UUID, uuid4
+from uuid import uuid4
 
-from pydantic import PositiveInt
+from pydantic import UUID4, PositiveInt
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import (
 	Field,
@@ -93,7 +93,10 @@ class StateAcronymName(StrEnum):
 
 
 class StateBase(SQLModel):
-	acronym: StateAcronym = Field(unique=True)
+	acronym: StateAcronym = Field(
+		unique=True,
+		index=True,
+	)
 	name: str | None
 
 
@@ -104,11 +107,14 @@ class StateCreate(StateBase):
 class State(StateCreate, table=True):
 	__tablename__ = 'states'
 
-	id: UUID | None = Field(default_factory=uuid4, primary_key=True)
+	id: UUID4 | None = Field(default_factory=uuid4, primary_key=True)
 
 
 class CityBase(SQLModel):
-	ibge: PositiveInt = Field(unique=True)
+	ibge: PositiveInt = Field(
+		unique=True,
+		index=True,
+	)
 	name: str | None
 	ddd: int | None = None
 
@@ -120,7 +126,7 @@ class CityCreate(CityBase):
 class City(CityCreate, table=True):
 	__tablename__ = 'cities'
 
-	id: UUID | None = Field(default_factory=uuid4, primary_key=True)
+	id: UUID4 | None = Field(default_factory=uuid4, primary_key=True)
 
 
 class Coordinates(TypedDict):
@@ -139,14 +145,14 @@ class AddressBase(SQLModel):
 class Address(AddressBase, table=True):
 	__tablename__ = 'addresses'
 
-	id: UUID = Field(default_factory=uuid4, primary_key=True)
+	id: UUID4 = Field(default_factory=uuid4, primary_key=True)
 
-	zipcode: int = Field(unique=True, gt=1_000_000, lt=99_999_999)
+	zipcode: int = Field(unique=True, index=True, gt=1_000_000, lt=99_999_999)
 
-	state_id: UUID = Field(foreign_key='states.id')
+	state_id: UUID4 = Field(foreign_key='states.id')
 	state: State = Relationship(sa_relationship_kwargs={'lazy': 'selectin'})
 
-	city_id: UUID = Field(foreign_key='cities.id')
+	city_id: UUID4 = Field(foreign_key='cities.id')
 	city: City = Relationship(sa_relationship_kwargs={'lazy': 'selectin'})
 
 	neighborhood: str

@@ -21,7 +21,7 @@ from typing import Self, TypedDict
 from httpx import AsyncClient
 from pydantic import PositiveInt
 
-from api.address.graphql_types import DictResponse
+from api.address.types import DictResponse
 from database.models.brazil import (
 	Address,
 	City,

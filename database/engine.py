@@ -17,7 +17,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from collections.abc import AsyncGenerator
+from typing import Annotated
 
+from fastapi import Depends
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel.ext.asyncio.session import AsyncSession
 
@@ -39,3 +41,6 @@ async def get_session() -> (
 	"""Create and yield database async session."""
 	async with AsyncSession(engine) as session:
 		yield session
+
+
+T_AsyncSession = Annotated[AsyncSession, Depends(get_session)]

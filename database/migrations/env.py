@@ -26,6 +26,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from sqlmodel import SQLModel
 
 from database.models.brazil import Address, City, State  # noqa: F401
+from database.models.user import User  # noqa: F401
 from utils.settings import settings
 
 # this is the Alembic Config object, which provides

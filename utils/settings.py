@@ -43,6 +43,12 @@ class Settings(BaseSettings):
 	DATABASE_PORT: PositiveInt = 5432
 	DATABASE_NAME: str
 
+	JWT_SECRET_KEY: str
+	JWT_ALGORITHM: str = 'HS256'
+	ACCESS_TOKEN_EXPIRE_MINUTES: PositiveInt = 30
+
+	TIME_ZONE: str = 'UTC'
+
 	CEP_ABERTO_TOKEN: str | None = None
 
 	@computed_field  # type: ignore[prop-decorator]

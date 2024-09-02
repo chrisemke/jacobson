@@ -16,28 +16,38 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from typing import Annotated, Self
+from http import HTTPStatus
+from typing import Self
 
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from pydantic import PositiveInt
-from sqlmodel.ext.asyncio.session import AsyncSession
-from strawberry import Info, Schema, field, type
-from strawberry.fastapi import BaseContext, GraphQLRouter
+from strawberry import Info, Schema, field, mutation, type
+from strawberry.fastapi import GraphQLRouter
 
-from api.address.graphql_inputs import AddressFilterInput, AddressInsertInput
-from api.address.graphql_types import AddressType
-from api.resolvers import get_address, insert_address
-from database import functions
-from database.engine import get_session
+from api.address.inputs import AddressFilterInput, AddressInsertInput
+from api.address.types import AddressType
+from api.auth import AuthExtension
+from api.context import Context
+from api.resolvers import (
+	authenticate_user,
+	create_user,
+	get_address,
+	insert_address,
+	insert_address_background,
+	refresh_token_by_id,
+)
+from api.security import verify_password
+from api.user.inputs import LoginInput, UserRegisterInput
+from api.user.types import LoginType
 from utils.settings import settings
 
 
 @type
 class Query:
-	@field
+	@field(extensions=[AuthExtension])  # type: ignore[misc]
 	async def all_address(
 		self: Self,
-		info: Info,
+		info: Info[Context],
 		filter: AddressFilterInput,
 		page_size: PositiveInt = 10,
 		page_number: PositiveInt = 1,
@@ -64,9 +74,8 @@ class Query:
 		)
 		if result['provider'] != 'local' and result['data']:
 			info.context.background_tasks.add_task(
-				functions.insert_address, info.context.session, result['data'][0]
+				insert_address_background, info.context.session, result['data'][0]
 			)
-			# insert log
 
 		return list(
 			map(
@@ -78,15 +87,15 @@ class Query:
 
 @type
 class Mutation:
-	@field
+	@mutation(extensions=[AuthExtension])  # type: ignore[misc]
 	async def create_address(
-		self: Self, info: Info, address: AddressInsertInput
+		self: Self, info: Info[Context], address: AddressInsertInput
 	) -> AddressType:
 		"""
 		Insert address and city if not exists on database.
 
 		Args:
-				info (Info): Strawberry default value to get context information
+				info (Info[Context]): Strawberry default value to get context information
 						in this case we use 'db'
 				address (AddressInsertInput): Strict address class,
 						almost all fields need to be passed
@@ -99,27 +108,75 @@ class Mutation:
 			await insert_address(info.context.session, address)
 		)
 
+	@mutation(extensions=[AuthExtension])  # type: ignore[misc]
+	async def refresh_token(self: Self, info: Info[Context]) -> str | None:
+		"""
+		Refresh jwt token.
 
-class CustomContext(BaseContext):
-	def __init__(self: Self, session: AsyncSession):
-		"""Generate context database session."""
-		self.session = session
+		Args:
+				self (Self): Scope of current class
+				info (Info[Context]): Custom context, contains current user
 
+		Returns:
+				str: jwt token
 
-async def get_context(
-	session: Annotated[AsyncSession, Depends(get_session)],
-) -> CustomContext:
-	"""
-	Create database session to use when needed.
+		"""
+		if user := await info.context.user():
+			return await refresh_token_by_id(str(user.id))
+		return None
 
-	Args:
-			session (Annotated[AsyncSession, Depends): get db session from get_session
+	@mutation
+	async def login(
+		self: Self, info: Info[Context], login_data: LoginInput
+	) -> LoginType:
+		"""
+		Authenticate user.
 
-	Returns:
-			CustomContext: class that contains db session
+		Args:
+				self (Self): Scope of current class
+				info (Info[Context]): Custom context, contains db session
+				login_data (LoginInput): Username | Email and password
 
-	"""
-	return CustomContext(session)
+		Returns:
+				LoginType: Authenticated Login
+
+		"""
+		user = await authenticate_user(
+			info.context.session, login_data.to_pydantic()
+		)
+		if not user or not verify_password(login_data.password, user.password):
+			response = info.context.response
+
+			response.status_code = HTTPStatus.UNAUTHORIZED
+			response.headers['WWW-Authenticate'] = 'Bearer'
+			raise HTTPException(
+				status_code=HTTPStatus.UNAUTHORIZED,
+				detail='Could not validate credentials',
+				headers={'WWW-Authenticate': 'Bearer'},
+			)
+
+		return LoginType.from_pydantic(user)
+
+	@mutation
+	async def register(
+		self: Self, info: Info[Context], register_data: UserRegisterInput
+	) -> LoginType:
+		"""
+		Register user on database.
+
+		Args:
+				info (Info[Context]): Scope of current class
+				register_data (UserRegisterInput): User data
+
+		Returns:
+				bool: True if succeed
+
+		"""
+		return LoginType.from_pydantic(
+			await create_user(
+				info.context.session, info.context.response, register_data
+			)
+		)
 
 
 schema = Schema(query=Query, mutation=Mutation)
@@ -127,6 +184,6 @@ schema = Schema(query=Query, mutation=Mutation)
 """Create Graphql Router for fastapi and start graphql ide if env is DEV."""
 graphql_app = GraphQLRouter[object, object](
 	schema,
-	context_getter=get_context,
+	context_getter=lambda context=Depends(Context): context,
 	graphql_ide='graphiql' if settings.DEV else None,
 )

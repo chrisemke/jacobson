@@ -40,7 +40,7 @@ depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
-	"""Create State, City and Address tables based on sqlmodel metadata."""
+	"""Create State, City and Address tables."""
 	op.create_table(
 		'cities',
 		sa.Column('id', sa.Uuid(), nullable=False),
@@ -48,8 +48,8 @@ def upgrade() -> None:
 		sa.Column('name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
 		sa.Column('ddd', sa.Integer(), nullable=True),
 		sa.PrimaryKeyConstraint('id'),
-		sa.UniqueConstraint('ibge'),
 	)
+	op.create_index(op.f('ix_cities_ibge'), 'cities', ['ibge'], unique=True)
 	op.create_table(
 		'states',
 		sa.Column('id', sa.Uuid(), nullable=False),
@@ -89,8 +89,8 @@ def upgrade() -> None:
 		),
 		sa.Column('name', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
 		sa.PrimaryKeyConstraint('id'),
-		sa.UniqueConstraint('acronym'),
 	)
+	op.create_index(op.f('ix_states_acronym'), 'states', ['acronym'], unique=True)
 	op.create_table(
 		'addresses',
 		sa.Column('id', sa.Uuid(), nullable=False),
@@ -116,12 +116,17 @@ def upgrade() -> None:
 			['states.id'],
 		),
 		sa.PrimaryKeyConstraint('id'),
-		sa.UniqueConstraint('zipcode'),
+	)
+	op.create_index(
+		op.f('ix_addresses_zipcode'), 'addresses', ['zipcode'], unique=True
 	)
 
 
 def downgrade() -> None:
 	"""Drop address, state and city tables."""
+	op.drop_index(op.f('ix_addresses_zipcode'), table_name='addresses')
+	op.drop_index(op.f('ix_states_acronym'), table_name='states')
+	op.drop_index(op.f('ix_cities_ibge'), table_name='cities')
 	op.drop_table('addresses')
 	op.drop_table('states')
 	op.drop_table('cities')

@@ -18,10 +18,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import Self, TypedDict
 
-from httpx import AsyncClient
+from httpx import AsyncClient, HTTPStatusError
 from pydantic import PositiveInt
 
-from api.address.graphql_types import DictResponse
+from api.address.types import DictResponse
 from database.models.brazil import (
 	Address,
 	City,
@@ -70,9 +70,12 @@ class ViaCep(Plugin):
 		async with AsyncClient() as client:
 			request = await client.get(f'https://viacep.com.br/ws/{zipcode:08}/json/')
 		request.raise_for_status()
+		request_json = request.json()
+		if request_json.get('erro'):
+			raise HTTPStatusError('Zipcode not found')
 
 		return {
-			'data': [await self._request_to_database_model(request.json())],
+			'data': [await self._request_to_database_model(request_json)],
 			'provider': 'viacep',
 		}
 

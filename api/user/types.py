@@ -16,18 +16,31 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from abc import abstractmethod
-from typing import Protocol, Self, runtime_checkable
+from typing import Self
 
-from pydantic import PositiveInt
+from strawberry import auto, field
+from strawberry.experimental.pydantic import type as pydantic_type
 
-from api.address.types import DictResponse
+from api.jwt.jwt_manager import create_access_token
+from database.models.user import User
 
 
-@runtime_checkable
-class Plugin(Protocol):
-	@abstractmethod
-	async def get_address_by_zipcode(
-		self: Self, zipcode: PositiveInt
-	) -> DictResponse:
-		"""Get address by zipcode."""
+@pydantic_type(User)
+class LoginType:
+	id: auto
+	email: auto
+	username: auto
+
+	@field
+	def jwt(self: Self) -> str:
+		"""
+		Generate jwt token based on current id.
+
+		Args:
+				self (Self): Scope of current class
+
+		Returns:
+				str: Jwt token
+
+		"""
+		return create_access_token({'sub': str(self.id)})

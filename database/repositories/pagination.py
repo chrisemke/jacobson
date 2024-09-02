@@ -16,18 +16,23 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from abc import abstractmethod
-from typing import Protocol, Self, runtime_checkable
-
 from pydantic import PositiveInt
 
-from api.address.types import DictResponse
 
+def page_to_offset(
+	page_size: PositiveInt, page_number: PositiveInt
+) -> PositiveInt:
+	"""
+	Calculate the database offset based on page size and number.
 
-@runtime_checkable
-class Plugin(Protocol):
-	@abstractmethod
-	async def get_address_by_zipcode(
-		self: Self, zipcode: PositiveInt
-	) -> DictResponse:
-		"""Get address by zipcode."""
+	Args:
+			page_size (PositiveInt): How many elements in each page
+			page_number (PositiveInt): Number of the page
+
+	Returns:
+			PositiveInt: The database offset
+
+	"""
+	if page_number <= 1:
+		return 0
+	return page_size * (page_number - 1)
