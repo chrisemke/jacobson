@@ -26,7 +26,19 @@ from fastapi.templating import Jinja2Templates
 from api.schema import graphql_app
 from utils.settings import settings
 
-app = FastAPI()
+app = FastAPI(
+	title='Jacobson',
+	description='Self hosted zipcode API',
+	version='0.3.0',
+	docs_url='/docs' if settings.DEV else None,
+	redoc_url='/redoc' if settings.DEV else None,
+	license_info={
+		'name': 'GNU Affero General Public License v3.0 or later',
+		'identifier': 'AGPL-3.0-or-later',
+		'url': 'https://spdx.org/licenses/AGPL-3.0-or-later.html',
+	},
+)
+
 app.include_router(graphql_app, prefix='/graphql')
 
 if settings.DEV:
