@@ -50,10 +50,12 @@ call to tell the api to update some register from plugins that are configured
 - [x] Re-enable Coordinates on database and api's (only cep_aberto available)
 
 ## TODO (Needed for v0.3)
-- [ ] Add log support (loguru? or OpenTelemetry?)
+- [x] Auth (pyjwt+pwdlib)
+- [x] Start Repository architecture on database
+- [ ] Add log support (logfire? loguru? OpenTelemetry?)
 - [ ] Custom exceptions
-- [ ] Auth (pyjwt+pwdlib)
 - [ ] More test (unit and integration)
+- [ ] Healthcheck API
 
 ## TODO (Needed until v1.0)
 - [ ] Populate the database with zip codes and cities
@@ -65,13 +67,15 @@ call to tell the api to update some register from plugins that are configured
 - [ ] freeze versions on docker and pyproject
 - [ ] Better structure for services (plugin-like)
 - [ ] Send 'total' information on api requests for pagination
+- [ ] Authentication based on keycloak sso (OpenID Connect)
 
 ### TODO (nice to have)
 - [ ] add option to seed all cities (or chosen list)
 - [ ] add option to seed all zip codes (or chosen list)
 - [ ] add graphql schema generator on git hooks
-- [ ] move from docker-compose to a podman pod
-- [ ] study mypyc viability
+- [ ] move from podman-compose to podman kube
+- [ ] study the feasibility of scylladb (db, migrations and)
+- [ ] study the feasibility of mypyc
 - [ ] jacobson logo
 
 # DEV
@@ -85,7 +89,39 @@ to run podman as expected, you will need the packages "podman", "podman-compose"
 podman compose up -d --build
 ```
 
+or alternatively, if you already have poetry installed you can run the following commands:
+```bash
+poetry shell # Create/Enter poetry virtual env
+poetry install # Install all dependencies (needed to run task)
+task up # Decame podman command
+```
+
+Available tasks (shown with the ``task -l`` command):
+```bash
+build            Build containers
+up               Run containers
+down             Turn off containers
+logs             Show api container logs
+restart          Restart running containers
+docs_serve       Serve mkdocs watch all files
+pre_docs_deploy  Build mkdocs
+docs_deploy      Deploy mkdocs on branch pages
+hooks            Run htoolooks on all files
+autoupdate_hooks Auto update git hooks
+post_test        Generate coverage html
+test             Run all tests in current directory
+```
+look at the end of the pyproject.toml file to see literally what the tasks do
+
 You can access the api at localhost port 8000 /graphql
 ```
-http://127.0.0.1:8000/graphql
+http://localhost:8000/graphql
 ```
+
+If you are in dev mode you can access:
+* mkdocs at ``/``
+* Redoc at ``/redoc``
+* Swagger at ``/docs``
+* Graphiql ide at ``/graphql``
+
+Note: Graphiql ide only exists in dev mode
