@@ -16,6 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from typing import Self
 from urllib.parse import quote_plus
 
 from pydantic import (
@@ -53,7 +54,7 @@ class Settings(BaseSettings):
 
 	@computed_field  # type: ignore[prop-decorator]
 	@property
-	def DATABASE_URL(self) -> str:
+	def DATABASE_URL(self: Self) -> str:
 		"""Generate and validate database url based on other fields."""
 		url = (
 			'postgresql+psycopg://'
