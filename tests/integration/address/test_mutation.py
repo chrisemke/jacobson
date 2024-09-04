@@ -27,7 +27,7 @@ from tests.integration.factories import AddressFactory
 
 class TestMutation:
 	async def test_create_address_success(
-		self: Self, client: AsyncClient, city: City
+		self: Self, client: AsyncClient, city: City, token: str
 	):
 		address = AddressFactory()
 		state = address.state.model_dump()
@@ -44,7 +44,7 @@ class TestMutation:
 		address['city'] = city
 
 		mutation = """
-			mutation TestMutation($address: AddressInsertInput!) {
+			mutation TestCreateAddress($address: AddressInsertInput!) {
 				createAddress(address: $address) {
 					city {
 						name
@@ -69,9 +69,10 @@ class TestMutation:
 			json={
 				'query': mutation,
 				'variables': variables,
-				'operationName': 'TestMutation',
+				'operationName': 'TestCreateAddress',
 			},
+			headers={'Authorization': token},
 		)
 
-		assert response.status_code == HTTPStatus.OK
 		assert response.json() == {'data': {'createAddress': address}}
+		assert response.status_code == HTTPStatus.OK

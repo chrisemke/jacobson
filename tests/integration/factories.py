@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from factory import Factory, Faker, LazyAttribute
+from factory import Factory, Faker, LazyAttribute, Sequence, DictFactory
 from factory.fuzzy import FuzzyChoice
 
 from database.models.brazil import (
@@ -26,6 +26,8 @@ from database.models.brazil import (
 	StateAcronym,
 	StateAcronymName,
 )
+from database.models.user import User
+from pydantic import ConfigDict
 
 
 class StateFactory(Factory):
@@ -54,3 +56,14 @@ class AddressFactory(Factory):
 	city = CityFactory()
 	neighborhood = Faker('address')
 	complement = Faker('address')
+
+
+class UserFactory(DictFactory):
+	class Meta:
+		model = User
+
+	model_config = ConfigDict(extra='allow')
+
+	email = LazyAttribute(lambda obj: f'{obj.username}@test.com')
+	username = Sequence(lambda n: f'test{n}')
+	password = LazyAttribute(lambda obj: f'{obj.username}@password123')

@@ -26,7 +26,7 @@ from database.models.brazil import Address
 
 class TestQuery:
 	async def test_all_address_get_from_db(
-		self: Self, client: AsyncClient, address: Address
+		self: Self, client: AsyncClient, address: Address, token: str
 	):
 		state = address.state.model_dump()
 		state.pop('id')
@@ -67,11 +67,12 @@ class TestQuery:
 		response = await client.post(
 			'/graphql',
 			json={'query': query, 'variables': variables, 'operationName': 'TestQuery'},
+			headers={'Authorization': token},
 		)
 
-		assert response.status_code == HTTPStatus.OK
 		assert response.json() == {
 			'data': {
 				'allAddress': [address],
 			},
 		}
+		assert response.status_code == HTTPStatus.OK

@@ -20,6 +20,7 @@ from collections.abc import AsyncGenerator
 from uuid import uuid4
 
 import pytest
+from faker.generator import Generator
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 from sqlmodel import SQLModel, select
@@ -27,21 +28,29 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from testcontainers.postgres import PostgresContainer
 
 from api.app import app
+from api.security import get_password_hash
 from database.engine import get_session
 from database.models.brazil import State
-from tests.integration.factories import AddressFactory, CityFactory
+from database.models.user import User
+from tests.integration.factories import (
+	AddressFactory,
+	CityFactory,
+	UserFactory,
+)
 
 
 @pytest.fixture(scope='session')
 async def engine() -> AsyncGenerator[AsyncEngine, None]:
+	"""Database engine."""
 	with PostgresContainer(
 		'docker.io/library/postgres:16-alpine', driver='psycopg'
 	) as postgres:
 		yield create_async_engine(postgres.get_connection_url(), echo=True)
 
 
-@pytest.fixture()
+@pytest.fixture
 async def session(engine: AsyncEngine) -> AsyncGenerator[AsyncSession, None]:
+	"""Database session."""
 	async with engine.begin() as trans:
 		await trans.run_sync(SQLModel.metadata.create_all)
 
@@ -56,6 +65,7 @@ async def session(engine: AsyncEngine) -> AsyncGenerator[AsyncSession, None]:
 
 @pytest.fixture(autouse=True)
 async def state_data_seed(session):
+	"""Insert all states on first run."""
 	result = await session.exec(select(State).limit(1))
 	if not result.one_or_none():
 		states = [
@@ -90,8 +100,9 @@ async def state_data_seed(session):
 		await session.run_sync(lambda ses: ses.bulk_insert_mappings(State, states))
 
 
-@pytest.fixture()
+@pytest.fixture
 async def client(session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
+	"""Test client."""
 	app.dependency_overrides[get_session] = lambda: session
 
 	async with AsyncClient(app=app, base_url='http://dummy') as test_client:
@@ -100,8 +111,9 @@ async def client(session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
 	app.dependency_overrides.clear()
 
 
-@pytest.fixture()
+@pytest.fixture
 async def address(session: AsyncSession):
+	"""Test address."""
 	address = AddressFactory()
 
 	state_query = select(State).where(
@@ -118,11 +130,56 @@ async def address(session: AsyncSession):
 	return address
 
 
-@pytest.fixture()
+@pytest.fixture
 async def city(session: AsyncSession):
+	"""Test city."""
 	city = CityFactory()
 
 	session.add(city)
 	await session.commit()
 
 	return city
+
+
+@pytest.fixture
+async def user(faker: Generator, session: AsyncSession) -> User:
+	"""Test user."""
+	password = faker.password()
+	user = UserFactory(password=get_password_hash(password))
+
+	session.add(user)
+	await session.commit()
+	await session.refresh(user)
+
+	user.__dict__['clean_password'] = password
+
+	return user
+
+
+@pytest.fixture
+async def token(client: AsyncClient, user: User) -> str:
+	"""JWT valid token."""
+	mutation = """
+		mutation LoginToJWT($email: String, $password: String!) {
+			login(loginData: {password: $password, email: $email}) {
+				email
+				id
+				jwt
+				username
+			}
+		}
+	"""
+
+	variables = {
+		'email': user.email,
+		'password': user.clean_password,
+	}
+	response = await client.post(
+		'/graphql',
+		json={
+			'query': mutation,
+			'variables': variables,
+			'operationName': 'LoginToJWT',
+		},
+	)
+	return response.json()['data']['login']['jwt']

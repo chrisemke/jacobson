@@ -24,12 +24,16 @@ from utils.settings import Settings
 class TestSettings:
 	def test_all_settings(self: Self, monkeypatch):
 		expected = {
-			'DEV': '1',
+			'DEV': 1,
 			'DATABASE_USER': 'teste',
 			'DATABASE_PASSWORD': 'teste',
 			'DATABASE_HOST': 'jacobson_db_1',
-			'DATABASE_PORT': '5432',
+			'DATABASE_PORT': 5432,
 			'DATABASE_NAME': 'test',
+			'JWT_SECRET_KEY': 'your-secret-key',
+			'JWT_ALGORITHM': 'HS256',
+			'ACCESS_TOKEN_EXPIRE_MINUTES': 30,
+			'TIME_ZONE': 'UTC',
 			'CEP_ABERTO_TOKEN': 'token',
 			'DATABASE_URL': 'postgresql+psycopg://teste:teste@jacobson_db_1:5432/test',
 		}

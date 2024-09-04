@@ -18,7 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import Self
 
-from api.address.graphql_types import AddressType, CityType, StateType
+from api.address.types import AddressType, CityType, StateType
 from database.models.brazil import StateAcronym
 
 
