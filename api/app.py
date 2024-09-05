@@ -30,8 +30,7 @@ app = FastAPI(
 	title='Jacobson',
 	description='Self hosted zipcode API',
 	version='0.3.0',
-	docs_url='/docs' if settings.DEV else None,
-	redoc_url='/redoc' if settings.DEV else None,
+	openapi_url='/openapi.json' if settings.DEV else None,
 	license_info={
 		'name': 'GNU Affero General Public License v3.0 or later',
 		'identifier': 'AGPL-3.0-or-later',
