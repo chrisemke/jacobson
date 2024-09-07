@@ -38,7 +38,6 @@ class BrazilRepository:
 		Query addresses by the strawberry dataclass.
 
 		Args:
-				self (Self): scope of current class
 				session (AsyncSession): get the session of database from get_session
 				filter (AddressFilterInput): Strawberry input dataclass,
 						everything can be None (based on sqlmodel model)
@@ -85,7 +84,6 @@ class BrazilRepository:
 		Create address by the strawberry dataclass.
 
 		Args:
-				self (Self): scope of current class
 				session (AsyncSession): get the session of database from get_session
 				address (AddressInsertInput): Strawberry input dataclass,
 						strict (based on sqlmodel model)
@@ -127,7 +125,6 @@ class BrazilRepository:
 		Insert addresses and city if not exists in background.
 
 		Args:
-				self (Self): scope of current class
 				session (AsyncSession): the session of database from get_session
 				address (Address): Address instance based on database models
 

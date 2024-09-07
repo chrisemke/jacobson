@@ -28,18 +28,31 @@ nav:
     - readme: "README.md"
     - changelog: "changelog.md"
   - Api:
+    - address:
+      - inputs: "api/address/inputs.md"
+      - types: "api/address/types.md"
+    - jwt:
+      - jwt_manager: "api/jwt/jwt_manager.md"
+      - jwt_type: "api/jwt/jwt_type.md"
+    - user:
+      - inputs: "api/user/inputs.md"
+      - types: "api/user/types.md"
     - app: "api/app.md"
+    - auth: "api/auth.md"
+    - context: "api/context.md"
     - resolvers: "api/resolvers.md"
     - schema: "api/schema.md"
-    - address:
-      - inputs: "api/address/graphql_inputs.md"
-      - types: "api/address/graphql_types.md"
+    - security: "api/security.md"
   - Database:
+    - migrations: "database/migrations.md"
     - models:
       - brazil: "database/models/brazil.md"
-    - migrations: "database/migrations.md"
+      - user: "database/models/user.md"
+    - repositories:
+      - brazil: "database/repositories/brazil.md"
+      - pagination: "database/repositories/pagination.md"
+      - user: "database/repositories/user.md"
     - engine: "database/engine.md"
-    - functions: "database/functions.md"
   - Containers: "containers.md"
   - Plugins:
     - cep_aberto:

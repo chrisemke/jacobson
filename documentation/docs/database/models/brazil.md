@@ -1,6 +1,6 @@
 <!--
 Jacobson is a self hosted zipcode API
-Copyright (C) 2023-2024  Christian G. Semke.
+Copyright (C) 2023-2024 Christian G. Semke.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -31,6 +31,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ::: database.models.brazil.CityCreate
 
 ::: database.models.brazil.City
+
+::: database.models.brazil.Coordinates
 
 ::: database.models.brazil.AddressBase
 

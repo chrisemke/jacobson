@@ -1,6 +1,6 @@
 <!--
 Jacobson is a self hosted zipcode API
-Copyright (C) 2023-2024  Christian G. Semke.
+Copyright (C) 2023-2024 Christian G. Semke.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -16,12 +16,4 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-::: api.address.graphql_inputs.StateInput
-
-::: api.address.graphql_inputs.CityInput
-
-::: api.address.graphql_inputs.CoordinatesInput
-
-::: api.address.graphql_inputs.AddressFilterInput
-
-::: api.address.graphql_inputs.AddressInsertInput
+::: api.jwt.jwt_type.JWTClaim

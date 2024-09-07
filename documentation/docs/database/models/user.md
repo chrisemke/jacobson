@@ -1,6 +1,6 @@
 <!--
 Jacobson is a self hosted zipcode API
-Copyright (C) 2023-2024  Christian G. Semke.
+Copyright (C) 2023-2024 Christian G. Semke.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -16,10 +16,8 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-::: database.functions.page_to_offset
+::: database.models.user.UserBase
 
-::: database.functions.get_address_by_dc_join_state_join_city
+::: database.models.user.UserLogin
 
-::: database.functions.insert_address_by_dc
-
-::: database.functions.insert_address
+::: database.models.user.User
