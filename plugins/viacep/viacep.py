@@ -67,7 +67,7 @@ class ViaCep(Plugin):
 						provider key have 'viacep' str
 
 		"""
-		async with AsyncClient() as client:
+		async with AsyncClient(http2=True) as client:
 			request = await client.get(f'https://viacep.com.br/ws/{zipcode:08}/json/')
 		request.raise_for_status()
 		request_json = request.json()

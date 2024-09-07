@@ -106,7 +106,7 @@ class CepAberto(Plugin):
 		"""
 		url = f'https://www.cepaberto.com/api/v3/cep?cep={zipcode:08}'
 		headers = {'Authorization': f'Token token={self.token}'}
-		async with AsyncClient() as client:
+		async with AsyncClient(http2=True) as client:
 			request = await client.get(url, headers=headers)
 		request.raise_for_status()
 
