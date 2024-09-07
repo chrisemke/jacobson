@@ -58,6 +58,7 @@ call to tell the api to update some register from plugins that are configured
 - [ ] Healthcheck API
 
 ## TODO (Needed until v1.0)
+- [ ] Fix every raise on graphql, it should be None or GraphqlError !!!!!!!!
 - [ ] Populate the database with zip codes and cities
 - [ ] Automate migrations tests?
 - [ ] separate tests into groups to be run selectively
