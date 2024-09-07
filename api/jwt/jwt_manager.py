@@ -20,8 +20,8 @@ from datetime import datetime, timedelta
 from http import HTTPStatus
 from zoneinfo import ZoneInfo
 
-import jwt
 from fastapi import HTTPException
+from jwt import decode, encode
 from jwt.exceptions import DecodeError, ExpiredSignatureError
 from sqlmodel.ext.asyncio.session import AsyncSession
 
@@ -56,7 +56,7 @@ async def get_current_user(
 	)
 
 	try:
-		payload = jwt.decode(
+		payload = decode(
 			token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM]
 		)
 
@@ -92,7 +92,7 @@ def create_access_token(data: JWTClaim) -> str:
 	)
 	to_encode |= {'exp': expire}
 
-	return jwt.encode(
+	return encode(
 		to_encode,  # type: ignore[arg-type]
 		settings.JWT_SECRET_KEY,
 		algorithm=settings.JWT_ALGORITHM,
