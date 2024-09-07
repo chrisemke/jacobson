@@ -39,7 +39,7 @@ async def get_session() -> (
 	AsyncGenerator[AsyncSession, None]
 ):  # pragma: no cover
 	"""Create and yield database async session."""
-	async with AsyncSession(engine) as session:
+	async with AsyncSession(engine, expire_on_commit=False) as session:
 		yield session
 
 
