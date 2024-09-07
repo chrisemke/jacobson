@@ -105,7 +105,9 @@ async def client(session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
 	"""Test client."""
 	app.dependency_overrides[get_session] = lambda: session
 
-	async with AsyncClient(app=app, base_url='http://dummy') as test_client:
+	async with AsyncClient(
+		app=app, base_url='http://dummy', http2=True
+	) as test_client:
 		yield test_client
 
 	app.dependency_overrides.clear()
@@ -162,10 +164,7 @@ async def token(client: AsyncClient, user: User) -> str:
 	mutation = """
 		mutation LoginToJWT($email: String, $password: String!) {
 			login(loginData: {password: $password, email: $email}) {
-				email
-				id
 				jwt
-				username
 			}
 		}
 	"""
