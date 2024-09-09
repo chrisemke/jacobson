@@ -12,7 +12,7 @@ uvicorn = {extras = ["standard"], version = "^0.30.6"}
 fastapi-slim = "^0.114.0"
 strawberry-graphql = {extras = ["fastapi"], version = "^0.239.2"}
 httpx = {extras = ["http2"], version = "^0.27.2"}
-pydantic = "^2.9.0"
+pydantic = "^2.9.1"
 alembic = "^1.13.2"
 psycopg = {extras = ["binary"], version = "^3.2.1"}
 pydantic-settings = "^2.4.0"
