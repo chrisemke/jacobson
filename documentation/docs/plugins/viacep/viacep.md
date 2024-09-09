@@ -16,10 +16,10 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-::: plugins.viacep.viacep.ViaCepAddress
+::: jacobson.plugins.viacep.viacep.ViaCepAddress
 
 
-::: plugins.viacep.viacep.ViaCep
+::: jacobson.plugins.viacep.viacep.ViaCep
 	options:
 		members:
 			- get_address_by_zipcode

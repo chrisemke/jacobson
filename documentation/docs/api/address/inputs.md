@@ -16,12 +16,12 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-::: api.address.inputs.StateInput
+::: jacobson.api.address.inputs.StateInput
 
-::: api.address.inputs.CityInput
+::: jacobson.api.address.inputs.CityInput
 
-::: api.address.inputs.CoordinatesInput
+::: jacobson.api.address.inputs.CoordinatesInput
 
-::: api.address.inputs.AddressFilterInput
+::: jacobson.api.address.inputs.AddressFilterInput
 
-::: api.address.inputs.AddressInsertInput
+::: jacobson.api.address.inputs.AddressInsertInput

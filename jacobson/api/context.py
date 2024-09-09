@@ -24,9 +24,9 @@ from starlette.responses import Response
 from starlette.websockets import WebSocket
 from strawberry.fastapi import BaseContext
 
-from api.jwt.jwt_manager import get_current_user
-from database.engine import T_AsyncSession
-from database.models.user import User
+from jacobson.api.jwt.jwt_manager import get_current_user
+from jacobson.database.engine import T_AsyncSession
+from jacobson.database.models.user import User
 
 
 class Context(BaseContext):

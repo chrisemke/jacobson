@@ -23,8 +23,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from api.schema import graphql_app
-from utils.settings import settings
+from jacobson.api.schema import graphql_app
+from jacobson.utils.settings import settings
 
 app = FastAPI(
 	title='Jacobson',

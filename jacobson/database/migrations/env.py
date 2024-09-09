@@ -25,9 +25,9 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from sqlmodel import SQLModel
 
-from database.models.brazil import Address, City, State  # noqa: F401
-from database.models.user import User  # noqa: F401
-from utils.settings import settings
+from jacobson.database.models.brazil import Address, City, State  # noqa: F401
+from jacobson.database.models.user import User  # noqa: F401
+from jacobson.utils.settings import settings
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

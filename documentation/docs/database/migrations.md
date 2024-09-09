@@ -27,11 +27,11 @@ down_revision
 branch_labels
 depends_on
 
-::: database.migrations.versions.e5e1bdc106c3_create_state_city_and_address_tables.upgrade
+::: jacobson.database.migrations.versions.e5e1bdc106c3_create_state_city_and_address_tables.upgrade
 
-::: database.migrations.versions.e5e1bdc106c3_create_state_city_and_address_tables.downgrade
+::: jacobson.database.migrations.versions.e5e1bdc106c3_create_state_city_and_address_tables.downgrade
 
 
-::: database.migrations.versions.16486dde779e_data_seed_populate_state.upgrade
+::: jacobson.database.migrations.versions.16486dde779e_data_seed_populate_state.upgrade
 
-::: database.migrations.versions.16486dde779e_data_seed_populate_state.downgrade
+::: jacobson.database.migrations.versions.16486dde779e_data_seed_populate_state.downgrade

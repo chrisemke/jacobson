@@ -16,10 +16,10 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-::: api.address.types.StateType
+::: jacobson.api.address.types.StateType
 
-::: api.address.types.CityType
+::: jacobson.api.address.types.CityType
 
-::: api.address.types.AddressType
+::: jacobson.api.address.types.AddressType
 
-::: api.address.types.DictResponse
+::: jacobson.api.address.types.DictResponse

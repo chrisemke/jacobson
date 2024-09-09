@@ -24,11 +24,11 @@ from pydantic import PositiveInt
 from strawberry import Info, Schema, field, mutation, type
 from strawberry.fastapi import GraphQLRouter
 
-from api.address.inputs import AddressFilterInput, AddressInsertInput
-from api.address.types import AddressType
-from api.auth import AuthExtension
-from api.context import Context
-from api.resolvers import (
+from jacobson.api.address.inputs import AddressFilterInput, AddressInsertInput
+from jacobson.api.address.types import AddressType
+from jacobson.api.auth import AuthExtension
+from jacobson.api.context import Context
+from jacobson.api.resolvers import (
 	authenticate_user,
 	create_user,
 	get_address,
@@ -36,10 +36,10 @@ from api.resolvers import (
 	insert_address_background,
 	refresh_token_by_id,
 )
-from api.security import verify_password
-from api.user.inputs import LoginInput, UserRegisterInput
-from api.user.types import LoginType
-from utils.settings import settings
+from jacobson.api.security import verify_password
+from jacobson.api.user.inputs import LoginInput, UserRegisterInput
+from jacobson.api.user.types import LoginType
+from jacobson.utils.settings import settings
 
 
 @type

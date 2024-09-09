@@ -23,9 +23,9 @@ from faker import Faker
 from httpx import AsyncClient
 from jwt import decode
 
-from database.models.user import User
+from jacobson.database.models.user import User
 from tests.integration.factories import UserFactory
-from utils.settings import settings
+from jacobson.utils.settings import settings
 
 
 class TestMutation:

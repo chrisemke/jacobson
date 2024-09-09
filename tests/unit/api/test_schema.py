@@ -18,10 +18,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import ClassVar, Self
 
-from api.address.inputs import AddressFilterInput, AddressInsertInput
-from api.address.types import AddressType
-from api.schema import Mutation, Query
-from database.models.brazil import (
+from jacobson.api.address.inputs import AddressFilterInput, AddressInsertInput
+from jacobson.api.address.types import AddressType
+from jacobson.api.schema import Mutation, Query
+from jacobson.database.models.brazil import (
 	Address,
 	City,
 	CityCreate,
@@ -51,7 +51,7 @@ class TestQuery:
 			context = Session()
 
 		mocker.patch(
-			'api.schema.get_address',
+			'jacobson.api.schema.get_address',
 			return_value={'data': [address], 'provider': 'local'},
 		)
 		out = await Query().all_address(Info(), AddressFilterInput())
@@ -83,7 +83,9 @@ class TestMutation:
 		class Info:
 			context = Session()
 
-		mocker.patch('api.schema.insert_address', return_value=address.to_pydantic())
+		mocker.patch(
+			'jacobson.api.schema.insert_address', return_value=address.to_pydantic()
+		)
 		out = await Mutation().create_address(Info(), address)
 
 		assert isinstance(out, AddressType)

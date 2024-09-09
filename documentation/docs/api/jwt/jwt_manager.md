@@ -16,6 +16,6 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-::: api.jwt.jwt_manager.get_current_user
+::: jacobson.api.jwt.jwt_manager.get_current_user
 
-::: api.jwt.jwt_manager.create_access_token
+::: jacobson.api.jwt.jwt_manager.create_access_token

@@ -23,13 +23,13 @@ import pytest
 from httpx import HTTPStatusError, Response
 from respx import MockRouter
 
-from database.models.brazil import (
+from jacobson.database.models.brazil import (
 	Address,
 	City,
 	StateAcronym,
 	StateCreate,
 )
-from plugins.viacep.viacep import ViaCep
+from jacobson.plugins.viacep.viacep import ViaCep
 
 
 class TestViaCep:

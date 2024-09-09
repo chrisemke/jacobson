@@ -16,21 +16,52 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from strawberry import auto
+from strawberry import auto, input
 from strawberry.experimental.pydantic import input as pydantic_input
 
-from database.models.user import User, UserLogin
+from jacobson.database.models.brazil import (
+	Address,
+	AddressBase,
+	CityBase,
+	StateBase,
+)
 
 
-@pydantic_input(User)
-class UserRegisterInput:
-	email: auto
-	username: auto
-	password: auto
+@pydantic_input(StateBase)
+class StateInput:
+	acronym: auto
+	name: auto
 
 
-@pydantic_input(UserLogin)
-class LoginInput:
-	email: auto
-	username: auto
-	password: auto
+@pydantic_input(CityBase)
+class CityInput:
+	ibge: auto
+	name: auto
+	ddd: auto
+
+
+@input
+class CoordinatesInput:
+	latitude: float
+	longitude: float
+	altitude: float | None = None
+
+
+@pydantic_input(AddressBase)
+class AddressFilterInput:
+	zipcode: auto
+	city: CityInput | None = None
+	state: StateInput | None = None
+	neighborhood: auto
+	complement: auto
+	coordinates: CoordinatesInput | None = None
+
+
+@pydantic_input(Address)
+class AddressInsertInput:
+	zipcode: auto
+	state: StateInput
+	city: CityInput
+	neighborhood: auto
+	complement: auto
+	coordinates: CoordinatesInput | None = None

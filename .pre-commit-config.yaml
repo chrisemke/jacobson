@@ -52,7 +52,7 @@ repos:
         exclude: |
           (?x)(
               ^build/|
-              ^docker/
+              ^containers/
           )
       - id: ruff
         name: Run Ruff Linter
@@ -60,7 +60,7 @@ repos:
         exclude: |
           (?x)^(
               ^build/|
-              ^docker/|
+              ^containers/|
               ^tests/
           )
   - repo: https://github.com/pre-commit/mirrors-mypy
@@ -71,7 +71,7 @@ repos:
         exclude: |
           (?x)(
               ^build/|
-              ^docker/|
+              ^containers/|
               ^tests/
           )
         additional_dependencies:

@@ -22,7 +22,7 @@ from strawberry import auto
 from strawberry.experimental.pydantic import type as pydantic_type
 from strawberry.scalars import JSON
 
-from database.models.brazil import (
+from jacobson.database.models.brazil import (
 	Address,
 	CityCreate,
 	StateCreate,

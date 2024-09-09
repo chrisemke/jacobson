@@ -16,8 +16,8 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-::: database.models.user.UserBase
+::: jacobson.database.models.user.UserBase
 
-::: database.models.user.UserLogin
+::: jacobson.database.models.user.UserLogin
 
-::: database.models.user.User
+::: jacobson.database.models.user.User

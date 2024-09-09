@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-::: api.user.inputs.UserRegisterInput
+::: jacobson.api.user.inputs.UserRegisterInput
 
 
-::: api.user.inputs.LoginInput
+::: jacobson.api.user.inputs.LoginInput

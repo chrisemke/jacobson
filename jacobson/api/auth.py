@@ -22,7 +22,7 @@ from fastapi import HTTPException
 from strawberry import BasePermission, Info
 from strawberry.permission import PermissionExtension
 
-from api.context import Context
+from jacobson.api.context import Context
 
 
 class IsAuthenticated(BasePermission):

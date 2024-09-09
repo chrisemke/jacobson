@@ -25,10 +25,10 @@ from jwt import decode, encode
 from jwt.exceptions import DecodeError, ExpiredSignatureError
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from api.jwt.jwt_type import JWTClaim
-from database.models.user import User
-from database.repositories.user import UserRepository
-from utils.settings import settings
+from jacobson.api.jwt.jwt_type import JWTClaim
+from jacobson.database.models.user import User
+from jacobson.database.repositories.user import UserRepository
+from jacobson.utils.settings import settings
 
 
 async def get_current_user(

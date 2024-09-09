@@ -21,9 +21,9 @@ from pydantic import PositiveInt
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from api.address.inputs import AddressFilterInput, AddressInsertInput
-from database.models.brazil import Address, City, State
-from database.repositories.pagination import page_to_offset
+from jacobson.api.address.inputs import AddressFilterInput, AddressInsertInput
+from jacobson.database.models.brazil import Address, City, State
+from jacobson.database.repositories.pagination import page_to_offset
 
 
 class BrazilRepository:

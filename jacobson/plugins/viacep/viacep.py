@@ -21,15 +21,15 @@ from typing import Self, TypedDict
 from httpx import AsyncClient, HTTPStatusError
 from pydantic import PositiveInt
 
-from api.address.types import DictResponse
-from database.models.brazil import (
+from jacobson.api.address.types import DictResponse
+from jacobson.database.models.brazil import (
 	Address,
 	City,
 	StateAcronym,
 	StateAcronymName,
 	StateCreate,
 )
-from plugins.protocol import Plugin
+from jacobson.plugins.protocol import Plugin
 
 
 class ViaCepAddress(TypedDict):

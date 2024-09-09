@@ -20,9 +20,9 @@ from asyncio import as_completed, create_task
 
 from pydantic import PositiveInt
 
-from api.address.types import DictResponse
-from plugins.cep_aberto.cep_aberto import CepAberto
-from plugins.viacep.viacep import ViaCep
+from jacobson.api.address.types import DictResponse
+from jacobson.plugins.cep_aberto.cep_aberto import CepAberto
+from jacobson.plugins.viacep.viacep import ViaCep
 
 
 async def get_zipcode_from_plugins(

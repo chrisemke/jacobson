@@ -20,7 +20,7 @@ from pydantic import UUID4
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from database.models.user import User
+from jacobson.database.models.user import User
 
 
 class UserRepository:

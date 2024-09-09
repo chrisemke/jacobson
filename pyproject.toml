@@ -54,7 +54,7 @@ build-backend = "poetry.core.masonry.api"
 python_version = "3.12"
 strict = true
 explicit_package_bases = true
-exclude = ["build", "docker", "tests"]
+exclude = ["build", "containers", "tests"]
 plugins = ["pydantic.mypy", "strawberry.ext.mypy_plugin"]
 
 [tool.ruff]

@@ -19,14 +19,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from factory import Factory, Faker, LazyAttribute, Sequence, DictFactory
 from factory.fuzzy import FuzzyChoice
 
-from database.models.brazil import (
+from jacobson.database.models.brazil import (
 	Address,
 	City,
 	State,
 	StateAcronym,
 	StateAcronymName,
 )
-from database.models.user import User
+from jacobson.database.models.user import User
 from pydantic import ConfigDict
 
 

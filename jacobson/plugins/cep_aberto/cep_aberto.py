@@ -21,16 +21,16 @@ from typing import Self, TypedDict
 from httpx import AsyncClient
 from pydantic import PositiveInt
 
-from api.address.types import DictResponse
-from database.models.brazil import (
+from jacobson.api.address.types import DictResponse
+from jacobson.database.models.brazil import (
 	Address,
 	City,
 	StateAcronym,
 	StateAcronymName,
 	StateCreate,
 )
-from plugins.protocol import Plugin
-from utils.settings import settings
+from jacobson.plugins.protocol import Plugin
+from jacobson.utils.settings import settings
 
 
 class CepAbertoState(TypedDict):

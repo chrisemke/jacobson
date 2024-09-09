@@ -16,18 +16,31 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from abc import abstractmethod
-from typing import Protocol, Self, runtime_checkable
+from collections.abc import AsyncGenerator
+from typing import Annotated
 
-from pydantic import PositiveInt
+from fastapi import Depends
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlmodel.ext.asyncio.session import AsyncSession
 
-from api.address.types import DictResponse
+from jacobson.utils.settings import settings
+
+engine = create_async_engine(
+	settings.DATABASE_URL,
+	echo=settings.DEV,
+	future=True,
+	pool_size=20,
+	max_overflow=20,
+	pool_recycle=3600,
+)
 
 
-@runtime_checkable
-class Plugin(Protocol):
-	@abstractmethod
-	async def get_address_by_zipcode(
-		self: Self, zipcode: PositiveInt
-	) -> DictResponse:
-		"""Get address by zipcode."""
+async def get_session() -> (
+	AsyncGenerator[AsyncSession, None]
+):  # pragma: no cover
+	"""Create and yield database async session."""
+	async with AsyncSession(engine, expire_on_commit=False) as session:
+		yield session
+
+
+T_AsyncSession = Annotated[AsyncSession, Depends(get_session)]

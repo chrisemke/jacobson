@@ -16,24 +16,24 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-::: database.models.brazil.StateAcronym
+::: jacobson.database.models.brazil.StateAcronym
 
-::: database.models.brazil.StateAcronymName
+::: jacobson.database.models.brazil.StateAcronymName
 
-::: database.models.brazil.StateBase
+::: jacobson.database.models.brazil.StateBase
 
-::: database.models.brazil.StateCreate
+::: jacobson.database.models.brazil.StateCreate
 
-::: database.models.brazil.State
+::: jacobson.database.models.brazil.State
 
-::: database.models.brazil.CityBase
+::: jacobson.database.models.brazil.CityBase
 
-::: database.models.brazil.CityCreate
+::: jacobson.database.models.brazil.CityCreate
 
-::: database.models.brazil.City
+::: jacobson.database.models.brazil.City
 
-::: database.models.brazil.Coordinates
+::: jacobson.database.models.brazil.Coordinates
 
-::: database.models.brazil.AddressBase
+::: jacobson.database.models.brazil.AddressBase
 
-::: database.models.brazil.Address
+::: jacobson.database.models.brazil.Address

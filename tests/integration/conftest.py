@@ -27,11 +27,11 @@ from sqlmodel import SQLModel, select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from testcontainers.postgres import PostgresContainer
 
-from api.app import app
-from api.security import get_password_hash
-from database.engine import get_session
-from database.models.brazil import State
-from database.models.user import User
+from jacobson.api.app import app
+from jacobson.api.security import get_password_hash
+from jacobson.database.engine import get_session
+from jacobson.database.models.brazil import State
+from jacobson.database.models.user import User
 from tests.integration.factories import (
 	AddressFactory,
 	CityFactory,

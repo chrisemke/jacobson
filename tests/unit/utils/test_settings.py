@@ -18,7 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import Self
 
-from utils.settings import Settings
+from jacobson.utils.settings import Settings
 
 
 class TestSettings:

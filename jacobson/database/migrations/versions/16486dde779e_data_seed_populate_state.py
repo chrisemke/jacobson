@@ -21,7 +21,7 @@ from uuid import uuid4
 
 from alembic import op
 
-from database.models.brazil import State
+from jacobson.database.models.brazil import State
 
 """
 Data Seed: Populate State.

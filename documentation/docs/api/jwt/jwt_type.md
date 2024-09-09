@@ -16,4 +16,4 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-::: api.jwt.jwt_type.JWTClaim
+::: jacobson.api.jwt.jwt_type.JWTClaim

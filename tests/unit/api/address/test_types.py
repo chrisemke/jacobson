@@ -18,8 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import Self
 
-from api.address.types import AddressType, CityType, StateType
-from database.models.brazil import StateAcronym
+from jacobson.api.address.types import AddressType, CityType, StateType
+from jacobson.database.models.brazil import StateAcronym
 
 
 class TestTypes:

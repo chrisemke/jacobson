@@ -25,13 +25,13 @@ from httpx import HTTPStatusError, Response
 from pytest_mock import MockerFixture
 from respx import MockRouter
 
-from database.models.brazil import (
+from jacobson.database.models.brazil import (
 	Address,
 	City,
 	StateAcronym,
 	StateCreate,
 )
-from plugins.cep_aberto.cep_aberto import CepAberto
+from jacobson.plugins.cep_aberto.cep_aberto import CepAberto
 
 
 @dataclass
@@ -60,12 +60,12 @@ class TestCepAberto:
 		}
 
 	def test_valid_token(self: Self, mocker: MockerFixture) -> None:
-		mocker.patch('plugins.cep_aberto.cep_aberto.settings', SettingsMock)
+		mocker.patch('jacobson.plugins.cep_aberto.cep_aberto.settings', SettingsMock)
 		assert CepAberto().token == 'valid_token'
 
 	def test_invalid_token(self: Self, mocker: MockerFixture) -> None:
 		mocker.patch(
-			'plugins.cep_aberto.cep_aberto.settings',
+			'jacobson.plugins.cep_aberto.cep_aberto.settings',
 			SettingsMock(CEP_ABERTO_TOKEN=None),
 		)
 
@@ -75,7 +75,7 @@ class TestCepAberto:
 	async def test_get_address_by_zipcode_method_url_is_correct(
 		self: Self, mocker: MockerFixture, respx_mock: MockRouter
 	) -> None:
-		mocker.patch('plugins.cep_aberto.cep_aberto.settings', SettingsMock)
+		mocker.patch('jacobson.plugins.cep_aberto.cep_aberto.settings', SettingsMock)
 
 		zipcode = 1001000
 		mock = respx_mock.get(
@@ -89,7 +89,7 @@ class TestCepAberto:
 	async def test_get_address_by_zipcode_method_headers_are_correct(
 		self: Self, mocker: MockerFixture, respx_mock: MockRouter
 	) -> None:
-		mocker.patch('plugins.cep_aberto.cep_aberto.settings', SettingsMock)
+		mocker.patch('jacobson.plugins.cep_aberto.cep_aberto.settings', SettingsMock)
 
 		zipcode = 1001000
 		respx_mock.get(
@@ -104,7 +104,7 @@ class TestCepAberto:
 	async def test_get_address_by_zipcode_method_request_error(
 		self: Self, mocker: MockerFixture, respx_mock: MockRouter
 	) -> None:
-		mocker.patch('plugins.cep_aberto.cep_aberto.settings', SettingsMock)
+		mocker.patch('jacobson.plugins.cep_aberto.cep_aberto.settings', SettingsMock)
 
 		zipcode = 1001000
 		respx_mock.get(
@@ -127,7 +127,7 @@ class TestCepAberto:
 	async def test_get_address_by_zipcode_method_returns_address(
 		self: Self, mocker: MockerFixture, respx_mock: MockRouter
 	) -> None:
-		mocker.patch('plugins.cep_aberto.cep_aberto.settings', SettingsMock)
+		mocker.patch('jacobson.plugins.cep_aberto.cep_aberto.settings', SettingsMock)
 
 		zipcode = 1001000
 		respx_mock.get(

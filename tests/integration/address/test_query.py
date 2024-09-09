@@ -21,7 +21,7 @@ from typing import Self
 
 from httpx import AsyncClient
 
-from database.models.brazil import Address
+from jacobson.database.models.brazil import Address
 
 
 class TestQuery:

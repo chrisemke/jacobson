@@ -23,16 +23,16 @@ from pydantic import PositiveInt
 from sqlmodel.ext.asyncio.session import AsyncSession
 from starlette.responses import Response
 
-from api.address.inputs import AddressFilterInput, AddressInsertInput
-from api.address.types import DictResponse
-from api.jwt.jwt_manager import create_access_token
-from api.security import get_password_hash
-from api.user.inputs import UserRegisterInput
-from database.models.brazil import Address
-from database.models.user import User, UserLogin
-from database.repositories.brazil import BrazilRepository
-from database.repositories.user import UserRepository
-from plugins.plugins_controller import get_zipcode_from_plugins
+from jacobson.api.address.inputs import AddressFilterInput, AddressInsertInput
+from jacobson.api.address.types import DictResponse
+from jacobson.api.jwt.jwt_manager import create_access_token
+from jacobson.api.security import get_password_hash
+from jacobson.api.user.inputs import UserRegisterInput
+from jacobson.database.models.brazil import Address
+from jacobson.database.models.user import User, UserLogin
+from jacobson.database.repositories.brazil import BrazilRepository
+from jacobson.database.repositories.user import UserRepository
+from jacobson.plugins.plugins_controller import get_zipcode_from_plugins
 
 
 async def get_address(

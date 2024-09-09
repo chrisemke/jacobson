@@ -21,7 +21,7 @@ from typing import Self
 
 from httpx import AsyncClient
 
-from database.models.brazil import City
+from jacobson.database.models.brazil import City
 from tests.integration.factories import AddressFactory
 
 

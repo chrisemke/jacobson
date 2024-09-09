@@ -16,31 +16,31 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from collections.abc import AsyncGenerator
-from typing import Annotated
+from typing import Self
 
-from fastapi import Depends
-from sqlalchemy.ext.asyncio import create_async_engine
-from sqlmodel.ext.asyncio.session import AsyncSession
+from strawberry import auto, field
+from strawberry.experimental.pydantic import type as pydantic_type
 
-from utils.settings import settings
-
-engine = create_async_engine(
-	settings.DATABASE_URL,
-	echo=settings.DEV,
-	future=True,
-	pool_size=20,
-	max_overflow=20,
-	pool_recycle=3600,
-)
+from jacobson.api.jwt.jwt_manager import create_access_token
+from jacobson.database.models.user import User
 
 
-async def get_session() -> (
-	AsyncGenerator[AsyncSession, None]
-):  # pragma: no cover
-	"""Create and yield database async session."""
-	async with AsyncSession(engine, expire_on_commit=False) as session:
-		yield session
+@pydantic_type(User)
+class LoginType:
+	id: auto
+	email: auto
+	username: auto
 
+	@field
+	def jwt(self: Self) -> str:
+		"""
+		Generate jwt token based on current id.
 
-T_AsyncSession = Annotated[AsyncSession, Depends(get_session)]
+		Args:
+				self (Self): Scope of current class
+
+		Returns:
+				str: Jwt token
+
+		"""
+		return create_access_token({'sub': str(self.id)})

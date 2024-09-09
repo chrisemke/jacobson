@@ -16,13 +16,13 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-::: plugins.cep_aberto.cep_aberto.CepAbertoState
+::: jacobson.plugins.cep_aberto.cep_aberto.CepAbertoState
 
-::: plugins.cep_aberto.cep_aberto.CepAbertoCity
+::: jacobson.plugins.cep_aberto.cep_aberto.CepAbertoCity
 
-::: plugins.cep_aberto.cep_aberto.CepAbertoAddress
+::: jacobson.plugins.cep_aberto.cep_aberto.CepAbertoAddress
 
-::: plugins.cep_aberto.cep_aberto.CepAberto
+::: jacobson.plugins.cep_aberto.cep_aberto.CepAberto
 	options:
 		members:
 			- __init__

@@ -19,11 +19,13 @@ services:
     build:
       context: .
       dockerfile: ./containers/app/Containerfile.dev
+    env_file: ".env"
     ports:
       - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
     volumes:
-      - ".:/jacobson"
+      - "./jacobson:/jacobson/jacobson"
+      - "./documentation/site:/jacobson/documentation/site"
     restart: always

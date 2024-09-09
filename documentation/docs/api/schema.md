@@ -16,10 +16,10 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
-::: api.schema.Query
+::: jacobson.api.schema.Query
 
-::: api.schema.Mutation
+::: jacobson.api.schema.Mutation
 
-::: api.schema.schema
+::: jacobson.api.schema.schema
 
-::: api.schema.graphql_app
+::: jacobson.api.schema.graphql_app

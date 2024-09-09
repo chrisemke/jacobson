@@ -18,13 +18,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import Self
 
-from api.address.inputs import (
+from jacobson.api.address.inputs import (
 	AddressFilterInput,
 	AddressInsertInput,
 	CityInput,
 	StateInput,
 )
-from database.models.brazil import StateAcronym
+from jacobson.database.models.brazil import StateAcronym
 
 
 class TestInputs:
