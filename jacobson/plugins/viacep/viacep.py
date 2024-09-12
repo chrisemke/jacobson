@@ -68,14 +68,17 @@ class ViaCep(Plugin):
 
 		"""
 		async with AsyncClient(http2=True) as client:
-			request = await client.get(f'https://viacep.com.br/ws/{zipcode:08}/json/')
-		request.raise_for_status()
-		request_json = request.json()
-		if request_json.get('erro'):
-			raise HTTPStatusError('Zipcode not found')
+			response = await client.get(f'https://viacep.com.br/ws/{zipcode:08}/json/')
+		response.raise_for_status()
+		response_json = response.json()
+
+		if response_json.get('erro'):
+			raise HTTPStatusError(
+				'Zipcode not found', request=response.request, response=response
+			)
 
 		return {
-			'data': [await self._request_to_database_model(request_json)],
+			'data': [await self._request_to_database_model(response_json)],
 			'provider': 'viacep',
 		}
 
