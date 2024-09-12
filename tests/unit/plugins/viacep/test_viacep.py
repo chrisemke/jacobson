@@ -110,3 +110,20 @@ class TestViaCep:
 		address_model['id'] = address_response_model['id']
 		address_model['updated_at'] = address_response_model['updated_at']
 		assert address_response_model == address_model
+
+	async def test_get_address_by_zipcode_return_erro(
+		self: Self, respx_mock: MockRouter
+	) -> None:
+		zipcode = 111111111
+		respx_mock.get(f'https://viacep.com.br/ws/{zipcode:08}/json/').mock(
+			return_value=Response(
+				200,
+				json={'erro': 'erro'},
+			)
+		)
+
+		with pytest.raises(
+			HTTPStatusError,
+			match=escape('Zipcode not found'),
+		):
+			await ViaCep().get_address_by_zipcode(zipcode)
