@@ -25,7 +25,7 @@ from jacobson.database.models.brazil import Address
 
 
 class TestQuery:
-	async def test_all_address_get_from_db(
+	async def test_all_address_get_from_db_success(
 		self: Self, client: AsyncClient, address: Address, token: str
 	):
 		state = address.state.model_dump()
@@ -44,29 +44,33 @@ class TestQuery:
 		address['city'] = city
 
 		query = """
-			query TestQuery($filter: AddressFilterInput!) {
-				allAddress(filter: $filter, pageSize: 1, pageNumber: 1) {
-					zipcode
-					neighborhood
-					complement
-					state {
-						name
-						acronym
-					}
-					coordinates
-					city {
-						name
-						ibge
-						ddd
-					}
+		query TestQuerySuccess($filter: AddressFilterInput!) {
+			allAddress(filter: $filter, pageSize: 1, pageNumber: 1) {
+				zipcode
+				neighborhood
+				complement
+				state {
+					name
+					acronym
+				}
+				coordinates
+				city {
+					name
+					ibge
+					ddd
 				}
 			}
+		}
 		"""
 		variables = {'filter': {'zipcode': address['zipcode']}}
 
 		response = await client.post(
 			'/graphql',
-			json={'query': query, 'variables': variables, 'operationName': 'TestQuery'},
+			json={
+				'query': query,
+				'variables': variables,
+				'operationName': 'TestQuerySuccess',
+			},
 			headers={'Authorization': token},
 		)
 
@@ -76,3 +80,42 @@ class TestQuery:
 			},
 		}
 		assert response.status_code == HTTPStatus.OK
+
+	async def test_all_address_get_from_db_no_content(
+		self: Self, client: AsyncClient, token: str
+	):
+		query = """
+		query TestQueryNoContent($filter: AddressFilterInput!) {
+			allAddress(filter: $filter, pageSize: 1, pageNumber: 1) {
+				zipcode
+				neighborhood
+				complement
+				state {
+					name
+					acronym
+				}
+				coordinates
+				city {
+					name
+					ibge
+					ddd
+				}
+			}
+		}
+		"""
+		variables = {'filter': {'neighborhood': ''}}
+		response = await client.post(
+			'/graphql',
+			json={
+				'query': query,
+				'variables': variables,
+				'operationName': 'TestQueryNoContent',
+			},
+			headers={'Authorization': token},
+		)
+		assert response.json() == {
+			'data': {
+				'allAddress': [],
+			},
+		}
+		assert response.status_code == HTTPStatus.NO_CONTENT
