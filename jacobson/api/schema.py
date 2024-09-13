@@ -72,7 +72,9 @@ class Query:
 		result = await get_address(
 			info.context.session, filter, page_size, page_number
 		)
-		if result['provider'] != 'local' and result['data']:
+		if not result['data']:
+			info.context.response.status_code = HTTPStatus.NO_CONTENT
+		elif result['provider'] != 'local':
 			info.context.background_tasks.add_task(
 				insert_address_background, info.context.session, result['data'][0]
 			)
