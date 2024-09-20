@@ -9,12 +9,12 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "3.12.*"
 uvicorn = {extras = ["standard"], version = "^0.30.6"}
-fastapi-slim = "^0.114.1"
-strawberry-graphql = {extras = ["fastapi"], version = "^0.240.2"}
+fastapi-slim = "^0.115.0"
+strawberry-graphql = {extras = ["fastapi"], version = "^0.242.0"}
 httpx = {extras = ["http2"], version = "^0.27.2"}
-pydantic = "^2.9.1"
+pydantic = "^2.9.2"
 alembic = "^1.13.2"
-psycopg = {extras = ["binary"], version = "^3.2.1"}
+psycopg = {extras = ["binary"], version = "^3.2.2"}
 pydantic-settings = "^2.5.2"
 sqlmodel = "^0.0.22"
 email-validator = "^2.2.0"
@@ -23,17 +23,17 @@ pwdlib = {extras = ["argon2"], version = "^0.2.1"}
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.8.0"
-ruff = "^0.6.4"
+ruff = "^0.6.6"
 mypy = "^1.11.2"
 commitizen = "^3.29.0"
 poetry-plugin-export = "^1.8.0"
-fastapi = {extras = ["standard"], version = "^0.114.1"}
-strawberry-graphql = {extras = ["cli"], version = "^0.240.2"}
+fastapi = {extras = ["standard"], version = "^0.115.0"}
+strawberry-graphql = {extras = ["cli"], version = "^0.242.0"}
 taskipy = "^1.13.0"
 
 [tool.poetry.group.docs.dependencies]
 mkdocs = "^1.6.1"
-mkdocs-material = "^9.5.34"
+mkdocs-material = "^9.5.35"
 mkdocstrings = {extras = ["python"], version = "^0.26.1"}
 mkdocs-site-urls = "^0.2.0"
 
@@ -58,9 +58,10 @@ exclude = ["build", "containers", "tests"]
 plugins = ["pydantic.mypy", "strawberry.ext.mypy_plugin"]
 
 [tool.ruff]
+target-version = "py312"
 indent-width = 1
 line-length = 79
-target-version = "py312"
+fix = true
 
 [tool.ruff.lint]
 select = [
