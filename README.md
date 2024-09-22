@@ -90,11 +90,19 @@ to run podman as expected, you will need the packages "podman", "podman-compose"
 podman compose up -d --build
 ```
 
-or alternatively, if you already have poetry installed you can run the following commands:
+or alternatively, if you already have uv installed you can run the following commands:
 ```bash
-poetry shell # Create/Enter poetry virtual env
-poetry install # Install all dependencies (needed to run task)
+uv sync # Create uv virtual env and install dependencies
+source .venv/bin/activate # Enter on virtual env
 task up # Decame podman command
+```
+
+Alternative commands:
+```bash
+uv sync --extra docs # If you want mkdocs dependencies
+uv sync --extra test # If you want pytest dependencies
+uv sync --all-extras # If you want full env
+source .venv/bin/activate.fish # Alternative command if you use fish shell
 ```
 
 Available tasks (shown with the ``task -l`` command):

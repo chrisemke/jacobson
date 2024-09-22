@@ -16,8 +16,9 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from factory import Factory, Faker, LazyAttribute, Sequence, DictFactory
+from factory import DictFactory, Factory, Faker, LazyAttribute, Sequence
 from factory.fuzzy import FuzzyChoice
+from pydantic import ConfigDict
 
 from jacobson.database.models.brazil import (
 	Address,
@@ -27,7 +28,6 @@ from jacobson.database.models.brazil import (
 	StateAcronymName,
 )
 from jacobson.database.models.user import User
-from pydantic import ConfigDict
 
 
 class StateFactory(Factory):

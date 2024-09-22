@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from typing import ClassVar, Self
+from typing import Self
 
 from jacobson.api.address.inputs import AddressFilterInput, AddressInsertInput
 from jacobson.api.address.types import AddressType
@@ -26,8 +26,8 @@ from jacobson.database.models.brazil import (
 	City,
 	CityCreate,
 	State,
-	StateCreate,
 	StateAcronym,
+	StateCreate,
 )
 
 
