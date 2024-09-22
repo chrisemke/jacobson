@@ -7,13 +7,13 @@ VOLUME ./documentation/site:/jacobson/documentation/site
 
 EXPOSE 8000
 
-ADD pyproject.toml /jacobson
+ADD requirements_dev.txt /jacobson
 ADD alembic.ini /jacobson
 
 RUN apk update \
 	&& apk upgrade \
 	&& pip install --upgrade pip \
-	&& pip install .[docs] \
+	&& pip install -r requirements_dev.txt \
 	&& pip cache purge
 
 ENTRYPOINT ["sh", "-c", "alembic upgrade head && uvicorn jacobson.api.app:app --host=0.0.0.0 --port=8000 --reload"]
