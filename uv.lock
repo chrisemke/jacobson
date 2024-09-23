@@ -1,5 +1,5 @@
 version = 1
-requires-python = ">=3.12, <4"
+requires-python = ">=3.12"
 resolution-markers = [
     "python_full_version < '3.13'",
     "python_full_version >= '3.13'",
@@ -621,40 +621,40 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "alembic", specifier = "~=1.13.2" },
-    { name = "email-validator", specifier = "~=2.2.0" },
-    { name = "factory-boy", marker = "extra == 'test'", specifier = "~=3.3.1" },
-    { name = "fastapi-slim", specifier = "~=0.115.0" },
-    { name = "httpx", extras = ["http2"], specifier = "~=0.27.2" },
-    { name = "mkdocs", marker = "extra == 'docs'", specifier = "~=1.6.1" },
-    { name = "mkdocs-material", marker = "extra == 'docs'", specifier = "~=9.5.36" },
-    { name = "mkdocs-site-urls", marker = "extra == 'docs'", specifier = "~=0.2.0" },
-    { name = "mkdocstrings", extras = ["python"], marker = "extra == 'docs'", specifier = "~=0.26.1" },
-    { name = "psycopg", extras = ["binary"], specifier = "~=3.2.2" },
-    { name = "pwdlib", extras = ["argon2"], specifier = "~=0.2.1" },
-    { name = "pydantic", specifier = "~=2.9.2" },
-    { name = "pydantic-settings", specifier = "~=2.5.2" },
-    { name = "pyjwt", specifier = "~=2.9.0" },
-    { name = "pytest", marker = "extra == 'test'", specifier = "~=8.3.3" },
-    { name = "pytest-asyncio", marker = "extra == 'test'", specifier = "~=0.24.0" },
-    { name = "pytest-cov", marker = "extra == 'test'", specifier = "~=5.0.0" },
-    { name = "pytest-mock", marker = "extra == 'test'", specifier = "~=3.14.0" },
-    { name = "respx", marker = "extra == 'test'", specifier = "~=0.21.1" },
-    { name = "sqlmodel", specifier = "~=0.0.22" },
-    { name = "strawberry-graphql", extras = ["fastapi"], specifier = "~=0.242.0" },
-    { name = "testcontainers", extras = ["postgres"], marker = "extra == 'test'", specifier = "~=4.8.1" },
-    { name = "uvicorn", extras = ["standard"], specifier = "~=0.30.6" },
+    { name = "alembic", specifier = ">=1.13.2" },
+    { name = "email-validator", specifier = ">=2.2.0" },
+    { name = "factory-boy", marker = "extra == 'test'", specifier = ">=3.3.1" },
+    { name = "fastapi-slim", specifier = ">=0.115.0" },
+    { name = "httpx", extras = ["http2"], specifier = ">=0.27.2" },
+    { name = "mkdocs", marker = "extra == 'docs'", specifier = ">=1.6.1" },
+    { name = "mkdocs-material", marker = "extra == 'docs'", specifier = ">=9.5.36" },
+    { name = "mkdocs-site-urls", marker = "extra == 'docs'", specifier = ">=0.2.0" },
+    { name = "mkdocstrings", extras = ["python"], marker = "extra == 'docs'", specifier = ">=0.26.1" },
+    { name = "psycopg", extras = ["binary"], specifier = ">=3.2.2" },
+    { name = "pwdlib", extras = ["argon2"], specifier = ">=0.2.1" },
+    { name = "pydantic", specifier = ">=2.9.2" },
+    { name = "pydantic-settings", specifier = ">=2.5.2" },
+    { name = "pyjwt", specifier = ">=2.9.0" },
+    { name = "pytest", marker = "extra == 'test'", specifier = ">=8.3.3" },
+    { name = "pytest-asyncio", marker = "extra == 'test'", specifier = ">=0.24.0" },
+    { name = "pytest-cov", marker = "extra == 'test'", specifier = ">=5.0.0" },
+    { name = "pytest-mock", marker = "extra == 'test'", specifier = ">=3.14.0" },
+    { name = "respx", marker = "extra == 'test'", specifier = ">=0.21.1" },
+    { name = "sqlmodel", specifier = ">=0.0.22" },
+    { name = "strawberry-graphql", extras = ["fastapi"], specifier = ">=0.242.0" },
+    { name = "testcontainers", extras = ["postgres"], marker = "extra == 'test'", specifier = ">=4.8.1" },
+    { name = "uvicorn", extras = ["standard"], specifier = ">=0.30.6" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "commitizen", specifier = "~=3.29.0" },
-    { name = "fastapi", extras = ["standard"], specifier = "~=0.115.0" },
-    { name = "mypy", specifier = "~=1.11.2" },
-    { name = "pre-commit", specifier = "~=3.8.0" },
-    { name = "ruff", specifier = "~=0.6.7" },
-    { name = "strawberry-graphql", extras = ["cli"], specifier = "~=0.242.0" },
-    { name = "taskipy", specifier = "~=1.13.0" },
+    { name = "commitizen", specifier = ">=3.29.0" },
+    { name = "fastapi", extras = ["standard"], specifier = ">=0.115.0" },
+    { name = "mypy", specifier = ">=1.11.2" },
+    { name = "pre-commit", specifier = ">=3.8.0" },
+    { name = "ruff", specifier = ">=0.6.7" },
+    { name = "strawberry-graphql", extras = ["cli"], specifier = ">=0.242.0" },
+    { name = "taskipy", specifier = ">=1.13.0" },
 ]
 
 [[package]]
@@ -1171,15 +1171,15 @@ wheels = [
 
 [[package]]
 name = "pymdown-extensions"
-version = "10.9"
+version = "10.10.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "markdown" },
     { name = "pyyaml" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d8/d3/fb86beeaa4416f73a28a5e8d440976b7cada2b2d7b5e715b2bd849d4de32/pymdown_extensions-10.9.tar.gz", hash = "sha256:6ff740bcd99ec4172a938970d42b96128bdc9d4b9bcad72494f29921dc69b753", size = 812128 }
+sdist = { url = "https://files.pythonhosted.org/packages/d7/e6/51b83b93b74014ebc415f26de4b60320ccdb4802b6d6e37d4b4070619e20/pymdown_extensions-10.10.1.tar.gz", hash = "sha256:ad277ee4739ced051c3b6328d22ce782358a3bec39bc6ca52815ccbf44f7acdc", size = 828448 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/7b/41/18b5dc5e97ec3ff1c2f51d372e570a9fbe231f1124dcc36dbc6b47f93058/pymdown_extensions-10.9-py3-none-any.whl", hash = "sha256:d323f7e90d83c86113ee78f3fe62fc9dee5f56b54d912660703ea1816fed5626", size = 250954 },
+    { url = "https://files.pythonhosted.org/packages/f5/08/56121d5a6746c192172766c18be90c790018b632ff94598ad3fa39935b73/pymdown_extensions-10.10.1-py3-none-any.whl", hash = "sha256:6c74ea6c2e2285186a241417480fc2d3cc52941b3ec2dced4014c84dc78c5493", size = 258809 },
 ]
 
 [[package]]
@@ -1490,14 +1490,14 @@ wheels = [
 
 [[package]]
 name = "starlette"
-version = "0.38.5"
+version = "0.38.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/13/aa/57975da16ca0c368bbb5687daa6ad79561c2328a44667a1d6802e94df3e5/starlette-0.38.5.tar.gz", hash = "sha256:04a92830a9b6eb1442c766199d62260c3d4dc9c4f9188360626b1e0273cb7077", size = 2569511 }
+sdist = { url = "https://files.pythonhosted.org/packages/42/b4/e25c3b688ef703d85e55017c6edd0cbf38e5770ab748234363d54ff0251a/starlette-0.38.6.tar.gz", hash = "sha256:863a1588f5574e70a821dadefb41e4881ea451a47a3cd1b4df359d4ffefe5ead", size = 2569491 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/90/1a/8853ba4cea1ec99535ac9be5795a50ca92cddd04d57bbaa56e866cb7548c/starlette-0.38.5-py3-none-any.whl", hash = "sha256:632f420a9d13e3ee2a6f18f437b0a9f1faecb0bc42e1942aa2ea0e379a4c4206", size = 71447 },
+    { url = "https://files.pythonhosted.org/packages/b7/9c/93f7bc03ff03199074e81974cc148908ead60dcf189f68ba1761a0ee35cf/starlette-0.38.6-py3-none-any.whl", hash = "sha256:4517a1409e2e73ee4951214ba012052b9e16f60e90d73cfb06192c19203bbb05", size = 71451 },
 ]
 
 [[package]]
@@ -1534,7 +1534,7 @@ dependencies = [
     { name = "colorama" },
     { name = "mslex", marker = "sys_platform == 'win32'" },
     { name = "psutil" },
-    { name = "tomli" },
+    { name = "tomli", marker = "python_full_version < '4'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/58/c4/04a9e02cd9bdf0389a975523ef39879125b01a58b8ec73ffd8a240cbea90/taskipy-1.13.0.tar.gz", hash = "sha256:2b52f0257958fed151f1340f7de93fcf0848f7a358ad62ba05c31c2ca04f89fe", size = 14500 }
 wheels = [

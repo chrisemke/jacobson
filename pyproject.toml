@@ -3,7 +3,7 @@ name = "Jacobson"
 version = "0.3.0"
 description = 'Self-hosted zipcode API'
 readme = "README.md"
-requires-python = "~=3.12"
+requires-python = ">=3.12"
 license = {text = "AGPL-3.0-or-later"}
 keywords = []
 authors = [{name = "Krisque", email = "chrisemke@protonmail.com"}]
@@ -20,18 +20,18 @@ classifiers = [
 	"Framework :: MkDocs",
 ]
 dependencies = [
-	"alembic~=1.13.2",
-	"email-validator~=2.2.0",
-	"fastapi-slim~=0.115.0",
-	"httpx[http2]~=0.27.2",
-	"psycopg[binary]~=3.2.2",
-	"pwdlib[argon2]~=0.2.1",
-	"pydantic~=2.9.2",
-	"pydantic-settings~=2.5.2",
-	"pyjwt~=2.9.0",
-	"sqlmodel~=0.0.22",
-	"strawberry-graphql[fastapi]~=0.242.0",
-	"uvicorn[standard]~=0.30.6",
+	"alembic>=1.13.2",
+	"email-validator>=2.2.0",
+	"fastapi-slim>=0.115.0",
+	"httpx[http2]>=0.27.2",
+	"psycopg[binary]>=3.2.2",
+	"pwdlib[argon2]>=0.2.1",
+	"pydantic>=2.9.2",
+	"pydantic-settings>=2.5.2",
+	"pyjwt>=2.9.0",
+	"sqlmodel>=0.0.22",
+	"strawberry-graphql[fastapi]>=0.242.0",
+	"uvicorn[standard]>=0.30.6",
 ]
 
 [project.urls]
@@ -41,31 +41,31 @@ Source = "https://codeberg.org/Krisque/jacobson"
 
 [project.optional-dependencies]
 docs = [
-	"mkdocs-material~=9.5.36",
-	"mkdocs-site-urls~=0.2.0",
-	"mkdocs~=1.6.1",
-	"mkdocstrings[python]~=0.26.1",
+	"mkdocs-material>=9.5.36",
+	"mkdocs-site-urls>=0.2.0",
+	"mkdocs>=1.6.1",
+	"mkdocstrings[python]>=0.26.1",
 ]
 test = [
-	"factory-boy~=3.3.1",
-	"pytest~=8.3.3",
-	"pytest-asyncio~=0.24.0",
-	"pytest-cov~=5.0.0",
-	"pytest-mock~=3.14.0",
-	"respx~=0.21.1",
-	"testcontainers[postgres]~=4.8.1",
+	"factory-boy>=3.3.1",
+	"pytest>=8.3.3",
+	"pytest-asyncio>=0.24.0",
+	"pytest-cov>=5.0.0",
+	"pytest-mock>=3.14.0",
+	"respx>=0.21.1",
+	"testcontainers[postgres]>=4.8.1",
 ]
 
 
 [tool.uv]
 dev-dependencies = [
-	"commitizen~=3.29.0",
-	"fastapi[standard]~=0.115.0",
-	"mypy~=1.11.2",
-	"pre-commit~=3.8.0",
-	"ruff~=0.6.7",
-	"strawberry-graphql[cli]~=0.242.0",
-	"taskipy~=1.13.0",
+	"commitizen>=3.29.0",
+	"fastapi[standard]>=0.115.0",
+	"mypy>=1.11.2",
+	"pre-commit>=3.8.0",
+	"ruff>=0.6.7",
+	"strawberry-graphql[cli]>=0.242.0",
+	"taskipy>=1.13.0",
 ]
 
 

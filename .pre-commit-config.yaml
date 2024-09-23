@@ -87,10 +87,11 @@ repos:
     rev: "0.4.15"
     hooks:
       - id: uv-lock
+        args: ["--upgrade"]
       - id: uv-export
-        args: ["--no-dev", "-o=requirements.txt"]
+        args: ["--no-dev", "-o=requirements.txt", "-q"]
       - id: uv-export
-        args: ["--extra=docs", "--no-dev", "-o=requirements_dev.txt"]
+        args: ["--extra=docs", "--no-dev", "-o=requirements_dev.txt", "-q"]
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v3.29.0
     hooks:
