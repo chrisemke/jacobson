@@ -43,7 +43,7 @@ from tests.integration.factories import (
 async def engine() -> AsyncGenerator[AsyncEngine, None]:
 	"""Database engine."""
 	with PostgresContainer(
-		'docker.io/library/postgres:16-alpine', driver='psycopg'
+		'docker.io/library/postgres:17-alpine', driver='psycopg'
 	) as postgres:
 		yield create_async_engine(postgres.get_connection_url(), echo=True)
 

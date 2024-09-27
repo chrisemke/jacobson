@@ -16,4 +16,4 @@ RUN apk update \
 	&& pip install -r requirements_dev.txt \
 	&& pip cache purge
 
-ENTRYPOINT ["sh", "-c", "alembic upgrade head && uvicorn jacobson.api.app:app --host=0.0.0.0 --port=8000 --reload"]
+ENTRYPOINT ["sh", "-c", "alembic upgrade head && uvicorn jacobson.api.app:app --host=0.0.0.0 --reload"]
