@@ -8,19 +8,20 @@ license = {text = "AGPL-3.0-or-later"}
 keywords = []
 authors = [{name = "Krisque", email = "chrisemke@protonmail.com"}]
 classifiers = [
-	"License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
 	"Development Status :: 4 - Beta",
-	"Programming Language :: Python",
-	"Programming Language :: Python :: 3.12",
-	"Programming Language :: Python :: Implementation :: CPython",
+	"Framework :: AsyncIO",
 	"Framework :: FastAPI",
+	"Framework :: MkDocs",
 	"Framework :: Pydantic",
 	"Framework :: Pydantic :: 2",
 	"Framework :: Pytest",
-	"Framework :: MkDocs",
+	"License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+	"Programming Language :: Python",
+	"Programming Language :: Python :: 3.12",
+	"Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = [
-	"alembic>=1.13.2",
+	"alembic>=1.13.3",
 	"email-validator>=2.2.0",
 	"fastapi-slim>=0.115.0",
 	"httpx[http2]>=0.27.2",
@@ -30,18 +31,13 @@ dependencies = [
 	"pydantic-settings>=2.5.2",
 	"pyjwt>=2.9.0",
 	"sqlmodel>=0.0.22",
-	"strawberry-graphql[fastapi]>=0.242.0",
-	"uvicorn[standard]>=0.30.6",
+	"strawberry-graphql[fastapi]>=0.243.1",
+	"uvicorn[standard]>=0.31.0",
 ]
-
-[project.urls]
-Documentation = "https://krisque.codeberg.page/jacobson/"
-Issues = "https://codeberg.org/Krisque/jacobson/issues"
-Source = "https://codeberg.org/Krisque/jacobson"
 
 [project.optional-dependencies]
 docs = [
-	"mkdocs-material>=9.5.36",
+	"mkdocs-material>=9.5.38",
 	"mkdocs-site-urls>=0.2.0",
 	"mkdocs>=1.6.1",
 	"mkdocstrings[python]>=0.26.1",
@@ -56,15 +52,20 @@ test = [
 	"testcontainers[postgres]>=4.8.1",
 ]
 
+[project.urls]
+Documentation = "https://krisque.codeberg.page/jacobson/"
+Issues = "https://codeberg.org/Krisque/jacobson/issues"
+Source = "https://codeberg.org/Krisque/jacobson"
+
 
 [tool.uv]
 dev-dependencies = [
-	"commitizen>=3.29.0",
+	"commitizen>=3.29.1",
 	"fastapi[standard]>=0.115.0",
 	"mypy>=1.11.2",
 	"pre-commit>=3.8.0",
-	"ruff>=0.6.7",
-	"strawberry-graphql[cli]>=0.242.0",
+	"ruff>=0.6.8",
+	"strawberry-graphql[cli]>=0.243.1",
 	"taskipy>=1.13.0",
 ]
 
@@ -84,16 +85,16 @@ fix = true
 
 [tool.ruff.lint]
 select = [
-	"E", # pydocstyle
-	"W", # pydocstyle
-	"F", # pyflakes
-	"I", # isort
-	"PL", # Pylint
-	"UP", # pyupgrade
-	"D", # docstrings
-	"RUF", # ruff
+	"E",     # pydocstyle
+	"W",     # pydocstyle
+	"F",     # pyflakes
+	"I",     # isort
+	"PL",    # Pylint
+	"UP",    # pyupgrade
+	"D",     # docstrings
+	"RUF",   # ruff
 	"ASYNC", # flake8-async
-	"PT", # flake8-pytest-style
+	"PT",    # flake8-pytest-style
 ]
 ignore = [
 	"D100", # Missing docstring in public module
