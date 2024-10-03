@@ -48,14 +48,14 @@ repos:
     rev: v0.6.8
     hooks:
       - id: ruff-format
-        name: Run Ruff Formater
+        name: Ruff Formater
         exclude: |
           (?x)(
               ^build/|
               ^containers/
           )
       - id: ruff
-        name: Run Ruff Linter
+        name: Ruff Linter
         args: [--fix, --unsafe-fixes, --exit-non-zero-on-fix]
         exclude: |
           (?x)^(
@@ -67,7 +67,7 @@ repos:
     rev: v1.11.2
     hooks:
       - id: mypy
-        name: Run Mypy (Static type checker)
+        name: Mypy (Static type checker)
         exclude: |
           (?x)(
               ^build/|
@@ -84,14 +84,11 @@ repos:
             "pwdlib[argon2]",
           ]
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: "0.4.17"
+    rev: "0.4.18"
     hooks:
       - id: uv-lock
+        name: Upgrade uv lock file
         args: ["--upgrade"]
-      - id: uv-export
-        args: ["--no-dev", "-o=requirements.txt", "-q"]
-      - id: uv-export
-        args: ["--extra=docs", "--no-dev", "-o=requirements_dev.txt", "-q"]
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v3.29.1
     hooks:

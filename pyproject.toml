@@ -25,7 +25,7 @@ dependencies = [
 	"email-validator>=2.2.0",
 	"fastapi-slim>=0.115.0",
 	"httpx[http2]>=0.27.2",
-	"psycopg[binary]>=3.2.2",
+	"psycopg[binary]>=3.2.3",
 	"pwdlib[argon2]>=0.2.1",
 	"pydantic>=2.9.2",
 	"pydantic-settings>=2.5.2",
@@ -37,7 +37,7 @@ dependencies = [
 
 [project.optional-dependencies]
 docs = [
-	"mkdocs-material>=9.5.38",
+	"mkdocs-material>=9.5.39",
 	"mkdocs-site-urls>=0.2.0",
 	"mkdocs>=1.6.1",
 	"mkdocstrings[python]>=0.26.1",
