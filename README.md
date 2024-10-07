@@ -71,6 +71,7 @@ call to tell the api to update some register from plugins that are configured
 - [ ] Authentication based on keycloak sso (OpenID Connect)
 
 ### TODO (nice to have)
+- [ ] migrate from taskipy to poe the poet
 - [ ] add option to seed all cities (or chosen list)
 - [ ] add option to seed all zip codes (or chosen list)
 - [ ] add graphql schema generator on git hooks
