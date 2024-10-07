@@ -31,7 +31,7 @@ dependencies = [
 	"pydantic-settings>=2.5.2",
 	"pyjwt>=2.9.0",
 	"sqlmodel>=0.0.22",
-	"strawberry-graphql[fastapi]>=0.243.1",
+	"strawberry-graphql[fastapi]>=0.245.0",
 	"uvicorn[standard]>=0.31.0",
 ]
 
@@ -63,9 +63,9 @@ dev-dependencies = [
 	"commitizen>=3.29.1",
 	"fastapi[standard]>=0.115.0",
 	"mypy>=1.11.2",
-	"pre-commit>=3.8.0",
-	"ruff>=0.6.8",
-	"strawberry-graphql[cli]>=0.243.1",
+	"pre-commit>=4.0.0",
+	"ruff>=0.6.9",
+	"strawberry-graphql[cli]>=0.245.0",
 	"taskipy>=1.13.0",
 ]
 
