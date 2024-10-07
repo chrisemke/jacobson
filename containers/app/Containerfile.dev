@@ -9,8 +9,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --frozen --no-install-project --no-editable --no-dev
 
-ADD pyproject.toml /jacobson
-ADD uv.lock /jacobson
+COPY pyproject.toml /jacobson
+COPY uv.lock /jacobson
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-editable --no-dev --extra docs
@@ -20,7 +20,7 @@ FROM docker.io/library/python:3.12-alpine
 
 WORKDIR /jacobson
 
-COPY --from=builder /jacobson /jacobson
+COPY --from=builder /jacobson/.venv /jacobson/.venv
 
 VOLUME ./jacobson:/jacobson/jacobson
 VOLUME ./documentation/site:/jacobson/documentation/site
@@ -29,6 +29,6 @@ EXPOSE 8000
 
 ENV PATH="/jacobson/.venv/bin:$PATH"
 
-ADD alembic.ini /jacobson
+COPY alembic.ini /jacobson
 
 ENTRYPOINT ["sh", "-c", "alembic upgrade head && uvicorn jacobson.api.app:app --host=0.0.0.0 --reload"]
