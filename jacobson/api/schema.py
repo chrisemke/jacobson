@@ -20,6 +20,7 @@ from http import HTTPStatus
 from typing import Self
 
 from fastapi import Depends, HTTPException
+from loguru import logger
 from pydantic import PositiveInt
 from strawberry import Info, Schema, field, mutation, type
 from strawberry.fastapi import GraphQLRouter
@@ -78,6 +79,7 @@ class Query:
 			info.context.background_tasks.add_task(
 				insert_address_background, info.context.session, result['data'][0]
 			)
+			logger.info('Address insert task created')
 
 		return list(
 			map(

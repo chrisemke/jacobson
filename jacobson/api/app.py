@@ -17,11 +17,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from http import HTTPStatus
+from sys import stderr
 
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from loguru import logger
 
 from jacobson.api.schema import graphql_app
 from jacobson.utils.settings import settings
@@ -40,7 +42,22 @@ app = FastAPI(
 
 app.include_router(graphql_app, prefix='/graphql')
 
+logger.remove()
+
+logger.add(
+	stderr,
+	format=lambda x: (
+		f'{x['level'].name}: {" " * (8 - len(x['level'].name))}'
+		f'{x['name']}:'
+		f'\\{x['function']}:'
+		f'{x['line']} - {x['message']}\n'
+	),
+	enqueue=True,
+)
+logger.add('jacobson.log', enqueue=True)
+
 if settings.DEV:
+	logger.info('Starting on DEV mode')
 	app.mount(
 		'/',
 		StaticFiles(directory='documentation/site', html=True),
@@ -62,3 +79,5 @@ if settings.DEV:
 
 		"""
 		return templates.TemplateResponse(name='index.html', request=request)
+else:
+	logger.info('Starting on PROD mode')
