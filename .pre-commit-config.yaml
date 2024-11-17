@@ -5,7 +5,7 @@ repos:
       - id: end-of-file-fixer
       - id: trailing-whitespace
       - id: mixed-line-ending
-      - id: check-byte-order-marker
+      - id: fix-byte-order-marker
       - id: check-executables-have-shebangs
       - id: check-merge-conflict
       - id: check-symlinks
@@ -45,7 +45,7 @@ repos:
             --no-space,
           ]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.6.9
+    rev: v0.7.4
     hooks:
       - id: ruff-format
         name: Ruff Formater
@@ -64,7 +64,7 @@ repos:
               ^tests/
           )
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.12.0
+    rev: v1.13.0
     hooks:
       - id: mypy
         name: Mypy (Static type checker)
@@ -84,13 +84,13 @@ repos:
             "pwdlib[argon2]",
           ]
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: "0.4.22"
+    rev: "0.5.2"
     hooks:
       - id: uv-lock
         name: Upgrade uv lock file
         args: ["--upgrade"]
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.29.1
+    rev: v3.31.0
     hooks:
       - id: commitizen
       - id: commitizen-branch
