@@ -52,7 +52,7 @@ call to tell the api to update some register from plugins that are configured
 ## TODO (Needed for v0.3)
 - [x] Auth (pyjwt+pwdlib)
 - [x] Start Repository architecture on database
-- [ ] Add log support (logfire? loguru? OpenTelemetry?)
+- [ ] Add log support (loguru)
 - [ ] Custom exceptions
 - [ ] More test (unit and integration)
 - [ ] Healthcheck API
