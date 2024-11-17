@@ -10,7 +10,7 @@ COPY uv.lock /jacobson
 RUN uv sync --frozen --no-editable --group docs
 
 # Final Image
-FROM docker.io/library/python:3.13-alpine
+FROM docker.io/python:3.13-alpine
 
 WORKDIR /jacobson
 
