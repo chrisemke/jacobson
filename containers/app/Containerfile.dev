@@ -7,7 +7,7 @@ WORKDIR /jacobson
 COPY pyproject.toml /jacobson
 COPY uv.lock /jacobson
 
-RUN uv sync --frozen --no-editable --no-dev --extra docs
+RUN uv sync --frozen --no-editable --group docs
 
 # Final Image
 FROM docker.io/library/python:3.13-alpine
