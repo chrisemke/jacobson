@@ -1,6 +1,6 @@
 """
 Jacobson is a self hosted zipcode API
-Copyright (C) 2023-2024 Christian G. Semke.
+Copyright (C) 2023-2025 Christian G. Semke.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -32,7 +32,7 @@ class IsAuthenticated(BasePermission):
 		self: Self, source: Any, info: Info[Context], **kwargs: Any
 	) -> bool:
 		"""
-		strawberry default function to see if user has permission.
+		Strawberry default function to see if user has permission.
 
 		Args:
 				self (Self): Scope of current class

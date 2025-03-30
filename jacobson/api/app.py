@@ -1,6 +1,6 @@
 """
 Jacobson is a self hosted zipcode API
-Copyright (C) 2023-2024 Christian G. Semke.
+Copyright (C) 2023-2025 Christian G. Semke.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -47,10 +47,10 @@ logger.remove()
 logger.add(
 	stderr,
 	format=lambda x: (
-		f'{x['level'].name}: {" " * (8 - len(x['level'].name))}'
-		f'{x['name']}:'
-		f'\\{x['function']}:'
-		f'{x['line']} - {x['message']}\n'
+		f'{x["level"].name}: {" " * (8 - len(x["level"].name))}'
+		f'{x["name"]}:'
+		f'\\{x["function"]}:'
+		f'{x["line"]} - {x["message"]}\n'
 	),
 	enqueue=True,
 )
