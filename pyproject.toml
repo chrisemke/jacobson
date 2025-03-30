@@ -1,7 +1,7 @@
 [project]
 name = "Jacobson"
 version = "0.3.0"
-description = 'Self-hosted zipcode API'
+description = "Self-hosted zipcode API"
 readme = "README.md"
 requires-python = ">=3.12, <3.14"
 license = {text = "AGPL-3.0-or-later"}
@@ -22,46 +22,44 @@ classifiers = [
 	"Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = [
-	"alembic>=1.14.0",
+	"alembic>=1.15.2",
 	"email-validator>=2.2.0",
-	"fastapi-slim>=0.115.5",
-	"httpx[http2]>=0.27.2",
-	"psycopg[binary]>=3.2.3",
+	"fastapi-slim>=0.115.12",
+	"httpx[http2]>=0.28.1",
+	"psycopg[binary]>=3.2.6",
 	"pwdlib[argon2]>=0.2.1",
-	"pydantic>=2.10.1",
-	"pydantic-settings>=2.6.1",
-	"pyjwt>=2.9.0",
-	"sqlmodel>=0.0.22",
-	"strawberry-graphql[fastapi]>=0.252.0",
-	"uvicorn[standard]>=0.32.1",
+	"pydantic>=2.11.1",
+	"pydantic-settings>=2.8.1",
+	"pyjwt>=2.10.1",
+	"sqlmodel>=0.0.24",
+	"strawberry-graphql[fastapi]>=0.262.6",
+	"uvicorn[standard]>=0.34.0",
 	"greenlet>=3.1.1",                      # Needed to run alembic for now
-	"loguru>=0.7.2",
+	"loguru>=0.7.3",
 ]
 
 [dependency-groups]
 dev = [
-	"commitizen>=3.31.0",
-	"fastapi[standard]>=0.115.5",
-	"mypy>=1.13.0",
-	"pre-commit>=4.0.1",
-	"ruff>=0.8.0",
-	"strawberry-graphql[cli]>=0.252.0",
-	"taskipy>=1.14.0",
+	"mypy>=1.15.0",
+	"pre-commit>=4.2.0",
+	"ruff>=0.11.2",
+	"strawberry-graphql[cli]>=0.262.6",
+	"taskipy>=1.14.1",
 ]
 docs = [
 	"mkdocs>=1.6.1",
-	"mkdocs-material>=9.5.45",
+	"mkdocs-material>=9.6.9",
 	"mkdocs-site-urls>=0.2.0",
-	"mkdocstrings[python]>=0.27.0",
+	"mkdocstrings[python]>=0.29.0",
 ]
 test = [
-	"factory-boy>=3.3.1",
-	"pytest>=8.3.3",
-	"pytest-asyncio>=0.24.0",
+	"factory-boy>=3.3.3",
+	"pytest>=8.3.5",
+	"pytest-asyncio>=0.26.0",
 	"pytest-cov>=6.0.0",
 	"pytest-mock>=3.14.0",
-	"respx>=0.21.1",
-	"testcontainers[postgres]>=4.8.2",
+	"respx>=0.22.0",
+	"testcontainers[postgres]>=4.9.2",
 ]
 
 [project.urls]
@@ -126,7 +124,8 @@ docstring-code-format = true
 [tool.pytest.ini_options]
 minversion = "8.3"
 addopts = "-vv --no-header -p no:warnings"
-asyncio_mode = 'auto'
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
 testpaths = ["tests"]
 
 [tool.taskipy.variables]
