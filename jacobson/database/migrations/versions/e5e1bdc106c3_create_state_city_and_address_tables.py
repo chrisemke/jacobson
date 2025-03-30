@@ -103,7 +103,7 @@ def upgrade() -> None:
 		sa.Column('complement', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
 		sa.Column(
 			'coordinates',
-			postgresql.JSONB(astext_type=sa.Text()),  # type: ignore[no-untyped-call]
+			postgresql.JSONB(astext_type=sa.Text()),
 			nullable=True,
 		),
 		sa.Column('updated_at', sa.DateTime(), nullable=False),
