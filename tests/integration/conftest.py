@@ -16,12 +16,13 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from asyncio import get_event_loop
 from collections.abc import AsyncGenerator
 from uuid import uuid4
 
 import pytest
 from faker.generator import Generator
-from httpx import AsyncClient
+from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 from sqlmodel import SQLModel, select
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -40,7 +41,12 @@ from tests.integration.factories import (
 
 
 @pytest.fixture(scope='session')
-async def engine() -> AsyncGenerator[AsyncEngine, None]:
+def event_loop():
+	return get_event_loop()
+
+
+@pytest.fixture(scope='session')
+async def engine() -> AsyncGenerator[AsyncEngine]:
 	"""Database engine."""
 	with PostgresContainer(
 		'docker.io/library/postgres:17-alpine', driver='psycopg'
@@ -49,7 +55,7 @@ async def engine() -> AsyncGenerator[AsyncEngine, None]:
 
 
 @pytest.fixture
-async def session(engine: AsyncEngine) -> AsyncGenerator[AsyncSession, None]:
+async def session(engine: AsyncEngine) -> AsyncGenerator[AsyncSession]:
 	"""Database session."""
 	async with engine.begin() as trans:
 		await trans.run_sync(SQLModel.metadata.create_all)
@@ -101,12 +107,14 @@ async def state_data_seed(session):
 
 
 @pytest.fixture
-async def client(session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
+async def client(session: AsyncSession) -> AsyncGenerator[AsyncClient]:
 	"""Test client."""
 	app.dependency_overrides[get_session] = lambda: session
 
+	transport = ASGITransport(app=app)
+
 	async with AsyncClient(
-		app=app, base_url='http://dummy', http2=True
+		transport=transport, base_url='http://dummy', http2=True
 	) as test_client:
 		yield test_client
 
