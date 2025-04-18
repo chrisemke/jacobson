@@ -35,7 +35,7 @@ class Context(BaseContext):
 	response: Response
 	_current_user: User | None
 
-	def __init__(self: Self, session: T_AsyncSession):
+	def __init__(self: Self, session: T_AsyncSession) -> None:
 		"""Generate context database session."""
 		self.session = session
 		self._current_user = None
